@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="yAiA6z" name="NewProject" projectType="audioplug" useAppConfig="0"
+<JUCERPROJECT id="vUa0qt" name="NewProject" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1">
-  <MAINGROUP id="mb3WHe" name="NewProject">
-    <GROUP id="{68CA86C0-748B-0BB9-1344-AD538C58F771}" name="Source">
-      <FILE id="UJJYeK" name="PluginProcessor.cpp" compile="1" resource="0"
+  <MAINGROUP id="UDceBE" name="NewProject">
+    <GROUP id="{2DA1CDE7-1D9A-4DEC-CFC9-7BB79AF4DFDE}" name="Source">
+      <FILE id="W4pJrK" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
-      <FILE id="MGGrHp" name="PluginProcessor.h" compile="0" resource="0"
+      <FILE id="aulTLg" name="PluginProcessor.h" compile="0" resource="0"
             file="Source/PluginProcessor.h"/>
-      <FILE id="N6J7mb" name="PluginEditor.cpp" compile="1" resource="0"
+      <FILE id="M9AttE" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
-      <FILE id="OCe3ph" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="A2NBEM" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
@@ -29,7 +29,6 @@
         <MODULEPATH id="juce_audio_utils" path="../../../../JUCE/modules"/>
         <MODULEPATH id="juce_core" path="../../../../JUCE/modules"/>
         <MODULEPATH id="juce_data_structures" path="../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_dsp" path="../../../../JUCE/modules"/>
         <MODULEPATH id="juce_events" path="../../../../JUCE/modules"/>
         <MODULEPATH id="juce_graphics" path="../../../../JUCE/modules"/>
         <MODULEPATH id="juce_gui_basics" path="../../../../JUCE/modules"/>
@@ -50,7 +49,6 @@
         <MODULEPATH id="juce_audio_utils" path="../../../../JUCE/modules"/>
         <MODULEPATH id="juce_core" path="../../../../JUCE/modules"/>
         <MODULEPATH id="juce_data_structures" path="../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_dsp" path="../../../../JUCE/modules"/>
         <MODULEPATH id="juce_events" path="../../../../JUCE/modules"/>
         <MODULEPATH id="juce_graphics" path="../../../../JUCE/modules"/>
         <MODULEPATH id="juce_gui_basics" path="../../../../JUCE/modules"/>
@@ -71,7 +69,6 @@
         <MODULEPATH id="juce_audio_utils" path="../../../../JUCE/modules"/>
         <MODULEPATH id="juce_core" path="../../../../JUCE/modules"/>
         <MODULEPATH id="juce_data_structures" path="../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_dsp" path="../../../../JUCE/modules"/>
         <MODULEPATH id="juce_events" path="../../../../JUCE/modules"/>
         <MODULEPATH id="juce_graphics" path="../../../../JUCE/modules"/>
         <MODULEPATH id="juce_gui_basics" path="../../../../JUCE/modules"/>
@@ -92,7 +89,6 @@
         <MODULEPATH id="juce_audio_utils" path="../../../../JUCE/modules"/>
         <MODULEPATH id="juce_core" path="../../../../JUCE/modules"/>
         <MODULEPATH id="juce_data_structures" path="../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_dsp" path="../../../../JUCE/modules"/>
         <MODULEPATH id="juce_events" path="../../../../JUCE/modules"/>
         <MODULEPATH id="juce_graphics" path="../../../../JUCE/modules"/>
         <MODULEPATH id="juce_gui_basics" path="../../../../JUCE/modules"/>
@@ -110,7 +106,6 @@
     <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
-    <MODULE id="juce_dsp" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
