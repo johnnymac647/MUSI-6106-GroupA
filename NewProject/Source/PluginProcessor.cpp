@@ -19,7 +19,7 @@ NewProjectAudioProcessor::NewProjectAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ), apvts (*this, nullptr, "Parameters", createParameters())
 #endif
 {
 }
@@ -135,6 +135,10 @@ void NewProjectAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
+    auto gain_db = apvts.getRawParameterValue("VOLUME");
+    double gain_linear = std::expf(gain_db->load()/20);
+    std::cout << gain_linear << std::endl;
+
     // In case we have more outputs than inputs, this code clears any output
     // channels that didn't contain input data, (because these aren't
     // guaranteed to be empty - they may contain garbage).
@@ -154,6 +158,10 @@ void NewProjectAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     {
         auto* channelData = buffer.getWritePointer (channel);
 
+        for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
+        {
+            channelData[sample] *= gain_linear;
+        }
         // ..do something to the data...
     }
 }
@@ -188,4 +196,13 @@ void NewProjectAudioProcessor::setStateInformation (const void* data, int sizeIn
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new NewProjectAudioProcessor();
+}
+
+//==============================================================================
+// Create parameter layout for juce::AudioProcessorValueTreeState.
+juce::AudioProcessorValueTreeState::ParameterLayout NewProjectAudioProcessor::createParameters()
+{
+    std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("VOLUME", "Vulume", -96.0f, 12.0f, 0.0f));
+    return { params.begin() , params.end() };
 }

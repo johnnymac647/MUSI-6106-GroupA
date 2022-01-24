@@ -25,6 +25,9 @@ public:
     void resized() override;
 
 private:
+    juce::Slider VolumeKnob;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> VolumeKnobAttach;
+
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     NewProjectAudioProcessor& audioProcessor;
