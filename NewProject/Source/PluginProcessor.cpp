@@ -136,7 +136,7 @@ void NewProjectAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
     auto gain_db = apvts.getRawParameterValue("VOLUME");
-    double gain_linear = std::expf(gain_db->load()/20);
+    double gain_linear = std::powf(10, gain_db->load()/20);
     std::cout << gain_linear << std::endl;
 
     // In case we have more outputs than inputs, this code clears any output
