@@ -49,6 +49,14 @@ functionality from user point of view and how it differentiates from similar pro
 - JUCE: GUI, DSP packages
 - (Potentially) Eigen for linear algebra
 
+## Algorithmic References:
+- Zölzer, Udo, et al. DAFX-Digital audio effects. John Wiley & Sons, 2002.
+- Pirkle, Will C. Designing Audio Effect Plugins in C++: For AAX, AU, and VST3 with DSP Theory. Routledge, 2019.
+- Reiss, Joshua D., and Andrew McPherson. Audio effects: theory, implementation and application. CRC Press, 2014.
+- https://juce.com/learn/tutorials
+- https://www.mathworks.com/help/dsp/examples.html?s_tid=CRUX_topnav
+
+
 ## Milestones:
 - Milestone 1: Fully configurable parameters for advanced users (est. 03/07)
 - Milestone 2: Single knob with preset selector for amateur users (est. 04/14)
