@@ -1,4 +1,4 @@
-# MUSI-6106-GroupA
+im# MUSI-6106-GroupA
 Final Project for Audio Software Engineering, Spring 2022
 
 ## Motivation:
@@ -20,7 +20,7 @@ Final Project for Audio Software Engineering, Spring 2022
 functionality from user point of view and how it differentiates from similar products
 - Single knob/parameter with presets for the user to adjust, rather than a potentially overwhelming set of options example
 - *nice to have but will do for our own prototyping* - open up the application for more advanced users to customize individual parameters
-![alt text](https://github.com/johnnymac647/MUSI-6106-GroupA/blob/[main]/plots/flowchart_dsp.jpg?raw=true)
+![See DSP Flowchart](https://github.com/johnnymac647/MUSI-6106-GroupA/blob/main/plots/flowchart_dsp.jpg?raw=true)
 
 ## Description of Functionality:
 - UI:
