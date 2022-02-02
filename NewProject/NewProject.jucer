@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="vUa0qt" name="NewProject" projectType="audioplug" useAppConfig="0"
+<JUCERPROJECT id="vUa0qt" name="OneKnobVocal" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1">
-  <MAINGROUP id="UDceBE" name="NewProject">
+  <MAINGROUP id="UDceBE" name="OneKnobVocal">
     <GROUP id="{2DA1CDE7-1D9A-4DEC-CFC9-7BB79AF4DFDE}" name="Source">
       <FILE id="W4pJrK" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
@@ -12,6 +12,20 @@
             file="Source/PluginEditor.cpp"/>
       <FILE id="A2NBEM" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
     </GROUP>
+    <FILE id="bo5Wyk" name="Compressor.cpp" compile="1" resource="0" file="Source/Compressor.cpp"/>
+    <FILE id="YtaDmT" name="Compressor.h" compile="0" resource="0" file="Source/Compressor.h"/>
+    <FILE id="nBNKvr" name="De-esser.cpp" compile="1" resource="0" file="Source/De-esser.cpp"/>
+    <FILE id="ulwNxL" name="De-esser.h" compile="0" resource="0" file="Source/De-esser.h"/>
+    <FILE id="fsCS4J" name="Delay.cpp" compile="1" resource="0" file="Source/Delay.cpp"/>
+    <FILE id="pvMHja" name="Delay.h" compile="0" resource="0" file="Source/Delay.h"/>
+    <FILE id="OZm5ZZ" name="Effects.cpp" compile="1" resource="0" file="Source/Effects.cpp"/>
+    <FILE id="ancFwB" name="Effects.h" compile="0" resource="0" file="Source/Effects.h"/>
+    <FILE id="JEBIgT" name="Equalizer.cpp" compile="1" resource="0" file="Source/Equalizer.cpp"/>
+    <FILE id="ZDIiOo" name="Equalizer.h" compile="0" resource="0" file="Source/Equalizer.h"/>
+    <FILE id="yYFNaB" name="Reverb.cpp" compile="1" resource="0" file="Source/Reverb.cpp"/>
+    <FILE id="Uhj76Y" name="Reverb.h" compile="0" resource="0" file="Source/Reverb.h"/>
+    <FILE id="jvSrrb" name="Saturation.cpp" compile="1" resource="0" file="Source/Saturation.cpp"/>
+    <FILE id="NoKUOC" name="Saturation.h" compile="0" resource="0" file="Source/Saturation.h"/>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
   <EXPORTFORMATS>
