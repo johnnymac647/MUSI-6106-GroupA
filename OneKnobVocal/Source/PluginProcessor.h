@@ -54,7 +54,34 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
 private:
+<<<<<<< HEAD
     std::unique_ptr<juce::AudioProcessorGraph> mainProcessor;
+
+    void initialiseAudioNodes();
+    void connectAudioNodes();
+    void connectMidiNodes();
+    void initialiseGraph();   
+    
+    juce::AudioProcessorGraph::Node::Ptr midiInputNode;
+    juce::AudioProcessorGraph::Node::Ptr midiOutputNode;
+    
+    juce::ReferenceCountedArray<juce::AudioProcessorGraph::Node> audioNodeList;
+
+    juce::AudioProcessorGraph::Node::Ptr audioInputNode;
+    juce::AudioProcessorGraph::Node::Ptr audioOutputNode;
+
+    juce::AudioProcessorGraph::Node::Ptr inputGainNode;
+    juce::AudioProcessorGraph::Node::Ptr gateNode;
+    juce::AudioProcessorGraph::Node::Ptr deEsserNode;
+    juce::AudioProcessorGraph::Node::Ptr equalizerNode;
+    juce::AudioProcessorGraph::Node::Ptr compressorNode;
+    juce::AudioProcessorGraph::Node::Ptr saturatorNode;
+    juce::AudioProcessorGraph::Node::Ptr reverbNode;
+    juce::AudioProcessorGraph::Node::Ptr outputGainNode;
+
+
+=======
+>>>>>>> parent of 023678f (Copied the base class from JUCE documentation)
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OneKnobVocalAudioProcessor)
 };

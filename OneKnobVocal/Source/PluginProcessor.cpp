@@ -8,6 +8,14 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "Compressor.h"
+#include "DeEsser.h"
+#include "Equalizer.h"
+#include "Gain.h"
+#include "Gate.h"
+#include "Reverb.h"
+#include "Saturator.h"
+
 
 //==============================================================================
 OneKnobVocalAudioProcessor::OneKnobVocalAudioProcessor()
@@ -93,6 +101,13 @@ void OneKnobVocalAudioProcessor::changeProgramName (int index, const juce::Strin
 //==============================================================================
 void OneKnobVocalAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
+    mainProcessor->setPlayConfigDetails(getMainBusNumInputChannels(),
+        getMainBusNumOutputChannels(),
+        sampleRate, samplesPerBlock);
+
+    mainProcessor->prepareToPlay(sampleRate, samplesPerBlock);
+
+    initialiseGraph();
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
 }
@@ -150,6 +165,8 @@ void OneKnobVocalAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     // the samples and the outer loop is handling the channels.
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
+
+    mainProcessor->processBlock(buffer, midiMessages);
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         auto* channelData = buffer.getWritePointer (channel);
@@ -188,4 +205,71 @@ void OneKnobVocalAudioProcessor::setStateInformation (const void* data, int size
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new OneKnobVocalAudioProcessor();
+}
+
+void OneKnobVocalAudioProcessor::initialiseAudioNodes() //TODO: Could someone make this neat?
+{ 
+    inputGainNode = mainProcessor->addNode(std::make_unique<Gain>());
+    audioNodeList.add(inputGainNode);
+
+    gateNode = mainProcessor->addNode(std::make_unique<Gate>());
+    audioNodeList.add(gateNode);
+
+    deEsserNode = mainProcessor->addNode(std::make_unique<Deesser>());
+    audioNodeList.add(deEsserNode);
+
+    equalizerNode = mainProcessor->addNode(std::make_unique<Equalizer>());
+    audioNodeList.add(equalizerNode);
+
+    compressorNode = mainProcessor->addNode(std::make_unique<Deesser>());
+    audioNodeList.add(compressorNode);
+
+    saturatorNode = mainProcessor->addNode(std::make_unique<Saturator>());
+    audioNodeList.add(saturatorNode);
+
+    reverbNode = mainProcessor->addNode(std::make_unique<Reverb>());
+    audioNodeList.add(reverbNode);
+
+    outputGainNode = mainProcessor->addNode(std::make_unique<Gain>());
+    audioNodeList.add(outputGainNode);
+}
+
+void OneKnobVocalAudioProcessor::connectAudioNodes()
+
+{
+    for (int i = 0; i < audioNodeList.size() - 1; ++i)
+    {
+        for (int channel = 0; channel < 2; ++channel)
+            mainProcessor->addConnection({ { audioNodeList.getUnchecked(i)->nodeID,      channel },
+                                            { audioNodeList.getUnchecked(i + 1)->nodeID,  channel } });
+    }
+    for (int channel = 0; channel < 2; ++channel)
+    {
+        mainProcessor->addConnection({ { audioInputNode->nodeID,  channel },
+                                        { audioNodeList.getFirst()->nodeID, channel } });
+        mainProcessor->addConnection({ { audioNodeList.getLast()->nodeID,  channel },
+                                        { audioOutputNode->nodeID, channel } });
+    }
+}
+
+void OneKnobVocalAudioProcessor::connectMidiNodes()
+{
+    mainProcessor->addConnection({ { midiInputNode->nodeID,  juce::AudioProcessorGraph::midiChannelIndex },
+                                    { midiOutputNode->nodeID, juce::AudioProcessorGraph::midiChannelIndex } });
+}
+
+
+void OneKnobVocalAudioProcessor::initialiseGraph()
+{
+    mainProcessor->clear();
+
+    audioInputNode = mainProcessor->addNode(std::make_unique<juce::AudioProcessorGraph::AudioGraphIOProcessor>(juce::AudioProcessorGraph::AudioGraphIOProcessor::audioInputNode));
+    audioOutputNode = mainProcessor->addNode(std::make_unique<juce::AudioProcessorGraph::AudioGraphIOProcessor>(juce::AudioProcessorGraph::AudioGraphIOProcessor::audioOutputNode));
+   
+    
+    midiInputNode = mainProcessor->addNode(std::make_unique<juce::AudioProcessorGraph::AudioGraphIOProcessor>(juce::AudioProcessorGraph::AudioGraphIOProcessor::midiInputNode));
+    midiOutputNode = mainProcessor->addNode(std::make_unique<juce::AudioProcessorGraph::AudioGraphIOProcessor>(juce::AudioProcessorGraph::AudioGraphIOProcessor::midiOutputNode));
+
+    initialiseAudioNodes();
+    connectMidiNodes();
 }
