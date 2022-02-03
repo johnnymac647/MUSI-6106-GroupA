@@ -54,6 +54,7 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
 private:
+    std::unique_ptr<juce::AudioProcessorGraph> mainProcessor;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OneKnobVocalAudioProcessor)
 };

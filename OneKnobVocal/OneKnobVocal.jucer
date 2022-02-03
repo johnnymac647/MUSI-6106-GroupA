@@ -3,7 +3,10 @@
 <JUCERPROJECT id="yHeTrN" name="OneKnobVocal" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1">
   <MAINGROUP id="t5B24K" name="OneKnobVocal">
-    <GROUP id="{6B817EC4-777F-62A8-9E5D-068EBB7E7333}" name="Source">
+    <GROUP id="{F9C8FBCD-4E3B-9781-8A7F-96ABC945322E}" name="ProcessingUnits">
+      <FILE id="YgVZ8O" name="ProcessorBase.h" compile="0" resource="0" file="Source/ProcessorBase.h"/>
+    </GROUP>
+    <GROUP id="{6B817EC4-777F-62A8-9E5D-068EBB7E7333}" name="PluginInterface">
       <FILE id="SQnSNl" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="wsVCcI" name="PluginProcessor.h" compile="0" resource="0"
