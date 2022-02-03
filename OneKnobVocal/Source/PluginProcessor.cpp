@@ -27,7 +27,7 @@ OneKnobVocalAudioProcessor::OneKnobVocalAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ), mainProcessor(new juce::AudioProcessorGraph())
 #endif
 {
 }
@@ -108,6 +108,9 @@ void OneKnobVocalAudioProcessor::prepareToPlay (double sampleRate, int samplesPe
     mainProcessor->prepareToPlay(sampleRate, samplesPerBlock);
 
     initialiseGraph();
+
+    for (auto node : mainProcessor->getNodes())
+        node->getProcessor()->enableAllBuses();
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
 }
@@ -271,5 +274,6 @@ void OneKnobVocalAudioProcessor::initialiseGraph()
     midiOutputNode = mainProcessor->addNode(std::make_unique<juce::AudioProcessorGraph::AudioGraphIOProcessor>(juce::AudioProcessorGraph::AudioGraphIOProcessor::midiOutputNode));
 
     initialiseAudioNodes();
+    connectAudioNodes();
     connectMidiNodes();
 }

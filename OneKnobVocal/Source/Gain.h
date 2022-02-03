@@ -19,6 +19,7 @@ public:
         apvts{*this, nullptr, "Parameters", createParameterLayout()}
     {
         gain.setGainDecibels(apvts.getRawParameterValue("GAIN")->load());
+        //gain.setGainDecibels(-6.0f);
     }
 
     void prepareToPlay(double sampleRate, int samplesPerBlock) override
