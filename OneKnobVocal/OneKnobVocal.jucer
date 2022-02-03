@@ -4,6 +4,20 @@
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1">
   <MAINGROUP id="t5B24K" name="OneKnobVocal">
     <GROUP id="{F9C8FBCD-4E3B-9781-8A7F-96ABC945322E}" name="ProcessingUnits">
+      <FILE id="ZTvsw8" name="Compressor.cpp" compile="1" resource="0" file="Source/Compressor.cpp"/>
+      <FILE id="WDwbEd" name="Compressor.h" compile="0" resource="0" file="Source/Compressor.h"/>
+      <FILE id="ExFznT" name="DeEsser.cpp" compile="1" resource="0" file="Source/DeEsser.cpp"/>
+      <FILE id="BO0Wna" name="DeEsser.h" compile="0" resource="0" file="Source/DeEsser.h"/>
+      <FILE id="n1SHE7" name="Equalizer.cpp" compile="1" resource="0" file="Source/Equalizer.cpp"/>
+      <FILE id="I1a9lv" name="Equalizer.h" compile="0" resource="0" file="Source/Equalizer.h"/>
+      <FILE id="bSkpH6" name="Gain.cpp" compile="1" resource="0" file="Source/Gain.cpp"/>
+      <FILE id="PVMOWP" name="Gain.h" compile="0" resource="0" file="Source/Gain.h"/>
+      <FILE id="uHxB6V" name="Gate.cpp" compile="1" resource="0" file="Source/Gate.cpp"/>
+      <FILE id="tGKM4m" name="Gate.h" compile="0" resource="0" file="Source/Gate.h"/>
+      <FILE id="PRXBCL" name="Reverb.cpp" compile="1" resource="0" file="Source/Reverb.cpp"/>
+      <FILE id="StLSuV" name="Reverb.h" compile="0" resource="0" file="Source/Reverb.h"/>
+      <FILE id="tgpMm5" name="Saturator.cpp" compile="1" resource="0" file="Source/Saturator.cpp"/>
+      <FILE id="CK88JG" name="Saturator.h" compile="0" resource="0" file="Source/Saturator.h"/>
       <FILE id="YgVZ8O" name="ProcessorBase.h" compile="0" resource="0" file="Source/ProcessorBase.h"/>
     </GROUP>
     <GROUP id="{6B817EC4-777F-62A8-9E5D-068EBB7E7333}" name="PluginInterface">
@@ -36,6 +50,7 @@
         <MODULEPATH id="juce_graphics" path="../../../../../JUCE/modules"/>
         <MODULEPATH id="juce_gui_basics" path="../../../../../JUCE/modules"/>
         <MODULEPATH id="juce_gui_extra" path="../../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_dsp" path="../../../../../JUCE/modules"/>
       </MODULEPATHS>
     </VS2019>
     <XCODE_MAC targetFolder="Builds/MacOSX">
@@ -56,6 +71,7 @@
         <MODULEPATH id="juce_graphics" path="../../../../../JUCE/modules"/>
         <MODULEPATH id="juce_gui_basics" path="../../../../../JUCE/modules"/>
         <MODULEPATH id="juce_gui_extra" path="../../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_dsp" path="../../../../../JUCE/modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
   </EXPORTFORMATS>
@@ -69,6 +85,7 @@
     <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_dsp" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
