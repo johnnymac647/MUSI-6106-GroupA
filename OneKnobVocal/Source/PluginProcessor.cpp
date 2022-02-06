@@ -224,7 +224,7 @@ void OneKnobVocalAudioProcessor::initialiseAudioNodes() //TODO: Could someone ma
     equalizerNode = mainProcessor->addNode(std::make_unique<Equalizer>());
     audioNodeList.add(equalizerNode);
 
-    compressorNode = mainProcessor->addNode(std::make_unique<Deesser>());
+    compressorNode = mainProcessor->addNode(std::make_unique<Compressor>());
     audioNodeList.add(compressorNode);
 
     saturatorNode = mainProcessor->addNode(std::make_unique<Saturator>());

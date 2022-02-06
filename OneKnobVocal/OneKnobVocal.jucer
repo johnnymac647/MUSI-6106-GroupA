@@ -3,6 +3,30 @@
 <JUCERPROJECT id="yHeTrN" name="OneKnobVocal" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1">
   <MAINGROUP id="t5B24K" name="OneKnobVocal">
+    <GROUP id="{7487D8CA-5F2F-A206-091F-2D45C0C4C956}" name="ProcessingEditors">
+      <FILE id="C6aPhe" name="CompressorEditor.cpp" compile="1" resource="0"
+            file="Source/CompressorEditor.cpp"/>
+      <FILE id="xin5pp" name="CompressorEditor.h" compile="0" resource="0"
+            file="Source/CompressorEditor.h"/>
+      <FILE id="Ocie9r" name="DeEsserEditor.cpp" compile="1" resource="0"
+            file="Source/DeEsserEditor.cpp"/>
+      <FILE id="uzQ337" name="DeEsserEditor.h" compile="0" resource="0" file="Source/DeEsserEditor.h"/>
+      <FILE id="IQ9tMi" name="EqualizerEditor.cpp" compile="1" resource="0"
+            file="Source/EqualizerEditor.cpp"/>
+      <FILE id="LR6aAH" name="EqualizerEditor.h" compile="0" resource="0"
+            file="Source/EqualizerEditor.h"/>
+      <FILE id="PTXnML" name="GainSlider.cpp" compile="1" resource="0" file="Source/GainSlider.cpp"/>
+      <FILE id="O7om6L" name="GainSlider.h" compile="0" resource="0" file="Source/GainSlider.h"/>
+      <FILE id="kKpuCm" name="GateEditor.cpp" compile="1" resource="0" file="Source/GateEditor.cpp"/>
+      <FILE id="a77q93" name="GateEditor.h" compile="0" resource="0" file="Source/GateEditor.h"/>
+      <FILE id="oFdspF" name="ReverbEditor.cpp" compile="1" resource="0"
+            file="Source/ReverbEditor.cpp"/>
+      <FILE id="rEi6TD" name="ReverbEditor.h" compile="0" resource="0" file="Source/ReverbEditor.h"/>
+      <FILE id="IVYeWe" name="SaturatorEditor.cpp" compile="1" resource="0"
+            file="Source/SaturatorEditor.cpp"/>
+      <FILE id="QiNTrQ" name="SaturatorEditor.h" compile="0" resource="0"
+            file="Source/SaturatorEditor.h"/>
+    </GROUP>
     <GROUP id="{F9C8FBCD-4E3B-9781-8A7F-96ABC945322E}" name="ProcessingUnits">
       <FILE id="ZTvsw8" name="Compressor.cpp" compile="1" resource="0" file="Source/Compressor.cpp"/>
       <FILE id="WDwbEd" name="Compressor.h" compile="0" resource="0" file="Source/Compressor.h"/>
