@@ -53,9 +53,17 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    juce::AudioProcessorGraph::Node::Ptr inputGainNode;
+    juce::AudioProcessorGraph::Node::Ptr gateNode;
+    juce::AudioProcessorGraph::Node::Ptr deEsserNode;
+    juce::AudioProcessorGraph::Node::Ptr equalizerNode;
+    juce::AudioProcessorGraph::Node::Ptr compressorNode;
+    juce::AudioProcessorGraph::Node::Ptr saturatorNode;
+    juce::AudioProcessorGraph::Node::Ptr reverbNode;
+    juce::AudioProcessorGraph::Node::Ptr outputGainNode;
+
 private:
     std::unique_ptr<juce::AudioProcessorGraph> mainProcessor;
-
     void initialiseAudioNodes();
     void connectAudioNodes();
     void connectMidiNodes();
@@ -69,14 +77,7 @@ private:
     juce::AudioProcessorGraph::Node::Ptr audioInputNode;
     juce::AudioProcessorGraph::Node::Ptr audioOutputNode;
 
-    juce::AudioProcessorGraph::Node::Ptr inputGainNode;
-    juce::AudioProcessorGraph::Node::Ptr gateNode;
-    juce::AudioProcessorGraph::Node::Ptr deEsserNode;
-    juce::AudioProcessorGraph::Node::Ptr equalizerNode;
-    juce::AudioProcessorGraph::Node::Ptr compressorNode;
-    juce::AudioProcessorGraph::Node::Ptr saturatorNode;
-    juce::AudioProcessorGraph::Node::Ptr reverbNode;
-    juce::AudioProcessorGraph::Node::Ptr outputGainNode;
+
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OneKnobVocalAudioProcessor)
