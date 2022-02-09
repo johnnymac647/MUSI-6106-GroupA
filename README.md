@@ -84,5 +84,5 @@ functionality from user point of view and how it differentiates from similar pro
   - Nitin: Compression, UX Design, Developer
   - Mike: Distortion, Developer
 
-## GUI design 
+## GUI design: 
 ![Group 1](https://user-images.githubusercontent.com/77855667/153244859-47ccf6b0-3f52-498e-9938-4c0cb93d7e8f.png)
