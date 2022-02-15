@@ -13,11 +13,21 @@
 SaturatorEditor::SaturatorEditor(Saturator& p)
     :AudioProcessorEditor(&p), mProcessor(p)
 {
+    
+    GainKnob.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
+    GainKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
+    addAndMakeVisible(GainKnob);
+    GainKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "INPUT", GainKnob);
+    GainKnob.setBounds(0, 40, 120, 20);
+    
+    
     VolumeKnob.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     VolumeKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
     addAndMakeVisible(VolumeKnob);
     VolumeKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "GAIN", VolumeKnob);
-    VolumeKnob.setBounds(0, 40, 120, 20);
+    VolumeKnob.setBounds(0, 65, 120, 20);
+    
+    
 }
 SaturatorEditor::~SaturatorEditor()
 {

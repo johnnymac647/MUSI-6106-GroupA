@@ -40,7 +40,7 @@ public:
         float k = 1.f; //gain multiplier, amplify the input sample before applying it to the funciton.
         
         float tanh_k = tanh(k); //k applies in the denominators for normalization, optional
-        float atan_k = atan(k);
+        //float atan_k = atan(k);
         
         for (int channel = 0; channel < totalNumInputChannels; ++channel)
         {
@@ -85,6 +85,7 @@ private:
     {
         std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
         params.push_back(std::make_unique<juce::AudioParameterFloat>("GAIN", "Gain", -96.0f, 12.0f, 0.0f));
+        params.push_back(std::make_unique<juce::AudioParameterFloat>("INPUT", "Input", -96.0f, 12.0f, 0.0f));
         return { params.begin() , params.end() };
     }
     juce::dsp::Gain<float> gain;
