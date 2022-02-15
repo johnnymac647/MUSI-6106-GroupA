@@ -29,10 +29,30 @@ public:
 
     void processBlock(juce::AudioSampleBuffer& buffer, juce::MidiBuffer&) override
     {
+        const int totalNumInputChannels  = getTotalNumInputChannels();
+        const int totalNumOutputChannels = getTotalNumOutputChannels();
+        
+        for (int channel = 0; channel < totalNumInputChannels; ++channel)
+        {
+            float* channelData = buffer.getWritePointer (channel);
+            const int numSamplesToRender = buffer.getNumSamples();
+            
+            
+            for(int i = 0; i < numSamplesToRender; i++){
+                channelData[i] = channelData[i] * 0.1f;
+            }
+        }
+        
+        
+        
+        
+        
+        
         gain.setGainDecibels(apvts.getRawParameterValue("GAIN")->load());
         juce::dsp::AudioBlock<float> block(buffer);
         juce::dsp::ProcessContextReplacing<float> context(block);
         gain.process(context);
+        
     }
 
     void reset() override
