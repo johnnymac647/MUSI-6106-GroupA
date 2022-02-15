@@ -10,6 +10,7 @@
 
 #pragma once
 #include <JuceHeader.h>
+#include <math.h>
 #include "ProcessorBase.h"
 
 class Saturator : public ProcessorBase
@@ -30,7 +31,16 @@ public:
     void processBlock(juce::AudioSampleBuffer& buffer, juce::MidiBuffer&) override
     {
         const int totalNumInputChannels  = getTotalNumInputChannels();
-        const int totalNumOutputChannels = getTotalNumOutputChannels();
+        //const int totalNumOutputChannels = getTotalNumOutputChannels();
+        
+        /*
+        Pirkle, Will. Designing Audio Effect Plug-Ins in C++: with digital audio signal processing theory. Routledge, 2012. Table 19.1
+        */
+        
+        float k = 1.f; //gain multiplier, amplify the input sample before applying it to the funciton.
+        
+        float tanh_k = tanh(k); //k applies in the denominators for normalization, optional
+        float atan_k = atan(k);
         
         for (int channel = 0; channel < totalNumInputChannels; ++channel)
         {
@@ -39,7 +49,13 @@ public:
             
             
             for(int i = 0; i < numSamplesToRender; i++){
-                channelData[i] = channelData[i] * 0.1f;
+                
+                
+                //Hyperbolic Tangent TANH
+                channelData[i] = tanh(k * channelData[i]) / tanh_k;
+                
+                //Arctangent ATAN
+                //channelData[i] = atan(k * channelData[i]) / atan_k;
             }
         }
         
