@@ -20,8 +20,10 @@ public:
 private:
     Saturator& mProcessor;
     juce::Slider GainKnob;
+    juce::Slider MixKnob;
     juce::Slider VolumeKnob;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> GainKnobAttach;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> MixKnobAttach;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> VolumeKnobAttach;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SaturatorEditor);
 };

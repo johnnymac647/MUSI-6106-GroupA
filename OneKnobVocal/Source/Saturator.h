@@ -19,7 +19,7 @@ public:
     Saturator() :
         apvts{ *this, nullptr, "Parameters", createParameterLayout() }
     {
-        gain.setGainDecibels(apvts.getRawParameterValue("GAIN")->load());
+        gain.setGainDecibels(apvts.getRawParameterValue("OUTPUT")->load());
     }
 
     void prepareToPlay(double sampleRate, int samplesPerBlock) override
@@ -37,10 +37,17 @@ public:
         Pirkle, Will. Designing Audio Effect Plug-Ins in C++: with digital audio signal processing theory. Routledge, 2012. Table 19.1
         */
         
-        float k = 1.f; //gain multiplier, amplify the input sample before applying it to the funciton.
+        //gain multiplier, amplify the input sample before applying it to the funciton.
+        float k = (apvts.getRawParameterValue("GAIN")->load());
         
-        float tanh_k = tanh(k); //k applies in the denominators for normalization, optional
-        //float atan_k = atan(k);
+        
+        //k applies in the denominators for normalization, optional
+        //float tanh_k = tanh(k);
+        float atan_k = atan(k);
+        
+        
+        float mix = (apvts.getRawParameterValue("MIX")->load());
+        
         
         for (int channel = 0; channel < totalNumInputChannels; ++channel)
         {
@@ -52,19 +59,16 @@ public:
                 
                 
                 //Hyperbolic Tangent TANH
-                channelData[i] = tanh(k * channelData[i]) / tanh_k;
+                //channelData[i] = (1. - mix) * channelData[i] +
+                //                mix * (tanh(k * channelData[i]) / tanh_k);
                 
                 //Arctangent ATAN
-                //channelData[i] = atan(k * channelData[i]) / atan_k;
+                channelData[i] = (1. - mix) * channelData[i] +
+                                mix * (atan(k * channelData[i]) / atan_k);;
             }
         }
         
-        
-        
-        
-        
-        
-        gain.setGainDecibels(apvts.getRawParameterValue("GAIN")->load());
+        gain.setGainDecibels(apvts.getRawParameterValue("OUTPUT")->load());
         juce::dsp::AudioBlock<float> block(buffer);
         juce::dsp::ProcessContextReplacing<float> context(block);
         gain.process(context);
@@ -84,8 +88,10 @@ private:
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout()
     {
         std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("GAIN", "Gain", -96.0f, 12.0f, 0.0f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("INPUT", "Input", -96.0f, 12.0f, 0.0f));
+        params.push_back(std::make_unique<juce::AudioParameterFloat>("GAIN", "Gain", 0.01f, 10.0f, 1.0f));
+        params.push_back(std::make_unique<juce::AudioParameterFloat>("MIX", "Mix", 0.0f, 1.0f, 1.0f));
+        params.push_back(std::make_unique<juce::AudioParameterFloat>("OUTPUT", "Output", -96.0f, 12.0f, 0.0f));
+        
         return { params.begin() , params.end() };
     }
     juce::dsp::Gain<float> gain;
