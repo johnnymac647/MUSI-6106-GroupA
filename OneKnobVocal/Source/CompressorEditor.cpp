@@ -16,7 +16,7 @@ CompressorEditor::CompressorEditor(Compressor& p)
     VolumeKnob.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     VolumeKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
     addAndMakeVisible(VolumeKnob);
-    VolumeKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "GAIN", VolumeKnob);
+    VolumeKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(*(mProcessor.ptr_apvts), "COMPRESSOR_POST_GAIN", VolumeKnob);
     VolumeKnob.setBounds(0, 40, 120, 20);
 }
 CompressorEditor::~CompressorEditor()

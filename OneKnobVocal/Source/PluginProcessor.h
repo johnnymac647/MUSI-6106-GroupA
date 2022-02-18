@@ -62,7 +62,11 @@ public:
     juce::AudioProcessorGraph::Node::Ptr reverbNode;
     juce::AudioProcessorGraph::Node::Ptr outputGainNode;
 
+    juce::AudioProcessorValueTreeState apvts;
+
 private:
+    juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
+
     std::unique_ptr<juce::AudioProcessorGraph> mainProcessor;
     void initialiseAudioNodes();
     void connectAudioNodes();

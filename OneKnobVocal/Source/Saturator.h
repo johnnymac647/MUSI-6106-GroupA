@@ -16,10 +16,17 @@
 class Saturator : public ProcessorBase
 {
 public:
-    Saturator() :
-        apvts{ *this, nullptr, "Parameters", createParameterLayout() }
+    Saturator(juce::AudioProcessorValueTreeState* parantApvts) 
     {
-        gain.setGainDecibels(apvts.getRawParameterValue("OUTPUT")->load());
+        ptr_apvts = parantApvts;
+        gain.setGainDecibels(ptr_apvts->getRawParameterValue("SATURATOR_POST_GAIN")->load());
+    }
+
+    static void addToParameterLayout(std::vector<std::unique_ptr<juce::RangedAudioParameter>>& params)
+    {
+        params.push_back(std::make_unique<juce::AudioParameterFloat>("SATURATOR_PRE_GAIN", "SaturatorPreGain", 0.01f, 10.0f, 1.0f));
+        params.push_back(std::make_unique<juce::AudioParameterFloat>("SATURATOR_MIX", "SaturatorMix", 0.0f, 1.0f, 1.0f));
+        params.push_back(std::make_unique<juce::AudioParameterFloat>("SATURATOR_POST_GAIN", "SaturatorPostGain", -96.0f, 12.0f, 0.0f));
     }
 
     void prepareToPlay(double sampleRate, int samplesPerBlock) override
@@ -38,7 +45,7 @@ public:
         */
         
         //gain multiplier, amplify the input sample before applying it to the funciton.
-        float k = (apvts.getRawParameterValue("GAIN")->load());
+        float k = (ptr_apvts->getRawParameterValue("SATURATOR_PRE_GAIN")->load());
         
         
         //k applies in the denominators for normalization, optional
@@ -46,7 +53,7 @@ public:
         float atan_k = atan(k);
         
         
-        float mix = (apvts.getRawParameterValue("MIX")->load());
+        float mix = (ptr_apvts->getRawParameterValue("SATURATOR_MIX")->load());
         
         
         for (int channel = 0; channel < totalNumInputChannels; ++channel)
@@ -68,7 +75,7 @@ public:
             }
         }
         
-        gain.setGainDecibels(apvts.getRawParameterValue("OUTPUT")->load());
+        gain.setGainDecibels(ptr_apvts->getRawParameterValue("SATURATOR_POST_GAIN")->load());
         juce::dsp::AudioBlock<float> block(buffer);
         juce::dsp::ProcessContextReplacing<float> context(block);
         gain.process(context);
@@ -82,17 +89,8 @@ public:
 
     const juce::String getName() const override { return "Saturator"; }
 
-    juce::AudioProcessorValueTreeState apvts;
+    juce::AudioProcessorValueTreeState* ptr_apvts;
 
 private:
-    juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout()
-    {
-        std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("GAIN", "Gain", 0.01f, 10.0f, 1.0f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("MIX", "Mix", 0.0f, 1.0f, 1.0f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("OUTPUT", "Output", -96.0f, 12.0f, 0.0f));
-        
-        return { params.begin() , params.end() };
-    }
     juce::dsp::Gain<float> gain;
 };

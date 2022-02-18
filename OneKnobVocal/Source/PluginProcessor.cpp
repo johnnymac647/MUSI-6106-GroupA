@@ -11,7 +11,6 @@
 #include "Compressor.h"
 #include "DeEsser.h"
 #include "Equalizer.h"
-#include "Gain.h"
 #include "Gate.h"
 #include "Reverb.h"
 #include "Saturator.h"
@@ -27,7 +26,8 @@ OneKnobVocalAudioProcessor::OneKnobVocalAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       ), mainProcessor(new juce::AudioProcessorGraph())
+                       ), mainProcessor(new juce::AudioProcessorGraph()),
+    apvts{ *this, nullptr, "Parameters", createParameterLayout() }
 #endif
 {
 }
@@ -195,12 +195,20 @@ void OneKnobVocalAudioProcessor::getStateInformation (juce::MemoryBlock& destDat
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
+    auto state = apvts.copyState();
+    std::unique_ptr<juce::XmlElement> xml(state.createXml());
+    copyXmlToBinary(*xml, destData);
 }
 
 void OneKnobVocalAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+    std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
+
+    if (xmlState.get() != nullptr)
+        if (xmlState->hasTagName(apvts.state.getType()))
+            apvts.replaceState(juce::ValueTree::fromXml(*xmlState));
 }
 
 //==============================================================================
@@ -212,29 +220,24 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 
 void OneKnobVocalAudioProcessor::initialiseAudioNodes() //TODO: Could someone make this neat?
 { 
-    inputGainNode = mainProcessor->addNode(std::make_unique<Gain>());
-    audioNodeList.add(inputGainNode);
-
-    gateNode = mainProcessor->addNode(std::make_unique<Gate>());
+    gateNode = mainProcessor->addNode(std::make_unique<Gate>(&apvts));
     audioNodeList.add(gateNode);
 
-    deEsserNode = mainProcessor->addNode(std::make_unique<Deesser>());
+    deEsserNode = mainProcessor->addNode(std::make_unique<Deesser>(&apvts));
     audioNodeList.add(deEsserNode);
 
-    equalizerNode = mainProcessor->addNode(std::make_unique<Equalizer>());
+    equalizerNode = mainProcessor->addNode(std::make_unique<Equalizer>(&apvts));
     audioNodeList.add(equalizerNode);
 
-    compressorNode = mainProcessor->addNode(std::make_unique<Compressor>());
+    compressorNode = mainProcessor->addNode(std::make_unique<Compressor>(&apvts));
     audioNodeList.add(compressorNode);
 
-    saturatorNode = mainProcessor->addNode(std::make_unique<Saturator>());
+    saturatorNode = mainProcessor->addNode(std::make_unique<Saturator>(&apvts));
     audioNodeList.add(saturatorNode);
 
-    reverbNode = mainProcessor->addNode(std::make_unique<Reverb>());
+    reverbNode = mainProcessor->addNode(std::make_unique<Reverb>(&apvts));
     audioNodeList.add(reverbNode);
 
-    outputGainNode = mainProcessor->addNode(std::make_unique<Gain>());
-    audioNodeList.add(outputGainNode);
 }
 
 void OneKnobVocalAudioProcessor::connectAudioNodes()
@@ -276,4 +279,18 @@ void OneKnobVocalAudioProcessor::initialiseGraph()
     initialiseAudioNodes();
     connectAudioNodes();
     connectMidiNodes();
+}
+
+juce::AudioProcessorValueTreeState::ParameterLayout OneKnobVocalAudioProcessor::createParameterLayout()
+{
+    std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
+
+    Gate::addToParameterLayout(params);
+    Deesser::addToParameterLayout(params);
+    Equalizer::addToParameterLayout(params);
+    Compressor::addToParameterLayout(params);
+    Saturator::addToParameterLayout(params);
+    Reverb::addToParameterLayout(params);
+
+    return { params.begin() , params.end() };
 }

@@ -10,7 +10,6 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
-#include "GainSlider.h"
 #include "GateEditor.h"
 #include "DeEsserEditor.h"
 #include "EqualizerEditor.h"
@@ -35,7 +34,6 @@ private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     OneKnobVocalAudioProcessor& audioProcessor;
-    std::unique_ptr<GainSlider> mInputGainSlider;
 
     std::unique_ptr<GateEditor> mGateEditor;
     std::unique_ptr<DeEsserEditor> mDeEsserEditor;
@@ -44,6 +42,5 @@ private:
     std::unique_ptr<SaturatorEditor> mSaturatorEditor;
     std::unique_ptr<ReverbEditor> mReverbEditor;
 
-    std::unique_ptr<GainSlider> mOutputGainSlider;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OneKnobVocalAudioProcessorEditor)
 };
