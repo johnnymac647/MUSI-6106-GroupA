@@ -15,10 +15,15 @@
 class Deesser : public ProcessorBase
 {
 public:
-    Deesser() :
-        apvts{ *this, nullptr, "Parameters", createParameterLayout() }
+    static void addToParameterLayout(std::vector<std::unique_ptr<juce::RangedAudioParameter>>& params)
     {
-        gain.setGainDecibels(apvts.getRawParameterValue("GAIN")->load());
+        params.push_back(std::make_unique<juce::AudioParameterFloat>("DEESSER_POST_GAIN", "DeesserPostGain", -96.0f, 12.0f, 0.0f));
+    }
+
+    Deesser(juce::AudioProcessorValueTreeState* mainApvts)
+    {
+        ptr_apvts = mainApvts;
+        gain.setGainDecibels(ptr_apvts->getRawParameterValue("DEESSER_POST_GAIN")->load());
     }
 
     void prepareToPlay(double sampleRate, int samplesPerBlock) override
@@ -29,7 +34,7 @@ public:
 
     void processBlock(juce::AudioSampleBuffer& buffer, juce::MidiBuffer&) override
     {
-        gain.setGainDecibels(apvts.getRawParameterValue("GAIN")->load());
+        gain.setGainDecibels(ptr_apvts->getRawParameterValue("DEESSER_POST_GAIN")->load());
         juce::dsp::AudioBlock<float> block(buffer);
         juce::dsp::ProcessContextReplacing<float> context(block);
         gain.process(context);
@@ -40,16 +45,10 @@ public:
         gain.reset();
     }
 
-    const juce::String getName() const override { return "Deesser"; }
+    const juce::String getName() const override { return "Gate"; }
 
-    juce::AudioProcessorValueTreeState apvts;
+    juce::AudioProcessorValueTreeState* ptr_apvts;
 
 private:
-    juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout()
-    {
-        std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("GAIN", "Gain", -96.0f, 12.0f, 0.0f));
-        return { params.begin() , params.end() };
-    }
     juce::dsp::Gain<float> gain;
 };

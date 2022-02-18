@@ -11,7 +11,6 @@
 #include "Compressor.h"
 #include "DeEsser.h"
 #include "Equalizer.h"
-#include "Gain.h"
 #include "Gate.h"
 #include "Reverb.h"
 #include "Saturator.h"
@@ -27,7 +26,8 @@ OneKnobVocalAudioProcessor::OneKnobVocalAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       ), mainProcessor(new juce::AudioProcessorGraph())
+                       ), mainProcessor(new juce::AudioProcessorGraph()),
+    apvts{ *this, nullptr, "Parameters", createParameterLayout() }
 #endif
 {
 }
@@ -212,29 +212,24 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 
 void OneKnobVocalAudioProcessor::initialiseAudioNodes() //TODO: Could someone make this neat?
 { 
-    inputGainNode = mainProcessor->addNode(std::make_unique<Gain>());
-    audioNodeList.add(inputGainNode);
-
-    gateNode = mainProcessor->addNode(std::make_unique<Gate>());
+    gateNode = mainProcessor->addNode(std::make_unique<Gate>(&apvts));
     audioNodeList.add(gateNode);
 
-    deEsserNode = mainProcessor->addNode(std::make_unique<Deesser>());
+    deEsserNode = mainProcessor->addNode(std::make_unique<Deesser>(&apvts));
     audioNodeList.add(deEsserNode);
 
-    equalizerNode = mainProcessor->addNode(std::make_unique<Equalizer>());
+    equalizerNode = mainProcessor->addNode(std::make_unique<Equalizer>(&apvts));
     audioNodeList.add(equalizerNode);
 
-    compressorNode = mainProcessor->addNode(std::make_unique<Compressor>());
+    compressorNode = mainProcessor->addNode(std::make_unique<Compressor>(&apvts));
     audioNodeList.add(compressorNode);
 
-    saturatorNode = mainProcessor->addNode(std::make_unique<Saturator>());
+    saturatorNode = mainProcessor->addNode(std::make_unique<Saturator>(&apvts));
     audioNodeList.add(saturatorNode);
 
-    reverbNode = mainProcessor->addNode(std::make_unique<Reverb>());
+    reverbNode = mainProcessor->addNode(std::make_unique<Reverb>(&apvts));
     audioNodeList.add(reverbNode);
 
-    outputGainNode = mainProcessor->addNode(std::make_unique<Gain>());
-    audioNodeList.add(outputGainNode);
 }
 
 void OneKnobVocalAudioProcessor::connectAudioNodes()
@@ -276,4 +271,18 @@ void OneKnobVocalAudioProcessor::initialiseGraph()
     initialiseAudioNodes();
     connectAudioNodes();
     connectMidiNodes();
+}
+
+juce::AudioProcessorValueTreeState::ParameterLayout OneKnobVocalAudioProcessor::createParameterLayout()
+{
+    std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
+
+    Gate::addToParameterLayout(params);
+    Deesser::addToParameterLayout(params);
+    Equalizer::addToParameterLayout(params);
+    Compressor::addToParameterLayout(params);
+    Saturator::addToParameterLayout(params);
+    Reverb::addToParameterLayout(params);
+
+    return { params.begin() , params.end() };
 }
