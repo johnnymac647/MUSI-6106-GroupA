@@ -16,7 +16,15 @@ class Equalizer : public ProcessorBase
 {
 public:
     
+    //graphic EQ outline
+    
     juce::dsp::IIR::Coefficients<float>* newCoefficients;
+    
+    //param EQ outline
+    //need an array/list of filters
+    //each filter needs: index, type(low/high pass/shelf, notch, etc)
+
+    
     
     Equalizer() :
         apvts{ *this, nullptr, "Parameters", createParameterLayout() }
@@ -55,4 +63,26 @@ private:
     }
     juce::dsp::Gain<float> gain;
 
+};
+
+//make this a derived class from one of the JUCE filters???
+class mVocalFilter {
+public:
+    enum eFilterType {
+        lowPass,
+        hiPass,
+        lowShelf,
+        hiShelf,
+        bandPass,
+        notch,
+        peak,
+        numOfFilters
+    };
+    
+    mVocalFilter::eFilterType mFilterType;
+    float m_fQ;
+    float m_fFrequency;
+    float m_fGain;
+    
+private:
 };
