@@ -15,6 +15,9 @@
 class Equalizer : public ProcessorBase
 {
 public:
+    
+    juce::dsp::IIR::Coefficients<float>* newCoefficients;
+    
     Equalizer() :
         apvts{ *this, nullptr, "Parameters", createParameterLayout() }
     {
