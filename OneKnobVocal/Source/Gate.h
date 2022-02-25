@@ -33,7 +33,6 @@ public:
         juce::dsp::AudioBlock<float> block(buffer);
         juce::dsp::ProcessContextReplacing<float> context(block);
         gain.process(context);
-        // test
     }
 
     void reset() override
