@@ -37,7 +37,7 @@ OneKnobVocalAudioProcessor::~OneKnobVocalAudioProcessor()
 }
 
 //==============================================================================
-const juce::String OneKnobVocalinitialiseGraph()::getName() const
+const juce::String OneKnobVocalAudioProcessor::getName() const
 {
     return JucePlugin_Name;
 }

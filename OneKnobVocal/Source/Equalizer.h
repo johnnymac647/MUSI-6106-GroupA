@@ -92,9 +92,11 @@ public:
         *leftChain.get<ChainPositions::lowMid>().coefficients = *lowMidCoefficients;
         *leftChain.get<ChainPositions::hiMid>().coefficients = *hiMidCoefficients;
 //        *monoChain.get<ChainPositions::hi>().coefficients = *hiCoefficients;
+        leftChain.get<ChainPositions::gain>().setGainDecibels(eqSettings.postGainDecibels);
         
         *rightChain.get<ChainPositions::lowMid>().coefficients = *lowMidCoefficients;
         *rightChain.get<ChainPositions::hiMid>().coefficients = *hiMidCoefficients;
+        rightChain.get<ChainPositions::gain>().setGainDecibels(eqSettings.postGainDecibels);
         
         juce::dsp::AudioBlock<float> block(buffer);
         auto leftBlock = block.getSingleChannelBlock(0);
@@ -110,7 +112,8 @@ public:
 
     void reset() override
     {
-        gain.reset();
+        leftChain.get<ChainPositions::gain>().reset();
+        rightChain.get<ChainPositions::gain>().reset();
     }
 
     const juce::String getName() const override { return "Equalizer"; }
@@ -118,15 +121,15 @@ public:
     juce::AudioProcessorValueTreeState* ptr_apvts;
 
 private:
-    juce::dsp::Gain<float> gain;
+    using Gain = juce::dsp::Gain<float>;
     
     //Fitler design techniques based on tutorial at https:\/\/www.youtube.com/watch?v=i_Iq4_Kd7Rc
     using Filter = juce::dsp::IIR::Filter<float>;
     using CutFilter = juce::dsp::ProcessorChain<Filter, Filter, Filter, Filter>;
-    using MonoChain = juce::dsp::ProcessorChain<CutFilter, Filter, Filter, CutFilter>;
+    using MonoChain = juce::dsp::ProcessorChain<Filter, Filter, Filter, Filter, Gain>;
     MonoChain leftChain, rightChain, monoChain;
     enum ChainPositions{
-        low, lowMid, hiMid, hi
+        low, lowMid, hiMid, hi, gain
     };
 
 };
