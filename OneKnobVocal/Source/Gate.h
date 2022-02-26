@@ -18,7 +18,7 @@ public:
     Gate() :
         apvts{ *this, nullptr, "Parameters", createParameterLayout() }
     {
-        // gain.setGainDecibels(apvts.getRawParameterValue("GAIN")->load());
+        gain.setGainDecibels(apvts.getRawParameterValue("GAIN")->load());
     }
 
     void prepareToPlay(double sampleRate, int samplesPerBlock) override
@@ -33,8 +33,8 @@ public:
         auto totalNumInputChannels  = getTotalNumInputChannels();
         auto totalNumOutputChannels = getTotalNumOutputChannels();
 
-        for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-            buffer.clear (i, 0, buffer.getNumSamples());
+        // for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
+        //     buffer.clear (i, 0, buffer.getNumSamples());
         
         gain.setGainDecibels(apvts.getRawParameterValue("GAIN")->load());
         

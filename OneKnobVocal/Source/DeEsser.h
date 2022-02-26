@@ -18,8 +18,7 @@ public:
     Deesser() :
         apvts{ *this, nullptr, "Parameters", createParameterLayout() }
     {
-        // gain.setGainDecibels(apvts.getRawParameterValue("GAIN")->load());
-
+        gain.setGainDecibels(apvts.getRawParameterValue("GAIN")->load());
     }
 
     void prepareToPlay(double sampleRate, int samplesPerBlock) override
@@ -43,8 +42,8 @@ public:
         lowBuffer.makeCopyOf(buffer, true);
         highBuffer.makeCopyOf(buffer, true);
 
-        for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-            buffer.clear (i, 0, buffer.getNumSamples());
+        // for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
+        //     buffer.clear (i, 0, buffer.getNumSamples());
         
         gain.setGainDecibels(apvts.getRawParameterValue("GAIN")->load());
         
@@ -56,7 +55,7 @@ public:
         compressor.setAttack(apvts.getRawParameterValue("ATTACK")->load());
         compressor.setRelease(apvts.getRawParameterValue("RELEASE")->load());
         compressor.setThreshold(apvts.getRawParameterValue("THRESHOLD")->load());
-        compressor.setRatio(apvts.getRawParameterValue("RATIO")->load()));
+        compressor.setRatio(apvts.getRawParameterValue("RATIO")->load());
             
         auto lowBlock = juce::dsp::AudioBlock<float>(lowBuffer);
         auto lowContext = juce::dsp::ProcessContextReplacing<float>(lowBlock);
