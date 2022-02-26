@@ -30,8 +30,6 @@ public:
 
     void processBlock(juce::AudioSampleBuffer& buffer, juce::MidiBuffer&) override
     {
-        auto totalNumInputChannels  = getTotalNumInputChannels();
-        auto totalNumOutputChannels = getTotalNumOutputChannels();
 
         // for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         //     buffer.clear (i, 0, buffer.getNumSamples());

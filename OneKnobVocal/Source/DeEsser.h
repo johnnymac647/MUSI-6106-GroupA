@@ -36,7 +36,6 @@ public:
 
     void processBlock(juce::AudioSampleBuffer& buffer, juce::MidiBuffer&) override
     {
-        auto totalNumInputChannels  = getTotalNumInputChannels();
         auto totalNumOutputChannels = getTotalNumOutputChannels();
 
         lowBuffer.makeCopyOf(buffer, true);
