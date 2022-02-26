@@ -12,6 +12,16 @@
 #include <JuceHeader.h>
 #include "ProcessorBase.h"
 
+struct EQSettings{
+    float postGainDecibels{0}, lowGainDecibels{0}, lowMidGainDecibels{0}, hiMidGainDecibels{0}, hiGainDecibels{0};
+    float lowQ{0}, lowMidQ{0}, hiMidQ{0}, hiQ{0};
+    float lowFreq{0}, lowMidFreq{0}, hiMidFreq{0}, hiFreq{0};
+    
+};
+
+EQSettings getEQSettings(juce::AudioProcessorValueTreeState& apvts);
+
+
 class Equalizer : public ProcessorBase
 {
 public:
@@ -41,6 +51,13 @@ public:
     {
         juce::dsp::ProcessSpec spec{ sampleRate, static_cast<juce::uint32> (samplesPerBlock), 2 };
         gain.setGainDecibels(ptr_apvts->getRawParameterValue("EQ_POST_GAIN")->load());
+        
+        auto eqSettings = getEQSettings(*ptr_apvts);
+        auto lowCoefficients = juce::dsp::IIR::Coefficients<float>::makeHighShelf(sampleRate, eqSettings.lowFreq, eqSettings.lowQ, juce::Decibels::decibelsToGain(eqSettings.lowGainDecibels));
+        auto lowMidCoefficients = juce::dsp::IIR::Coefficients<float>::makePeakFilter(sampleRate, eqSettings.lowMidFreq, eqSettings.lowMidQ, juce::Decibels::decibelsToGain(eqSettings.lowMidGainDecibels));
+        auto hiMidCoefficients = juce::dsp::IIR::Coefficients<float>::makePeakFilter(sampleRate, eqSettings.hiMidFreq, eqSettings.hiMidQ, juce::Decibels::decibelsToGain(eqSettings.hiMidGainDecibels));
+        
+        
         gain.prepare(spec);
     }
 
@@ -63,5 +80,11 @@ public:
 
 private:
     juce::dsp::Gain<float> gain;
+    
+    //Fitler design techniques based on tutorial at https:\/\/www.youtube.com/watch?v=i_Iq4_Kd7Rc
+    using Filter = juce::dsp::IIR::Filter<float>;
+    using CutFilter = juce::dsp::ProcessorChain<Filter, Filter, Filter, Filter>;
+    using MonoChain = juce::dsp::ProcessorChain<CutFilter, Filter, Filter, CutFilter>;
+    MonoChain leftChain, rightChain;
 
 };

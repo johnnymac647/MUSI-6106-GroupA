@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="yHeTrN" name="OneKnobVocal" projectType="audioplug" useAppConfig="0"
-              addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1">
+              addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
+              cppLanguageStandard="17">
   <MAINGROUP id="t5B24K" name="OneKnobVocal">
     <GROUP id="{7487D8CA-5F2F-A206-091F-2D45C0C4C956}" name="ProcessingEditors">
       <FILE id="C6aPhe" name="CompressorEditor.cpp" compile="1" resource="0"
