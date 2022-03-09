@@ -10,7 +10,7 @@
 
 #include "ReverbEditor.h"
 
-ReverbEditor::ReverbEditor(Reverb& p)
+ReverbEditor::ReverbEditor(OneKnobVocalAudioProcessor& p)
     :AudioProcessorEditor(&p), mProcessor(p)
 {
     PostGainLabel.setText("Post Gain", juce::NotificationType::dontSendNotification);
@@ -19,7 +19,7 @@ ReverbEditor::ReverbEditor(Reverb& p)
 
     PostGainKnob.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     PostGainKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
-    PostGainKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(*(mProcessor.ptr_apvts), "REVERB_POST_GAIN", PostGainKnob);
+    PostGainKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "REVERB_POST_GAIN", PostGainKnob);
     PostGainKnob.setBounds(0, 40, 120, 20);
     addAndMakeVisible(PostGainKnob);
 
@@ -29,7 +29,7 @@ ReverbEditor::ReverbEditor(Reverb& p)
 
     RoomSizeKnob.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     RoomSizeKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
-    RoomSizeKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(*(mProcessor.ptr_apvts), "REVERB_ROOM_SIZE", RoomSizeKnob);
+    RoomSizeKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "REVERB_ROOM_SIZE", RoomSizeKnob);
     RoomSizeKnob.setBounds(0, 80, 120, 20);
     addAndMakeVisible(RoomSizeKnob);
 
@@ -39,7 +39,7 @@ ReverbEditor::ReverbEditor(Reverb& p)
 
     DampingKnob.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     DampingKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
-    DampingKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(*(mProcessor.ptr_apvts), "REVERB_DAMPING", DampingKnob);
+    DampingKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "REVERB_DAMPING", DampingKnob);
     DampingKnob.setBounds(0, 120, 120, 20);
     addAndMakeVisible(DampingKnob);
 
@@ -49,7 +49,7 @@ ReverbEditor::ReverbEditor(Reverb& p)
 
     WetLevelKnob.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     WetLevelKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
-    WetLevelKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(*(mProcessor.ptr_apvts), "REVERB_WET_LEVEL", WetLevelKnob);
+    WetLevelKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "REVERB_WET_LEVEL", WetLevelKnob);
     WetLevelKnob.setBounds(0, 160, 120, 20);
     addAndMakeVisible(WetLevelKnob);
 
@@ -59,7 +59,7 @@ ReverbEditor::ReverbEditor(Reverb& p)
 
     DryLevelKnob.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     DryLevelKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
-    DryLevelKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(*(mProcessor.ptr_apvts), "REVERB_DRY_LEVEL", DryLevelKnob);
+    DryLevelKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "REVERB_DRY_LEVEL", DryLevelKnob);
     DryLevelKnob.setBounds(0, 200, 120, 20);
     addAndMakeVisible(DryLevelKnob);
 
@@ -69,7 +69,7 @@ ReverbEditor::ReverbEditor(Reverb& p)
 
     WidthKnob.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     WidthKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
-    WidthKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(*(mProcessor.ptr_apvts), "REVERB_WIDTH", WidthKnob);
+    WidthKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "REVERB_WIDTH", WidthKnob);
     WidthKnob.setBounds(0, 240, 120, 20);
     addAndMakeVisible(WidthKnob);
 
