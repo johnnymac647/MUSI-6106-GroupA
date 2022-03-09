@@ -68,15 +68,13 @@ private:
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
 
     std::unique_ptr<juce::AudioProcessorGraph> mainProcessor;
-    void initialiseAudioNodes();
-    void connectAudioNodes();
+    void initialiseAudioNodes(juce::ReferenceCountedArray<juce::AudioProcessorGraph::Node>& audioNodeList);
+    void connectAudioNodes(juce::ReferenceCountedArray<juce::AudioProcessorGraph::Node>& audioNodeList);
     void connectMidiNodes();
     void initialiseGraph();   
     
     juce::AudioProcessorGraph::Node::Ptr midiInputNode;
     juce::AudioProcessorGraph::Node::Ptr midiOutputNode;
-    
-    juce::ReferenceCountedArray<juce::AudioProcessorGraph::Node> audioNodeList;
 
     juce::AudioProcessorGraph::Node::Ptr audioInputNode;
     juce::AudioProcessorGraph::Node::Ptr audioOutputNode;

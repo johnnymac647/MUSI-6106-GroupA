@@ -21,32 +21,32 @@ OneKnobVocalAudioProcessorEditor::OneKnobVocalAudioProcessorEditor (OneKnobVocal
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
 
-    mGateEditor = std::make_unique<GateEditor>(dynamic_cast<Gate&>(*audioProcessor.gateNode->getProcessor()));
+    mGateEditor = std::make_unique<GateEditor>(p);
     mGateEditor->setSize(133, 600);
     mGateEditor->setTopLeftPosition(0, 0);
     addAndMakeVisible(mGateEditor.get());
 
-    mDeEsserEditor = std::make_unique<DeEsserEditor>(dynamic_cast<Deesser&>(*audioProcessor.deEsserNode->getProcessor()));
+    mDeEsserEditor = std::make_unique<DeEsserEditor>(p);
     mDeEsserEditor->setSize(134, 600);
     mDeEsserEditor->setTopLeftPosition(133, 0);
     addAndMakeVisible(mDeEsserEditor.get());
 
-    mEqualizerEditor = std::make_unique<EqualizerEditor>(dynamic_cast<Equalizer&>(*audioProcessor.equalizerNode->getProcessor()));
+    mEqualizerEditor = std::make_unique<EqualizerEditor>(p);
     mEqualizerEditor->setSize(133, 600);
     mEqualizerEditor->setTopLeftPosition(267, 0);
     addAndMakeVisible(mEqualizerEditor.get());
 
-    mCompressorEditor = std::make_unique<CompressorEditor>(dynamic_cast<Compressor&>(*audioProcessor.compressorNode->getProcessor()));
+    mCompressorEditor = std::make_unique<CompressorEditor>(p);
     mCompressorEditor->setSize(133, 600);
     mCompressorEditor->setTopLeftPosition(400, 0);
     addAndMakeVisible(mCompressorEditor.get());
 
-    mSaturatorEditor = std::make_unique<SaturatorEditor>(dynamic_cast<Saturator&>(*audioProcessor.saturatorNode->getProcessor()));
+    mSaturatorEditor = std::make_unique<SaturatorEditor>(p);
     mSaturatorEditor->setSize(134, 600);
     mSaturatorEditor->setTopLeftPosition(533, 0);
     addAndMakeVisible(mSaturatorEditor.get());
 
-    mReverbEditor = std::make_unique<ReverbEditor>(dynamic_cast<Reverb&>(*audioProcessor.reverbNode->getProcessor()));
+    mReverbEditor = std::make_unique<ReverbEditor>(p);
     mReverbEditor->setSize(133, 600);
     mReverbEditor->setTopLeftPosition(667, 0);
     addAndMakeVisible(mReverbEditor.get());

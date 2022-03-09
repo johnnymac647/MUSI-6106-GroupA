@@ -10,16 +10,16 @@
 
 #pragma once
 #include <JuceHeader.h>
-#include "Compressor.h"
+#include "PluginProcessor.h"
 
 class CompressorEditor : public juce::AudioProcessorEditor
 {
 public:
-    CompressorEditor(Compressor&);
+    CompressorEditor(OneKnobVocalAudioProcessor&);
     ~CompressorEditor();
     void paint(juce::Graphics&) override;
 private:
-    Compressor& mProcessor;
+    OneKnobVocalAudioProcessor& mProcessor;
     juce::Slider VolumeKnob;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> VolumeKnobAttach;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CompressorEditor);

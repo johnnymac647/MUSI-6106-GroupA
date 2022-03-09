@@ -110,7 +110,13 @@ void OneKnobVocalAudioProcessor::prepareToPlay (double sampleRate, int samplesPe
     initialiseGraph();
 
     for (auto node : mainProcessor->getNodes())
+    {
+        node->getProcessor()->setPlayConfigDetails(getMainBusNumInputChannels(),
+            getMainBusNumOutputChannels(),
+            sampleRate, samplesPerBlock);
+        node->getProcessor()->prepareToPlay(sampleRate, samplesPerBlock);
         node->getProcessor()->enableAllBuses();
+    }
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
 }
@@ -218,8 +224,9 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
     return new OneKnobVocalAudioProcessor();
 }
 
-void OneKnobVocalAudioProcessor::initialiseAudioNodes() //TODO: Could someone make this neat?
+void OneKnobVocalAudioProcessor::initialiseAudioNodes(juce::ReferenceCountedArray<juce::AudioProcessorGraph::Node>& audioNodeList) //TODO: Could someone make this neat?
 { 
+
     gateNode = mainProcessor->addNode(std::make_unique<Gate>(&apvts));
     audioNodeList.add(gateNode);
 
@@ -240,7 +247,7 @@ void OneKnobVocalAudioProcessor::initialiseAudioNodes() //TODO: Could someone ma
 
 }
 
-void OneKnobVocalAudioProcessor::connectAudioNodes()
+void OneKnobVocalAudioProcessor::connectAudioNodes(juce::ReferenceCountedArray<juce::AudioProcessorGraph::Node>& audioNodeList)
 
 {
     for (int i = 0; i < audioNodeList.size() - 1; ++i)
@@ -267,6 +274,9 @@ void OneKnobVocalAudioProcessor::connectMidiNodes()
 
 void OneKnobVocalAudioProcessor::initialiseGraph()
 {
+
+    juce::ReferenceCountedArray<juce::AudioProcessorGraph::Node> audioNodeList;
+
     mainProcessor->clear();
 
     audioInputNode = mainProcessor->addNode(std::make_unique<juce::AudioProcessorGraph::AudioGraphIOProcessor>(juce::AudioProcessorGraph::AudioGraphIOProcessor::audioInputNode));
@@ -276,8 +286,8 @@ void OneKnobVocalAudioProcessor::initialiseGraph()
     midiInputNode = mainProcessor->addNode(std::make_unique<juce::AudioProcessorGraph::AudioGraphIOProcessor>(juce::AudioProcessorGraph::AudioGraphIOProcessor::midiInputNode));
     midiOutputNode = mainProcessor->addNode(std::make_unique<juce::AudioProcessorGraph::AudioGraphIOProcessor>(juce::AudioProcessorGraph::AudioGraphIOProcessor::midiOutputNode));
 
-    initialiseAudioNodes();
-    connectAudioNodes();
+    initialiseAudioNodes(audioNodeList);
+    connectAudioNodes(audioNodeList);
     connectMidiNodes();
 }
 

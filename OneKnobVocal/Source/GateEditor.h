@@ -9,16 +9,16 @@
 */
 
 #pragma once
-#include "Gate.h"
+#include "PluginProcessor.h"
 
 class GateEditor : public juce::AudioProcessorEditor
 {
 public:
-    GateEditor(Gate&);
+    GateEditor(OneKnobVocalAudioProcessor&);
     ~GateEditor() override;
     void paint(juce::Graphics&) override;
 private:
-    Gate& mProcessor;
+    OneKnobVocalAudioProcessor& mProcessor;
     juce::Slider VolumeKnob;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> VolumeKnobAttach;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GateEditor);

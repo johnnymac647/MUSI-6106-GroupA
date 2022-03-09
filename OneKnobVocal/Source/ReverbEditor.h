@@ -9,16 +9,16 @@
 */
 
 #pragma once
-#include "Reverb.h"
+#include "PluginProcessor.h"
 
 class ReverbEditor : public juce::AudioProcessorEditor
 {
 public:
-    ReverbEditor(Reverb&);
+    ReverbEditor(OneKnobVocalAudioProcessor&);
     ~ReverbEditor();
     void paint(juce::Graphics&) override;
 private:
-    Reverb& mProcessor;
+    OneKnobVocalAudioProcessor& mProcessor;
     juce::Slider VolumeKnob;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> VolumeKnobAttach;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ReverbEditor);
