@@ -10,13 +10,13 @@
 
 #include "DeEsserEditor.h"
 
-DeEsserEditor::DeEsserEditor(Deesser& p)
+DeEsserEditor::DeEsserEditor(OneKnobVocalAudioProcessor& p)
     :AudioProcessorEditor(&p), mProcessor(p)
 {
     VolumeKnob.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     VolumeKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
     addAndMakeVisible(VolumeKnob);
-    VolumeKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(*(mProcessor.ptr_apvts), "DEESSER_POST_GAIN", VolumeKnob);
+    VolumeKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "DEESSER_POST_GAIN", VolumeKnob);
     VolumeKnob.setBounds(0, 40, 120, 20);
 }
 

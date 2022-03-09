@@ -9,16 +9,16 @@
 */
 
 #pragma once
-#include "Saturator.h"
+#include "PluginProcessor.h"
 
 class SaturatorEditor : public juce::AudioProcessorEditor
 {
 public:
-    SaturatorEditor(Saturator&);
+    SaturatorEditor(OneKnobVocalAudioProcessor&);
     ~SaturatorEditor();
     void paint(juce::Graphics&) override;
 private:
-    Saturator& mProcessor;
+    OneKnobVocalAudioProcessor& mProcessor;
     juce::Slider GainKnob;
     juce::Slider MixKnob;
     juce::Slider VolumeKnob;

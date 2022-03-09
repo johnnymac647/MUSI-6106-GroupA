@@ -10,13 +10,13 @@
 
 #include "GateEditor.h"
 
-GateEditor::GateEditor(Gate& p)
+GateEditor::GateEditor(OneKnobVocalAudioProcessor& p)
     :AudioProcessorEditor(&p), mProcessor(p)
 {
     VolumeKnob.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     VolumeKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
     addAndMakeVisible(VolumeKnob);
-    VolumeKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(*(mProcessor.ptr_apvts), "GATE_POST_GAIN", VolumeKnob);
+    VolumeKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "GATE_POST_GAIN", VolumeKnob);
     VolumeKnob.setBounds(0, 40, 120, 20);
 }
 
