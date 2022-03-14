@@ -20,6 +20,19 @@ public:
 private:
     OneKnobVocalAudioProcessor& mProcessor;
     juce::Slider VolumeKnob;
+    juce::Slider ThresholdKnob;
+    juce::Slider AttackKnob;
+    juce::Slider ReleaseKnob;
+    juce::Slider RatioKnob;
+    juce::Slider CrossoverFreqKnob;
+
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> VolumeKnobAttach;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> ThresholdKnobAttach;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> RatioKnobAttach;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> AttackKnobAttach;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> ReleaseKnobAttach;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> CrossoverFreqKnobAttach;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DeEsserEditor);
+
 };
