@@ -25,6 +25,12 @@ private:
     juce::Slider ReleaseKnob;
     juce::Slider RatioKnob;
 
+    juce::Label VolumeKnobLabel;
+    juce::Label ThresholdKnobLabel;
+    juce::Label AttackKnobLabel;
+    juce::Label ReleaseKnobLabel;
+    juce::Label RatioKnobLabel;
+
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> VolumeKnobAttach;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> ThresholdKnobAttach;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> RatioKnobAttach;
