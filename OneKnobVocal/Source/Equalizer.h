@@ -94,6 +94,8 @@ public:
 //        *monoChain.get<ChainPositions::hi>().coefficients = *hiCoefficients;
         leftChain.get<ChainPositions::gain>().setGainDecibels(eqSettings.postGainDecibels);
         
+        
+        //at the end, have a for loop 
         *rightChain.get<ChainPositions::lowMid>().coefficients = *lowMidCoefficients;
         *rightChain.get<ChainPositions::hiMid>().coefficients = *hiMidCoefficients;
         rightChain.get<ChainPositions::gain>().setGainDecibels(eqSettings.postGainDecibels);
