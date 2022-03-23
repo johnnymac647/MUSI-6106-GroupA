@@ -19,15 +19,15 @@ public:
     static void addToParameterLayout(std::vector<std::unique_ptr<juce::RangedAudioParameter>>& params)
     {
         params.push_back(std::make_unique<juce::AudioParameterFloat>("SATURATOR_PRE_GAIN", "SaturatorPreGain", 0.01f, 10.0f, 1.0f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("SATURATOR_MIX", "SaturatorMix", 0.0f, 1.0f, 1.0f));
+        params.push_back(std::make_unique<juce::AudioParameterFloat>("SATURATOR_MIX", "SaturatorMix", 0.0f, 1.0f, 0.0f));
         params.push_back(std::make_unique<juce::AudioParameterFloat>("SATURATOR_POST_GAIN", "SaturatorPostGain", -96.0f, 12.0f, 0.0f));
     }
 
     static void addToKnobMap(juce::HashMap<juce::String, juce::NormalisableRange<float>>& knobValueMap)
     {
-        knobValueMap.set("SATURATOR_PRE_GAIN", juce::NormalisableRange<float>(0.01f, 10.0f));
-        knobValueMap.set("SATURATOR_MIX", juce::NormalisableRange<float>(0.0f, 1.0f));
-        knobValueMap.set("SATURATOR_POST_GAIN", juce::NormalisableRange<float>(-96.0f, 12.0f));
+        knobValueMap.set("SATURATOR_PRE_GAIN", juce::NormalisableRange<float>(1.0f, 1.01f));
+        knobValueMap.set("SATURATOR_MIX", juce::NormalisableRange<float>(0.0f, 0.01f));
+        knobValueMap.set("SATURATOR_POST_GAIN", juce::NormalisableRange<float>(0.0f, 0.01f));
     }
 
     Saturator(juce::AudioProcessorValueTreeState* parantApvts) 

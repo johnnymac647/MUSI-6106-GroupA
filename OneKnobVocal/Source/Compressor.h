@@ -28,13 +28,13 @@ public:
 
     static void addToKnobMap(juce::HashMap<juce::String, juce::NormalisableRange<float>>& knobValueMap)
     {
-        knobValueMap.set("COMPRESSOR_PRE_GAIN", juce::NormalisableRange<float>(-96.0f, 12.0f));
-        knobValueMap.set("COMPRESSOR_POST_GAIN", juce::NormalisableRange<float>(-96.0f, 12.0f));
-        knobValueMap.set("COMPRESSOR_MAKEUP_GAIN", juce::NormalisableRange<float>(-96.0f, 12.0f));
-        knobValueMap.set("COMPRESSOR_ATTACK", juce::NormalisableRange<float>(0.0f, 1000.0f));
-        knobValueMap.set("COMPRESSOR_RELEASE", juce::NormalisableRange<float>(0.0f, 5000.0f));
-        knobValueMap.set("COMPRESSOR_THRESHOLD", juce::NormalisableRange<float>(-60.0f, 0.0f));
-        knobValueMap.set("COMPRESSOR_RATIO", juce::NormalisableRange<float>(1.0f, 100.0f));
+        knobValueMap.set("COMPRESSOR_PRE_GAIN", juce::NormalisableRange<float>(0.0f, 0.01f));
+        knobValueMap.set("COMPRESSOR_POST_GAIN", juce::NormalisableRange<float>(0.0f, 0.01f));
+        knobValueMap.set("COMPRESSOR_MAKEUP_GAIN", juce::NormalisableRange<float>(0.0f, 0.01f));
+        knobValueMap.set("COMPRESSOR_ATTACK", juce::NormalisableRange<float>(1.0f, 1.01f));
+        knobValueMap.set("COMPRESSOR_RELEASE", juce::NormalisableRange<float>(10.0f, 10.01f));
+        knobValueMap.set("COMPRESSOR_THRESHOLD", juce::NormalisableRange<float>(-18.0f, -17.99f));
+        knobValueMap.set("COMPRESSOR_RATIO", juce::NormalisableRange<float>(1.0f, 1.01f));
     }
 
     Compressor(juce::AudioProcessorValueTreeState* mainApvts)

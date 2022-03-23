@@ -27,12 +27,12 @@ public:
 
     static void addToKnobMap(juce::HashMap<juce::String, juce::NormalisableRange<float>>& knobValueMap)
     {
-        knobValueMap.set("DEESSER_POST_GAIN", juce::NormalisableRange<float>(-96.0f, 12.0f));
-        knobValueMap.set("DEESSER_THRESHOLD", juce::NormalisableRange<float>(-60.0f, 0.0f));
-        knobValueMap.set("DEESSER_ATTACK", juce::NormalisableRange<float>(0.0f, 1000.0f));
-        knobValueMap.set("DEESSER_RELEASE", juce::NormalisableRange<float>(0.0f, 5000.0f));
-        knobValueMap.set("DEESSER_RATIO", juce::NormalisableRange<float>(1.0f, 100.0f));
-        knobValueMap.set("DEESSER_CROSSOVERFREQ", juce::NormalisableRange<float>(20.0f, 20000.0f));
+        knobValueMap.set("DEESSER_POST_GAIN", juce::NormalisableRange<float>(0.0f, 0.01f));
+        knobValueMap.set("DEESSER_THRESHOLD", juce::NormalisableRange<float>(-18.0f, -17.99f));
+        knobValueMap.set("DEESSER_ATTACK", juce::NormalisableRange<float>(1.0f, 1.01f));
+        knobValueMap.set("DEESSER_RELEASE", juce::NormalisableRange<float>(10.0f, 10.01f));
+        knobValueMap.set("DEESSER_RATIO", juce::NormalisableRange<float>(1.0f, 1.01f));
+        knobValueMap.set("DEESSER_CROSSOVERFREQ", juce::NormalisableRange<float>(5000.0f, 5000.01f));
     }
 
     Deesser(juce::AudioProcessorValueTreeState* mainApvts)

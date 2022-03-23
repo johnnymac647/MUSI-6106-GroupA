@@ -20,19 +20,19 @@ public:
         params.push_back(std::make_unique<juce::AudioParameterFloat>("REVERB_POST_GAIN", "ReverbPostGain", -96.0f, 12.0f, 0.0f));
         params.push_back(std::make_unique<juce::AudioParameterFloat>("REVERB_ROOM_SIZE", "ReverbRoomSize", 0.f, 1.f, 0.5f));
         params.push_back(std::make_unique<juce::AudioParameterFloat>("REVERB_DAMPING", "ReverbDamping", 0.f, 1.f, 0.5f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("REVERB_WET_LEVEL", "ReverbWetLevel", -96.0f, 12.0f, -12.0f));
+        params.push_back(std::make_unique<juce::AudioParameterFloat>("REVERB_WET_LEVEL", "ReverbWetLevel", -96.0f, 12.0f, -96.0f));
         params.push_back(std::make_unique<juce::AudioParameterFloat>("REVERB_DRY_LEVEL", "ReverbDryLevel", -96.0f, 12.0f, 0.0f));
         params.push_back(std::make_unique<juce::AudioParameterFloat>("REVERB_WIDTH", "ReverbWidth", 0.f, 1.f, 0.5f));
     }
 
     static void addToKnobMap(juce::HashMap<juce::String, juce::NormalisableRange<float>>& knobValueMap)
     {
-        knobValueMap.set("REVERB_POST_GAIN", juce::NormalisableRange<float>(-96.0f, 12.0f));
-        knobValueMap.set("REVERB_ROOM_SIZE", juce::NormalisableRange<float>(0.f, 1.f));
-        knobValueMap.set("REVERB_DAMPING", juce::NormalisableRange<float>(0.f, 1.f));
-        knobValueMap.set("REVERB_WET_LEVEL", juce::NormalisableRange<float>(-96.0f, 12.0f));
-        knobValueMap.set("REVERB_DRY_LEVEL", juce::NormalisableRange<float>(-96.0f, 12.0f));
-        knobValueMap.set("REVERB_WIDTH", juce::NormalisableRange<float>(0.f, 1.f));
+        knobValueMap.set("REVERB_POST_GAIN", juce::NormalisableRange<float>(0.0f, 0.01f));
+        knobValueMap.set("REVERB_ROOM_SIZE", juce::NormalisableRange<float>(0.5f, 0.51f));
+        knobValueMap.set("REVERB_DAMPING", juce::NormalisableRange<float>(0.5f, 0.51f));
+        knobValueMap.set("REVERB_WET_LEVEL", juce::NormalisableRange<float>(-96.0f, -95.99f));
+        knobValueMap.set("REVERB_DRY_LEVEL", juce::NormalisableRange<float>(0.0f, 0.01f));
+        knobValueMap.set("REVERB_WIDTH", juce::NormalisableRange<float>(0.5f, 0.51f));
     }
 
     Reverb(juce::AudioProcessorValueTreeState* mainApvts)
