@@ -11,6 +11,7 @@
 #pragma once
 #include <JuceHeader.h>
 #include "ProcessorBase.h"
+#include "ModdedNormalisableRange.h"
 
 class Compressor : public ProcessorBase
 {
@@ -26,15 +27,15 @@ public:
         params.push_back(std::make_unique<juce::AudioParameterFloat>("COMPRESSOR_RATIO", "CompressorRatio", 1.0f, 100.0f, 1.0f));
     }
 
-    static void addToKnobMap(juce::HashMap<juce::String, juce::NormalisableRange<float>>& knobValueMap)
+    static void addToKnobMap(juce::HashMap<juce::String, ModdedNormalisableRange<float>>& knobValueMap)
     {
-        knobValueMap.set("COMPRESSOR_PRE_GAIN", juce::NormalisableRange<float>(0.0f, 0.01f));
-        knobValueMap.set("COMPRESSOR_POST_GAIN", juce::NormalisableRange<float>(0.0f, 0.01f));
-        knobValueMap.set("COMPRESSOR_MAKEUP_GAIN", juce::NormalisableRange<float>(0.0f, 0.01f));
-        knobValueMap.set("COMPRESSOR_ATTACK", juce::NormalisableRange<float>(1.0f, 1.01f));
-        knobValueMap.set("COMPRESSOR_RELEASE", juce::NormalisableRange<float>(10.0f, 10.01f));
-        knobValueMap.set("COMPRESSOR_THRESHOLD", juce::NormalisableRange<float>(-18.0f, -17.99f));
-        knobValueMap.set("COMPRESSOR_RATIO", juce::NormalisableRange<float>(1.0f, 1.01f));
+        knobValueMap.set("COMPRESSOR_PRE_GAIN", ModdedNormalisableRange<float>(0.0f, 0.01f));
+        knobValueMap.set("COMPRESSOR_POST_GAIN", ModdedNormalisableRange<float>(0.0f, 0.01f));
+        knobValueMap.set("COMPRESSOR_MAKEUP_GAIN", ModdedNormalisableRange<float>(0.0f, 0.01f));
+        knobValueMap.set("COMPRESSOR_ATTACK", ModdedNormalisableRange<float>(1.0f, 1.01f));
+        knobValueMap.set("COMPRESSOR_RELEASE", ModdedNormalisableRange<float>(10.0f, 10.01f));
+        knobValueMap.set("COMPRESSOR_THRESHOLD", ModdedNormalisableRange<float>(-18.0f, -17.99f));
+        knobValueMap.set("COMPRESSOR_RATIO", ModdedNormalisableRange<float>(1.0f, 1.01f));
     }
 
     Compressor(juce::AudioProcessorValueTreeState* mainApvts)

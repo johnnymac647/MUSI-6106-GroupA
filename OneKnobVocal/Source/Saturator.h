@@ -12,6 +12,7 @@
 #include <JuceHeader.h>
 #include <math.h>
 #include "ProcessorBase.h"
+#include "ModdedNormalisableRange.h"
 
 class Saturator : public ProcessorBase
 {
@@ -23,11 +24,11 @@ public:
         params.push_back(std::make_unique<juce::AudioParameterFloat>("SATURATOR_POST_GAIN", "SaturatorPostGain", -96.0f, 12.0f, 0.0f));
     }
 
-    static void addToKnobMap(juce::HashMap<juce::String, juce::NormalisableRange<float>>& knobValueMap)
+    static void addToKnobMap(juce::HashMap<juce::String, ModdedNormalisableRange<float>>& knobValueMap)
     {
-        knobValueMap.set("SATURATOR_PRE_GAIN", juce::NormalisableRange<float>(1.0f, 1.01f));
-        knobValueMap.set("SATURATOR_MIX", juce::NormalisableRange<float>(0.0f, 0.01f));
-        knobValueMap.set("SATURATOR_POST_GAIN", juce::NormalisableRange<float>(0.0f, 0.01f));
+        knobValueMap.set("SATURATOR_PRE_GAIN", ModdedNormalisableRange<float>(1.0f, 1.01f));
+        knobValueMap.set("SATURATOR_MIX", ModdedNormalisableRange<float>(0.0f, 0.01f));
+        knobValueMap.set("SATURATOR_POST_GAIN", ModdedNormalisableRange<float>(0.0f, 0.01f));
     }
 
     Saturator(juce::AudioProcessorValueTreeState* parantApvts) 

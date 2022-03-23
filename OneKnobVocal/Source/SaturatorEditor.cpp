@@ -71,17 +71,17 @@ void SaturatorEditor::sliderValueChanged(juce::Slider* slider)
     if (slider == &GainKnob)
     {
         if (abs(GainKnob.getMinValue() - mProcessor.knobValueMap["SATURATOR_PRE_GAIN"].start) < 1e-3 || abs(GainKnob.getMaxValue() - mProcessor.knobValueMap["SATURATOR_PRE_GAIN"].end) < 1e-3)
-            mProcessor.knobValueMap.set("SATURATOR_PRE_GAIN", juce::NormalisableRange<float>(GainKnob.getMinValue(), GainKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("SATURATOR_PRE_GAIN", ModdedNormalisableRange<float>(GainKnob.getMinValue(), GainKnob.getMaxValue()));
     }
     else if (slider == &MixKnob)
     {
         if (abs(MixKnob.getMinValue() - mProcessor.knobValueMap["SATURATOR_MIX"].start) < 1e-3 || abs(MixKnob.getMaxValue() - mProcessor.knobValueMap["SATURATOR_MIX"].end) < 1e-3)
-            mProcessor.knobValueMap.set("SATURATOR_MIX", juce::NormalisableRange<float>(MixKnob.getMinValue(), MixKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("SATURATOR_MIX", ModdedNormalisableRange<float>(MixKnob.getMinValue(), MixKnob.getMaxValue()));
     }
     else if (slider == &VolumeKnob)
     {
         if (abs(VolumeKnob.getMinValue() - mProcessor.knobValueMap["SATURATOR_POST_GAIN"].start) < 1e-3 || abs(VolumeKnob.getMaxValue() - mProcessor.knobValueMap["SATURATOR_POST_GAIN"].end) < 1e-3)
-            mProcessor.knobValueMap.set("SATURATOR_POST_GAIN", juce::NormalisableRange<float>(VolumeKnob.getMinValue(), VolumeKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("SATURATOR_POST_GAIN", ModdedNormalisableRange<float>(VolumeKnob.getMinValue(), VolumeKnob.getMaxValue()));
     }
 }
 

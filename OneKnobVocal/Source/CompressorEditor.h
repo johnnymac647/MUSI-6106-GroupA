@@ -9,8 +9,8 @@
 */
 
 #pragma once
-#include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "ModdedNormalisableRange.h"
 
 class CompressorEditor : public juce::AudioProcessorEditor,
     public juce::Slider::Listener

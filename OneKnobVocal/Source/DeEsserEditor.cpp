@@ -108,32 +108,32 @@ void DeEsserEditor::sliderValueChanged(juce::Slider* slider)
     if (slider == &VolumeKnob)
     {
         if (abs(VolumeKnob.getMinValue() - mProcessor.knobValueMap["DEESSER_POST_GAIN"].start) < 1e-3 || abs(VolumeKnob.getMaxValue() - mProcessor.knobValueMap["DEESSER_POST_GAIN"].end) < 1e-3)
-            mProcessor.knobValueMap.set("DEESSER_POST_GAIN", juce::NormalisableRange<float>(VolumeKnob.getMinValue(), VolumeKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("DEESSER_POST_GAIN", ModdedNormalisableRange<float>(VolumeKnob.getMinValue(), VolumeKnob.getMaxValue()));
     }
     else if (slider == &ThresholdKnob)
     {
         if (abs(ThresholdKnob.getMinValue() - mProcessor.knobValueMap["DEESSER_THRESHOLD"].start) < 1e-3 || abs(ThresholdKnob.getMaxValue() - mProcessor.knobValueMap["DEESSER_THRESHOLD"].end) < 1e-3)
-            mProcessor.knobValueMap.set("DEESSER_THRESHOLD", juce::NormalisableRange<float>(ThresholdKnob.getMinValue(), ThresholdKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("DEESSER_THRESHOLD", ModdedNormalisableRange<float>(ThresholdKnob.getMinValue(), ThresholdKnob.getMaxValue()));
     }
     else if (slider == &RatioKnob)
     {
         if (abs(RatioKnob.getMinValue() - mProcessor.knobValueMap["DEESSER_RATIO"].start) < 1e-3 || abs(RatioKnob.getMaxValue() - mProcessor.knobValueMap["DEESSER_RATIO"].end) < 1e-3)
-            mProcessor.knobValueMap.set("DEESSER_RATIO", juce::NormalisableRange<float>(RatioKnob.getMinValue(), RatioKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("DEESSER_RATIO", ModdedNormalisableRange<float>(RatioKnob.getMinValue(), RatioKnob.getMaxValue()));
     }
     else if (slider == &AttackKnob)
     {
         if (abs(AttackKnob.getMinValue() - mProcessor.knobValueMap["DEESSER_ATTACK"].start) < 1e-3 || abs(AttackKnob.getMaxValue() - mProcessor.knobValueMap["DEESSER_ATTACK"].end) < 1e-3)
-            mProcessor.knobValueMap.set("DEESSER_ATTACK", juce::NormalisableRange<float>(AttackKnob.getMinValue(), AttackKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("DEESSER_ATTACK", ModdedNormalisableRange<float>(AttackKnob.getMinValue(), AttackKnob.getMaxValue()));
     }
     else if (slider == &ReleaseKnob)
     {
         if (abs(ReleaseKnob.getMinValue() - mProcessor.knobValueMap["DEESSER_RELEASE"].start) < 1e-3 || abs(ReleaseKnob.getMaxValue() - mProcessor.knobValueMap["DEESSER_RELEASE"].end) < 1e-3)
-            mProcessor.knobValueMap.set("DEESSER_RELEASE", juce::NormalisableRange<float>(ReleaseKnob.getMinValue(), ReleaseKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("DEESSER_RELEASE", ModdedNormalisableRange<float>(ReleaseKnob.getMinValue(), ReleaseKnob.getMaxValue()));
     }
     else if (slider == &CrossoverFreqKnob)
     {
         if (abs(CrossoverFreqKnob.getMinValue() - mProcessor.knobValueMap["DEESSER_CROSSOVERFREQ"].start) < 1e-3 || abs(CrossoverFreqKnob.getMaxValue() - mProcessor.knobValueMap["DEESSER_CROSSOVERFREQ"].end) < 1e-3)
-            mProcessor.knobValueMap.set("DEESSER_CROSSOVERFREQ", juce::NormalisableRange<float>(CrossoverFreqKnob.getMinValue(), CrossoverFreqKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("DEESSER_CROSSOVERFREQ", ModdedNormalisableRange<float>(CrossoverFreqKnob.getMinValue(), CrossoverFreqKnob.getMaxValue()));
     }
 }
 

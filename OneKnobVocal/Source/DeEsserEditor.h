@@ -10,6 +10,7 @@
 
 #pragma once
 #include "PluginProcessor.h"
+#include "ModdedNormalisableRange.h"
 
 class DeEsserEditor : public juce::AudioProcessorEditor,
     public juce::Slider::Listener

@@ -191,67 +191,67 @@ void EqualizerEditor::sliderValueChanged(juce::Slider* slider)
     if (slider == &PostGainKnob)
     {
         if (abs(PostGainKnob.getMinValue() - mProcessor.knobValueMap["EQ_POST_GAIN"].start) < 1e-3 || abs(PostGainKnob.getMaxValue() - mProcessor.knobValueMap["EQ_POST_GAIN"].end) < 1e-3)
-            mProcessor.knobValueMap.set("EQ_POST_GAIN", juce::NormalisableRange<float>(PostGainKnob.getMinValue(), PostGainKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("EQ_POST_GAIN", ModdedNormalisableRange<float>(PostGainKnob.getMinValue(), PostGainKnob.getMaxValue()));
     }
     else if (slider == &LowBandGainKnob)
     {
         if (abs(LowBandGainKnob.getMinValue() - mProcessor.knobValueMap["EQ_LOW_BAND_GAIN"].start) < 1e-3 || abs(LowBandGainKnob.getMaxValue() - mProcessor.knobValueMap["EQ_LOW_BAND_GAIN"].end) < 1e-3)
-            mProcessor.knobValueMap.set("EQ_LOW_BAND_GAIN", juce::NormalisableRange<float>(LowBandGainKnob.getMinValue(), LowBandGainKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("EQ_LOW_BAND_GAIN", ModdedNormalisableRange<float>(LowBandGainKnob.getMinValue(), LowBandGainKnob.getMaxValue()));
     }
     else if (slider == &LowBandCutoffKnob)
     {
         if (abs(LowBandCutoffKnob.getMinValue() - mProcessor.knobValueMap["EQ_LOW_BAND_CUTOFF"].start) < 1e-3 || abs(LowBandCutoffKnob.getMaxValue() - mProcessor.knobValueMap["EQ_LOW_BAND_CUTOFF"].end) < 1e-3)
-            mProcessor.knobValueMap.set("EQ_LOW_BAND_CUTOFF", juce::NormalisableRange<float>(LowBandCutoffKnob.getMinValue(), LowBandCutoffKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("EQ_LOW_BAND_CUTOFF", ModdedNormalisableRange<float>(LowBandCutoffKnob.getMinValue(), LowBandCutoffKnob.getMaxValue()));
     }
     else if (slider == &LowBandQualityKnob)
     {
         if (abs(LowBandQualityKnob.getMinValue() - mProcessor.knobValueMap["EQ_LOW_BAND_QF"].start) < 1e-3 || abs(LowBandQualityKnob.getMaxValue() - mProcessor.knobValueMap["EQ_LOW_BAND_QF"].end) < 1e-3)
-            mProcessor.knobValueMap.set("EQ_LOW_BAND_QF", juce::NormalisableRange<float>(LowBandQualityKnob.getMinValue(), LowBandQualityKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("EQ_LOW_BAND_QF", ModdedNormalisableRange<float>(LowBandQualityKnob.getMinValue(), LowBandQualityKnob.getMaxValue()));
     }
     else if (slider == &LowMidBandGainKnob)
     {
         if (abs(LowMidBandGainKnob.getMinValue() - mProcessor.knobValueMap["EQ_LOWMID_BAND_GAIN"].start) < 1e-3 || abs(LowMidBandGainKnob.getMaxValue() - mProcessor.knobValueMap["EQ_LOWMID_BAND_GAIN"].end) < 1e-3)
-            mProcessor.knobValueMap.set("EQ_LOWMID_BAND_GAIN", juce::NormalisableRange<float>(LowMidBandGainKnob.getMinValue(), LowMidBandGainKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("EQ_LOWMID_BAND_GAIN", ModdedNormalisableRange<float>(LowMidBandGainKnob.getMinValue(), LowMidBandGainKnob.getMaxValue()));
     }
     else if (slider == &LowMidBandFreqKnob)
     {
         if (abs(LowMidBandFreqKnob.getMinValue() - mProcessor.knobValueMap["EQ_LOWMID_BAND_FREQ"].start) < 1e-3 || abs(LowMidBandFreqKnob.getMaxValue() - mProcessor.knobValueMap["EQ_LOWMID_BAND_FREQ"].end) < 1e-3)
-            mProcessor.knobValueMap.set("EQ_LOWMID_BAND_FREQ", juce::NormalisableRange<float>(LowMidBandFreqKnob.getMinValue(), LowMidBandFreqKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("EQ_LOWMID_BAND_FREQ", ModdedNormalisableRange<float>(LowMidBandFreqKnob.getMinValue(), LowMidBandFreqKnob.getMaxValue()));
     }
     else if (slider == &LowMidBandQualityKnob)
     {
         if (abs(LowMidBandQualityKnob.getMinValue() - mProcessor.knobValueMap["EQ_LOWMID_BAND_QF"].start) < 1e-3 || abs(LowMidBandQualityKnob.getMaxValue() - mProcessor.knobValueMap["EQ_LOWMID_BAND_QF"].end) < 1e-3)
-            mProcessor.knobValueMap.set("EQ_LOWMID_BAND_QF", juce::NormalisableRange<float>(LowMidBandQualityKnob.getMinValue(), LowMidBandQualityKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("EQ_LOWMID_BAND_QF", ModdedNormalisableRange<float>(LowMidBandQualityKnob.getMinValue(), LowMidBandQualityKnob.getMaxValue()));
     }
     else if (slider == &HighMidBandGainKnob)
     {
         if (abs(HighMidBandGainKnob.getMinValue() - mProcessor.knobValueMap["EQ_HIMID_BAND_GAIN"].start) < 1e-3 || abs(HighMidBandGainKnob.getMaxValue() - mProcessor.knobValueMap["EQ_HIMID_BAND_GAIN"].end) < 1e-3)
-            mProcessor.knobValueMap.set("EQ_HIMID_BAND_GAIN", juce::NormalisableRange<float>(HighMidBandGainKnob.getMinValue(), HighMidBandGainKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("EQ_HIMID_BAND_GAIN", ModdedNormalisableRange<float>(HighMidBandGainKnob.getMinValue(), HighMidBandGainKnob.getMaxValue()));
     }
     else if (slider == &HighMidBandFreqKnob)
     {
         if (abs(HighMidBandFreqKnob.getMinValue() - mProcessor.knobValueMap["EQ_HIMID_BAND_FREQ"].start) < 1e-3 || abs(HighMidBandFreqKnob.getMaxValue() - mProcessor.knobValueMap["EQ_HIMID_BAND_FREQ"].end) < 1e-3)
-            mProcessor.knobValueMap.set("EQ_HIMID_BAND_FREQ", juce::NormalisableRange<float>(HighMidBandFreqKnob.getMinValue(), HighMidBandFreqKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("EQ_HIMID_BAND_FREQ", ModdedNormalisableRange<float>(HighMidBandFreqKnob.getMinValue(), HighMidBandFreqKnob.getMaxValue()));
     }
     else if (slider == &HighMidBandQualityKnob)
     {
         if (abs(HighMidBandQualityKnob.getMinValue() - mProcessor.knobValueMap["EQ_HIMID_BAND_QF"].start) < 1e-3 || abs(HighMidBandQualityKnob.getMaxValue() - mProcessor.knobValueMap["EQ_HIMID_BAND_QF"].end) < 1e-3)
-            mProcessor.knobValueMap.set("EQ_HIMID_BAND_QF", juce::NormalisableRange<float>(HighMidBandQualityKnob.getMinValue(), HighMidBandQualityKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("EQ_HIMID_BAND_QF", ModdedNormalisableRange<float>(HighMidBandQualityKnob.getMinValue(), HighMidBandQualityKnob.getMaxValue()));
     }
     else if (slider == &HighBandGainKnob)
     {
         if (abs(HighBandGainKnob.getMinValue() - mProcessor.knobValueMap["EQ_HI_BAND_GAIN"].start) < 1e-3 || abs(HighBandGainKnob.getMaxValue() - mProcessor.knobValueMap["EQ_HI_BAND_GAIN"].end) < 1e-3)
-            mProcessor.knobValueMap.set("EQ_HI_BAND_GAIN", juce::NormalisableRange<float>(HighBandGainKnob.getMinValue(), HighBandGainKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("EQ_HI_BAND_GAIN", ModdedNormalisableRange<float>(HighBandGainKnob.getMinValue(), HighBandGainKnob.getMaxValue()));
     }
     else if (slider == &HighBandCutoffKnob)
     {
         if (abs(HighBandCutoffKnob.getMinValue() - mProcessor.knobValueMap["EQ_HI_BAND_CUTOFF"].start) < 1e-3 || abs(HighBandCutoffKnob.getMaxValue() - mProcessor.knobValueMap["EQ_HI_BAND_CUTOFF"].end) < 1e-3)
-            mProcessor.knobValueMap.set("EQ_HI_BAND_CUTOFF", juce::NormalisableRange<float>(HighBandCutoffKnob.getMinValue(), HighBandCutoffKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("EQ_HI_BAND_CUTOFF", ModdedNormalisableRange<float>(HighBandCutoffKnob.getMinValue(), HighBandCutoffKnob.getMaxValue()));
     }
     else if (slider == &HighBandQualityKnob)
     {
         if (abs(HighBandQualityKnob.getMinValue() - mProcessor.knobValueMap["EQ_HI_BAND_QF"].start) < 1e-3 || abs(HighBandQualityKnob.getMaxValue() - mProcessor.knobValueMap["EQ_HI_BAND_QF"].end) < 1e-3)
-            mProcessor.knobValueMap.set("EQ_HI_BAND_QF", juce::NormalisableRange<float>(HighBandQualityKnob.getMinValue(), HighBandQualityKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("EQ_HI_BAND_QF", ModdedNormalisableRange<float>(HighBandQualityKnob.getMinValue(), HighBandQualityKnob.getMaxValue()));
     }
 }
 

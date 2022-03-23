@@ -11,6 +11,7 @@
 #pragma once
 #include <JuceHeader.h>
 #include "ProcessorBase.h"
+#include "ModdedNormalisableRange.h"
 
 class Gate : public ProcessorBase
 {
@@ -24,13 +25,13 @@ public:
         params.push_back(std::make_unique<juce::AudioParameterFloat>("GATE_RATIO", "GateRatio", 1.0f, 100.0f, 10.0f));
     }
 
-    static void addToKnobMap(juce::HashMap<juce::String, juce::NormalisableRange<float>>& knobValueMap)
+    static void addToKnobMap(juce::HashMap<juce::String, ModdedNormalisableRange<float>>& knobValueMap)
     {
-        knobValueMap.set("GATE_POST_GAIN", juce::NormalisableRange<float>(0.0f, 0.01f));
-        knobValueMap.set("GATE_THRESHOLD", juce::NormalisableRange<float>(-18.0f, -17.99f));
-        knobValueMap.set("GATE_ATTACK", juce::NormalisableRange<float>(1.0f, 1.01f));
-        knobValueMap.set("GATE_RELEASE", juce::NormalisableRange<float>(10.0f, 10.01f));
-        knobValueMap.set("GATE_RATIO", juce::NormalisableRange<float>(1.0f, 1.01f));
+        knobValueMap.set("GATE_POST_GAIN", ModdedNormalisableRange<float>(0.0f, 0.01f));
+        knobValueMap.set("GATE_THRESHOLD", ModdedNormalisableRange<float>(-18.0f, -17.99f));
+        knobValueMap.set("GATE_ATTACK", ModdedNormalisableRange<float>(1.0f, 1.01f));
+        knobValueMap.set("GATE_RELEASE", ModdedNormalisableRange<float>(10.0f, 10.01f));
+        knobValueMap.set("GATE_RATIO", ModdedNormalisableRange<float>(1.0f, 1.01f));
     }
 
     Gate(juce::AudioProcessorValueTreeState* mainApvts)

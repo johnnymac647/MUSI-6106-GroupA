@@ -165,7 +165,7 @@ void OneKnobVocalAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
-    juce::HashMap<juce::String, juce::NormalisableRange<float>>::Iterator i(knobValueMap);
+    juce::HashMap<juce::String, ModdedNormalisableRange<float>>::Iterator i(knobValueMap);
     while (i.next())
     {
         apvts.getParameter(i.getKey())->setValueNotifyingHost(apvts.getParameter(i.getKey())->convertTo0to1(i.getValue().convertFrom0to1(apvts.getParameter("ONE_KNOB")->getValue())));

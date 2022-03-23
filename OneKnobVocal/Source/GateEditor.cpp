@@ -96,27 +96,27 @@ void GateEditor::sliderValueChanged(juce::Slider* slider)
     if (slider == &VolumeKnob)
     {
         if (abs(VolumeKnob.getMinValue() - mProcessor.knobValueMap["GATE_POST_GAIN"].start) < 1e-3 || abs(VolumeKnob.getMaxValue() - mProcessor.knobValueMap["GATE_POST_GAIN"].end) < 1e-3)
-            mProcessor.knobValueMap.set("GATE_POST_GAIN", juce::NormalisableRange<float>(VolumeKnob.getMinValue(), VolumeKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("GATE_POST_GAIN", ModdedNormalisableRange<float>(VolumeKnob.getMinValue(), VolumeKnob.getMaxValue()));
     }
     else if (slider == &ThresholdKnob)
     {
         if (abs(ThresholdKnob.getMinValue() - mProcessor.knobValueMap["GATE_THRESHOLD"].start) < 1e-3 || abs(ThresholdKnob.getMaxValue() - mProcessor.knobValueMap["GATE_THRESHOLD"].end) < 1e-3)
-            mProcessor.knobValueMap.set("GATE_THRESHOLD", juce::NormalisableRange<float>(ThresholdKnob.getMinValue(), ThresholdKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("GATE_THRESHOLD", ModdedNormalisableRange<float>(ThresholdKnob.getMinValue(), ThresholdKnob.getMaxValue()));
     }
     else if (slider == &RatioKnob)
     {
         if (abs(RatioKnob.getMinValue() - mProcessor.knobValueMap["GATE_RATIO"].start) < 1e-3 || abs(RatioKnob.getMaxValue() - mProcessor.knobValueMap["GATE_RATIO"].end) < 1e-3)
-            mProcessor.knobValueMap.set("GATE_RATIO", juce::NormalisableRange<float>(RatioKnob.getMinValue(), RatioKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("GATE_RATIO", ModdedNormalisableRange<float>(RatioKnob.getMinValue(), RatioKnob.getMaxValue()));
     }
     else if (slider == &AttackKnob)
     {
         if (abs(AttackKnob.getMinValue() - mProcessor.knobValueMap["GATE_ATTACK"].start) < 1e-3 || abs(AttackKnob.getMaxValue() - mProcessor.knobValueMap["GATE_ATTACK"].end) < 1e-3)
-            mProcessor.knobValueMap.set("GATE_ATTACK", juce::NormalisableRange<float>(AttackKnob.getMinValue(), AttackKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("GATE_ATTACK", ModdedNormalisableRange<float>(AttackKnob.getMinValue(), AttackKnob.getMaxValue()));
     }
     else if (slider == &ReleaseKnob)
     {
         if (abs(ReleaseKnob.getMinValue() - mProcessor.knobValueMap["GATE_RELEASE"].start) < 1e-3 || abs(ReleaseKnob.getMaxValue() - mProcessor.knobValueMap["GATE_RELEASE"].end) < 1e-3)
-            mProcessor.knobValueMap.set("GATE_RELEASE", juce::NormalisableRange<float>(ReleaseKnob.getMinValue(), ReleaseKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("GATE_RELEASE", ModdedNormalisableRange<float>(ReleaseKnob.getMinValue(), ReleaseKnob.getMaxValue()));
     }
 }
 

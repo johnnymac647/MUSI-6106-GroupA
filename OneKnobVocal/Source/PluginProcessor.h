@@ -9,6 +9,8 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "ModdedNormalisableRange.h"
+
 
 //==============================================================================
 /**
@@ -63,7 +65,7 @@ public:
     juce::AudioProcessorGraph::Node::Ptr outputGainNode;
 
     juce::AudioProcessorValueTreeState apvts;
-    juce::HashMap<juce::String, juce::NormalisableRange<float>> knobValueMap;
+    juce::HashMap<juce::String, ModdedNormalisableRange<float>> knobValueMap;
 
 private:
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
@@ -84,7 +86,7 @@ private:
     juce::ValueTree saveMapToValueTree()
     {
         juce::ValueTree mapValueTree("Mappings");
-        juce::HashMap<juce::String, juce::NormalisableRange<float>>::Iterator i(knobValueMap);
+        juce::HashMap<juce::String, ModdedNormalisableRange<float>>::Iterator i(knobValueMap);
         while (i.next())
         {
             juce::ValueTree currentMappingValue("NormRange");
@@ -104,7 +106,7 @@ private:
             {
                 if (range.hasType("NormRange"))
                 {
-                    knobValueMap.set(range["id"].toString(), juce::NormalisableRange<float>(range["Start"], range["End"]));
+                    knobValueMap.set(range["id"].toString(), ModdedNormalisableRange<float>(range["Start"], range["End"]));
                 }
             }
         }

@@ -117,37 +117,37 @@ void CompressorEditor::sliderValueChanged(juce::Slider* slider)
     if (slider == &InputGainKnob)
     {
         if (abs(InputGainKnob.getMinValue() - mProcessor.knobValueMap["COMPRESSOR_PRE_GAIN"].start) < 1e-3 || abs(InputGainKnob.getMaxValue() - mProcessor.knobValueMap["COMPRESSOR_PRE_GAIN"].end) < 1e-3)
-            mProcessor.knobValueMap.set("COMPRESSOR_PRE_GAIN", juce::NormalisableRange<float>(InputGainKnob.getMinValue(), InputGainKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("COMPRESSOR_PRE_GAIN", ModdedNormalisableRange<float>(InputGainKnob.getMinValue(), InputGainKnob.getMaxValue()));
     }
     else if (slider == &ThresholdKnob)
     {
         if (abs(ThresholdKnob.getMinValue() - mProcessor.knobValueMap["COMPRESSOR_THRESHOLD"].start) < 1e-3 || abs(ThresholdKnob.getMaxValue() - mProcessor.knobValueMap["COMPRESSOR_THRESHOLD"].end) < 1e-3)
-            mProcessor.knobValueMap.set("COMPRESSOR_THRESHOLD", juce::NormalisableRange<float>(ThresholdKnob.getMinValue(), ThresholdKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("COMPRESSOR_THRESHOLD", ModdedNormalisableRange<float>(ThresholdKnob.getMinValue(), ThresholdKnob.getMaxValue()));
     }
     else if (slider == &RatioKnob)
     {
         if (abs(RatioKnob.getMinValue() - mProcessor.knobValueMap["COMPRESSOR_RATIO"].start) < 1e-3 || abs(RatioKnob.getMaxValue() - mProcessor.knobValueMap["COMPRESSOR_RATIO"].end) < 1e-3)
-            mProcessor.knobValueMap.set("COMPRESSOR_RATIO", juce::NormalisableRange<float>(RatioKnob.getMinValue(), RatioKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("COMPRESSOR_RATIO", ModdedNormalisableRange<float>(RatioKnob.getMinValue(), RatioKnob.getMaxValue()));
     }
     else if (slider == &AttackKnob)
     {
         if (abs(AttackKnob.getMinValue() - mProcessor.knobValueMap["COMPRESSOR_ATTACK"].start) < 1e-3 || abs(AttackKnob.getMaxValue() - mProcessor.knobValueMap["COMPRESSOR_ATTACK"].end) < 1e-3)
-            mProcessor.knobValueMap.set("COMPRESSOR_ATTACK", juce::NormalisableRange<float>(AttackKnob.getMinValue(), AttackKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("COMPRESSOR_ATTACK", ModdedNormalisableRange<float>(AttackKnob.getMinValue(), AttackKnob.getMaxValue()));
     }
     else if (slider == &ReleaseKnob)
     {
         if (abs(ReleaseKnob.getMinValue() - mProcessor.knobValueMap["COMPRESSOR_RELEASE"].start) < 1e-3 || abs(ReleaseKnob.getMaxValue() - mProcessor.knobValueMap["COMPRESSOR_RELEASE"].end) < 1e-3)
-            mProcessor.knobValueMap.set("COMPRESSOR_RELEASE", juce::NormalisableRange<float>(ReleaseKnob.getMinValue(), ReleaseKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("COMPRESSOR_RELEASE", ModdedNormalisableRange<float>(ReleaseKnob.getMinValue(), ReleaseKnob.getMaxValue()));
     }
     else if (slider == &MakeUpGainKnob)
     {
         if (abs(MakeUpGainKnob.getMinValue() - mProcessor.knobValueMap["COMPRESSOR_MAKEUP_GAIN"].start) < 1e-3 || abs(MakeUpGainKnob.getMaxValue() - mProcessor.knobValueMap["COMPRESSOR_MAKEUP_GAIN"].end) < 1e-3)
-            mProcessor.knobValueMap.set("COMPRESSOR_MAKEUP_GAIN", juce::NormalisableRange<float>(MakeUpGainKnob.getMinValue(), MakeUpGainKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("COMPRESSOR_MAKEUP_GAIN", ModdedNormalisableRange<float>(MakeUpGainKnob.getMinValue(), MakeUpGainKnob.getMaxValue()));
     }
     else if (slider == &OutputGainKnob)
     {
         if (abs(OutputGainKnob.getMinValue() - mProcessor.knobValueMap["COMPRESSOR_POST_GAIN"].start) < 1e-3 || abs(OutputGainKnob.getMaxValue() - mProcessor.knobValueMap["COMPRESSOR_POST_GAIN"].end) < 1e-3)
-            mProcessor.knobValueMap.set("COMPRESSOR_POST_GAIN", juce::NormalisableRange<float>(OutputGainKnob.getMinValue(), OutputGainKnob.getMaxValue()));
+            mProcessor.knobValueMap.set("COMPRESSOR_POST_GAIN", ModdedNormalisableRange<float>(OutputGainKnob.getMinValue(), OutputGainKnob.getMaxValue()));
     }
 }
 

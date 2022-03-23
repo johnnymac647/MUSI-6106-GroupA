@@ -11,6 +11,7 @@
 #pragma once
 #include <JuceHeader.h>
 #include "ProcessorBase.h"
+#include "ModdedNormalisableRange.h"
 
 class Gain : public ProcessorBase
 {
