@@ -10,12 +10,16 @@
 
 #pragma once
 #include "PluginProcessor.h"
-class EqualizerEditor : public juce::AudioProcessorEditor
+class EqualizerEditor : public juce::AudioProcessorEditor,
+    public juce::Slider::Listener
 {
 public:
     EqualizerEditor(OneKnobVocalAudioProcessor&);
     ~EqualizerEditor() override;
     void paint(juce::Graphics&) override;
+    void sliderValueChanged(juce::Slider* slider) override;
+
+    void oneKnobMapping(float oneKnobSliderValue);
 private:
     OneKnobVocalAudioProcessor& mProcessor;
 

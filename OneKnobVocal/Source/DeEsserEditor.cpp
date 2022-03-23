@@ -23,6 +23,7 @@ DeEsserEditor::DeEsserEditor(OneKnobVocalAudioProcessor& p)
     VolumeKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
     addAndMakeVisible(VolumeKnob);
     VolumeKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "DEESSER_POST_GAIN", VolumeKnob);
+    VolumeKnob.addListener(this);
     VolumeKnob.setMinAndMaxValues(mProcessor.knobValueMap["DEESSER_POST_GAIN"].start, mProcessor.knobValueMap["DEESSER_POST_GAIN"].end);
     VolumeKnob.setBounds(0, 20 * (i++), 120, 20);
 
@@ -34,6 +35,7 @@ DeEsserEditor::DeEsserEditor(OneKnobVocalAudioProcessor& p)
     ThresholdKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
     addAndMakeVisible(ThresholdKnob);
     ThresholdKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "DEESSER_THRESHOLD", ThresholdKnob);
+    ThresholdKnob.addListener(this);
     ThresholdKnob.setMinAndMaxValues(mProcessor.knobValueMap["DEESSER_THRESHOLD"].start, mProcessor.knobValueMap["DEESSER_THRESHOLD"].end);
     ThresholdKnob.setBounds(0, 20 * (i++), 120, 20);
 
@@ -45,6 +47,7 @@ DeEsserEditor::DeEsserEditor(OneKnobVocalAudioProcessor& p)
     RatioKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
     addAndMakeVisible(RatioKnob);
     RatioKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "DEESSER_RATIO", RatioKnob);
+    RatioKnob.addListener(this);
     RatioKnob.setMinAndMaxValues(mProcessor.knobValueMap["DEESSER_RATIO"].start, mProcessor.knobValueMap["DEESSER_RATIO"].end);
     RatioKnob.setBounds(0, 20 * (i++), 120, 20);
 
@@ -56,6 +59,7 @@ DeEsserEditor::DeEsserEditor(OneKnobVocalAudioProcessor& p)
     AttackKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
     addAndMakeVisible(AttackKnob);
     AttackKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "DEESSER_ATTACK", AttackKnob);
+    AttackKnob.addListener(this);
     AttackKnob.setMinAndMaxValues(mProcessor.knobValueMap["DEESSER_ATTACK"].start, mProcessor.knobValueMap["DEESSER_ATTACK"].end);
     AttackKnob.setBounds(0, 20 * (i++), 120, 20);
 
@@ -67,6 +71,7 @@ DeEsserEditor::DeEsserEditor(OneKnobVocalAudioProcessor& p)
     ReleaseKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
     addAndMakeVisible(ReleaseKnob);
     ReleaseKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "DEESSER_RELEASE", ReleaseKnob);
+    ReleaseKnob.addListener(this);
     ReleaseKnob.setMinAndMaxValues(mProcessor.knobValueMap["DEESSER_RELEASE"].start, mProcessor.knobValueMap["DEESSER_RELEASE"].end);
     ReleaseKnob.setBounds(0, 20 * (i++), 120, 20);
 
@@ -78,6 +83,7 @@ DeEsserEditor::DeEsserEditor(OneKnobVocalAudioProcessor& p)
     CrossoverFreqKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
     addAndMakeVisible(CrossoverFreqKnob);
     CrossoverFreqKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "DEESSER_CROSSOVERFREQ", CrossoverFreqKnob);
+    CrossoverFreqKnob.addListener(this);
     CrossoverFreqKnob.setMinAndMaxValues(mProcessor.knobValueMap["DEESSER_CROSSOVERFREQ"].start, mProcessor.knobValueMap["DEESSER_CROSSOVERFREQ"].end);
     CrossoverFreqKnob.setBounds(0, 20 * (i++), 120, 20);
 
@@ -99,10 +105,44 @@ void DeEsserEditor::paint(juce::Graphics& g)
 
 void DeEsserEditor::sliderValueChanged(juce::Slider* slider)
 {
-
+    if (slider == &VolumeKnob)
+    {
+        if (abs(VolumeKnob.getMinValue() - mProcessor.knobValueMap["DEESSER_POST_GAIN"].start) < 1e-3 || abs(VolumeKnob.getMaxValue() - mProcessor.knobValueMap["DEESSER_POST_GAIN"].end) < 1e-3)
+            mProcessor.knobValueMap.set("DEESSER_POST_GAIN", juce::NormalisableRange<float>(VolumeKnob.getMinValue(), VolumeKnob.getMaxValue()));
+    }
+    else if (slider == &ThresholdKnob)
+    {
+        if (abs(ThresholdKnob.getMinValue() - mProcessor.knobValueMap["DEESSER_THRESHOLD"].start) < 1e-3 || abs(ThresholdKnob.getMaxValue() - mProcessor.knobValueMap["DEESSER_THRESHOLD"].end) < 1e-3)
+            mProcessor.knobValueMap.set("DEESSER_THRESHOLD", juce::NormalisableRange<float>(ThresholdKnob.getMinValue(), ThresholdKnob.getMaxValue()));
+    }
+    else if (slider == &RatioKnob)
+    {
+        if (abs(RatioKnob.getMinValue() - mProcessor.knobValueMap["DEESSER_RATIO"].start) < 1e-3 || abs(RatioKnob.getMaxValue() - mProcessor.knobValueMap["DEESSER_RATIO"].end) < 1e-3)
+            mProcessor.knobValueMap.set("DEESSER_RATIO", juce::NormalisableRange<float>(RatioKnob.getMinValue(), RatioKnob.getMaxValue()));
+    }
+    else if (slider == &AttackKnob)
+    {
+        if (abs(AttackKnob.getMinValue() - mProcessor.knobValueMap["DEESSER_ATTACK"].start) < 1e-3 || abs(AttackKnob.getMaxValue() - mProcessor.knobValueMap["DEESSER_ATTACK"].end) < 1e-3)
+            mProcessor.knobValueMap.set("DEESSER_ATTACK", juce::NormalisableRange<float>(AttackKnob.getMinValue(), AttackKnob.getMaxValue()));
+    }
+    else if (slider == &ReleaseKnob)
+    {
+        if (abs(ReleaseKnob.getMinValue() - mProcessor.knobValueMap["DEESSER_RELEASE"].start) < 1e-3 || abs(ReleaseKnob.getMaxValue() - mProcessor.knobValueMap["DEESSER_RELEASE"].end) < 1e-3)
+            mProcessor.knobValueMap.set("DEESSER_RELEASE", juce::NormalisableRange<float>(ReleaseKnob.getMinValue(), ReleaseKnob.getMaxValue()));
+    }
+    else if (slider == &CrossoverFreqKnob)
+    {
+        if (abs(CrossoverFreqKnob.getMinValue() - mProcessor.knobValueMap["DEESSER_CROSSOVERFREQ"].start) < 1e-3 || abs(CrossoverFreqKnob.getMaxValue() - mProcessor.knobValueMap["DEESSER_CROSSOVERFREQ"].end) < 1e-3)
+            mProcessor.knobValueMap.set("DEESSER_CROSSOVERFREQ", juce::NormalisableRange<float>(CrossoverFreqKnob.getMinValue(), CrossoverFreqKnob.getMaxValue()));
+    }
 }
 
 void DeEsserEditor::oneKnobMapping(float oneKnobSliderValue)
 {
-
+    VolumeKnob.setValue(mProcessor.knobValueMap["DEESSER_POST_GAIN"].convertFrom0to1(oneKnobSliderValue));
+    ThresholdKnob.setValue(mProcessor.knobValueMap["DEESSER_THRESHOLD"].convertFrom0to1(oneKnobSliderValue));
+    RatioKnob.setValue(mProcessor.knobValueMap["DEESSER_RATIO"].convertFrom0to1(oneKnobSliderValue));
+    AttackKnob.setValue(mProcessor.knobValueMap["DEESSER_ATTACK"].convertFrom0to1(oneKnobSliderValue));
+    ReleaseKnob.setValue(mProcessor.knobValueMap["DEESSER_RELEASE"].convertFrom0to1(oneKnobSliderValue));
+    CrossoverFreqKnob.setValue(mProcessor.knobValueMap["DEESSER_CROSSOVERFREQ"].convertFrom0to1(oneKnobSliderValue));
 }

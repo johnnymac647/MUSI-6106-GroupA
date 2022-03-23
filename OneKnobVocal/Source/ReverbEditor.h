@@ -11,12 +11,16 @@
 #pragma once
 #include "PluginProcessor.h"
 
-class ReverbEditor : public juce::AudioProcessorEditor
+class ReverbEditor : public juce::AudioProcessorEditor,
+    public juce::Slider::Listener
 {
 public:
     ReverbEditor(OneKnobVocalAudioProcessor&);
     ~ReverbEditor();
     void paint(juce::Graphics&) override;
+    void sliderValueChanged(juce::Slider* slider) override;
+
+    void oneKnobMapping(float oneKnobSliderValue);
 private:
     OneKnobVocalAudioProcessor& mProcessor;
 

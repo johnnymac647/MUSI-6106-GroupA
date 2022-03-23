@@ -11,12 +11,16 @@
 #pragma once
 #include "PluginProcessor.h"
 
-class SaturatorEditor : public juce::AudioProcessorEditor
+class SaturatorEditor : public juce::AudioProcessorEditor,
+    public juce::Slider::Listener
 {
 public:
     SaturatorEditor(OneKnobVocalAudioProcessor&);
     ~SaturatorEditor();
     void paint(juce::Graphics&) override;
+    void sliderValueChanged(juce::Slider* slider) override;
+
+    void oneKnobMapping(float oneKnobSliderValue);
 private:
     OneKnobVocalAudioProcessor& mProcessor;
     juce::Slider GainKnob;

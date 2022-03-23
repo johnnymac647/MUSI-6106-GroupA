@@ -90,5 +90,10 @@ void OneKnobVocalAudioProcessorEditor::sliderValueChanged(juce::Slider* slider)
     if (slider == &mOneKnobSlider)
     {
         mGateEditor->oneKnobMapping(mOneKnobSlider.getValue());
+        mDeEsserEditor->oneKnobMapping(mOneKnobSlider.getValue());
+        mEqualizerEditor->oneKnobMapping(mOneKnobSlider.getValue());
+        mCompressorEditor->oneKnobMapping(mOneKnobSlider.getValue());
+        mSaturatorEditor->oneKnobMapping(mOneKnobSlider.getValue());
+        mReverbEditor->oneKnobMapping(mOneKnobSlider.getValue());
     }
 }

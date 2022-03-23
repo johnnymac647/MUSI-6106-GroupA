@@ -12,12 +12,16 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 
-class CompressorEditor : public juce::AudioProcessorEditor
+class CompressorEditor : public juce::AudioProcessorEditor,
+    public juce::Slider::Listener
 {
 public:
     CompressorEditor(OneKnobVocalAudioProcessor&);
     ~CompressorEditor();
     void paint(juce::Graphics&) override;
+    void sliderValueChanged(juce::Slider* slider) override;
+
+    void oneKnobMapping(float oneKnobSliderValue);
 private:
     OneKnobVocalAudioProcessor& mProcessor;
     

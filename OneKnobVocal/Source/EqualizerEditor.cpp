@@ -22,6 +22,7 @@ EqualizerEditor::EqualizerEditor(OneKnobVocalAudioProcessor& p)
     PostGainKnob.setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
     PostGainKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
     PostGainKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "EQ_POST_GAIN", PostGainKnob);
+    PostGainKnob.addListener(this);
     PostGainKnob.setMinAndMaxValues(mProcessor.knobValueMap["EQ_POST_GAIN"].start, mProcessor.knobValueMap["EQ_POST_GAIN"].end);
     PostGainKnob.setBounds(0, 20 * (i++), 120, 20);
     addAndMakeVisible(PostGainKnob);
@@ -33,6 +34,7 @@ EqualizerEditor::EqualizerEditor(OneKnobVocalAudioProcessor& p)
     LowBandGainKnob.setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
     LowBandGainKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
     LowBandGainKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "EQ_LOW_BAND_GAIN", LowBandGainKnob);
+    LowBandGainKnob.addListener(this);
     LowBandGainKnob.setMinAndMaxValues(mProcessor.knobValueMap["EQ_LOW_BAND_GAIN"].start, mProcessor.knobValueMap["EQ_LOW_BAND_GAIN"].end);
     LowBandGainKnob.setBounds(0, 20 * (i++), 120, 20);
     addAndMakeVisible(LowBandGainKnob);
@@ -44,6 +46,7 @@ EqualizerEditor::EqualizerEditor(OneKnobVocalAudioProcessor& p)
     LowBandCutoffKnob.setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
     LowBandCutoffKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
     LowBandCutoffKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "EQ_LOW_BAND_CUTOFF", LowBandCutoffKnob);
+    LowBandCutoffKnob.addListener(this);
     LowBandCutoffKnob.setMinAndMaxValues(mProcessor.knobValueMap["EQ_LOW_BAND_CUTOFF"].start, mProcessor.knobValueMap["EQ_LOW_BAND_CUTOFF"].end);
     LowBandCutoffKnob.setBounds(0, 20 * (i++), 120, 20);
     addAndMakeVisible(LowBandCutoffKnob);
@@ -55,6 +58,7 @@ EqualizerEditor::EqualizerEditor(OneKnobVocalAudioProcessor& p)
     LowBandQualityKnob.setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
     LowBandQualityKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
     LowBandQualityKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "EQ_LOW_BAND_QF", LowBandQualityKnob);
+    LowBandQualityKnob.addListener(this);
     LowBandQualityKnob.setMinAndMaxValues(mProcessor.knobValueMap["EQ_LOW_BAND_QF"].start, mProcessor.knobValueMap["EQ_LOW_BAND_QF"].end);
     LowBandQualityKnob.setBounds(0, 20 * (i++), 120, 20);
     addAndMakeVisible(LowBandQualityKnob);
@@ -66,6 +70,7 @@ EqualizerEditor::EqualizerEditor(OneKnobVocalAudioProcessor& p)
     LowMidBandGainKnob.setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
     LowMidBandGainKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
     LowMidBandGainKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "EQ_LOWMID_BAND_GAIN", LowMidBandGainKnob);
+    LowMidBandGainKnob.addListener(this);
     LowMidBandGainKnob.setMinAndMaxValues(mProcessor.knobValueMap["EQ_LOWMID_BAND_GAIN"].start, mProcessor.knobValueMap["EQ_LOWMID_BAND_GAIN"].end);
     LowMidBandGainKnob.setBounds(0, 20 * (i++), 120, 20);
     addAndMakeVisible(LowMidBandGainKnob);
@@ -77,6 +82,7 @@ EqualizerEditor::EqualizerEditor(OneKnobVocalAudioProcessor& p)
     LowMidBandFreqKnob.setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
     LowMidBandFreqKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
     LowMidBandFreqKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "EQ_LOWMID_BAND_FREQ", LowMidBandFreqKnob);
+    LowMidBandFreqKnob.addListener(this);
     LowMidBandFreqKnob.setMinAndMaxValues(mProcessor.knobValueMap["EQ_LOWMID_BAND_FREQ"].start, mProcessor.knobValueMap["EQ_LOWMID_BAND_FREQ"].end);
     LowMidBandFreqKnob.setBounds(0, 20 * (i++), 120, 20);
     addAndMakeVisible(LowMidBandFreqKnob);
@@ -88,6 +94,7 @@ EqualizerEditor::EqualizerEditor(OneKnobVocalAudioProcessor& p)
     LowMidBandQualityKnob.setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
     LowMidBandQualityKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
     LowMidBandQualityKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "EQ_LOWMID_BAND_QF", LowMidBandQualityKnob);
+    LowMidBandQualityKnob.addListener(this);
     LowMidBandQualityKnob.setMinAndMaxValues(mProcessor.knobValueMap["EQ_LOWMID_BAND_QF"].start, mProcessor.knobValueMap["EQ_LOWMID_BAND_QF"].end);
     LowMidBandQualityKnob.setBounds(0, 20 * (i++), 120, 20);
     addAndMakeVisible(LowMidBandQualityKnob);
@@ -99,6 +106,7 @@ EqualizerEditor::EqualizerEditor(OneKnobVocalAudioProcessor& p)
     HighMidBandGainKnob.setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
     HighMidBandGainKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
     HighMidBandGainKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "EQ_HIMID_BAND_GAIN", HighMidBandGainKnob);
+    HighMidBandGainKnob.addListener(this);
     HighMidBandGainKnob.setMinAndMaxValues(mProcessor.knobValueMap["EQ_HIMID_BAND_GAIN"].start, mProcessor.knobValueMap["EQ_HIMID_BAND_GAIN"].end);
     HighMidBandGainKnob.setBounds(0, 20 * (i++), 120, 20);
     addAndMakeVisible(HighMidBandGainKnob);
@@ -110,6 +118,7 @@ EqualizerEditor::EqualizerEditor(OneKnobVocalAudioProcessor& p)
     HighMidBandFreqKnob.setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
     HighMidBandFreqKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
     HighMidBandFreqKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "EQ_HIMID_BAND_FREQ", HighMidBandFreqKnob);
+    HighMidBandFreqKnob.addListener(this);
     HighMidBandFreqKnob.setMinAndMaxValues(mProcessor.knobValueMap["EQ_HIMID_BAND_FREQ"].start, mProcessor.knobValueMap["EQ_HIMID_BAND_FREQ"].end);
     HighMidBandFreqKnob.setBounds(0, 20 * (i++), 120, 20);
     addAndMakeVisible(HighMidBandFreqKnob);
@@ -121,6 +130,7 @@ EqualizerEditor::EqualizerEditor(OneKnobVocalAudioProcessor& p)
     HighMidBandQualityKnob.setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
     HighMidBandQualityKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
     HighMidBandQualityKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "EQ_HIMID_BAND_QF", HighMidBandQualityKnob);
+    HighMidBandQualityKnob.addListener(this);
     HighMidBandQualityKnob.setMinAndMaxValues(mProcessor.knobValueMap["EQ_HIMID_BAND_QF"].start, mProcessor.knobValueMap["EQ_HIMID_BAND_QF"].end);
     HighMidBandQualityKnob.setBounds(0, 20 * (i++), 120, 20);
     addAndMakeVisible(HighMidBandQualityKnob);
@@ -132,6 +142,7 @@ EqualizerEditor::EqualizerEditor(OneKnobVocalAudioProcessor& p)
     HighBandGainKnob.setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
     HighBandGainKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
     HighBandGainKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "EQ_HI_BAND_GAIN", HighBandGainKnob);
+    HighBandGainKnob.addListener(this);
     HighBandGainKnob.setMinAndMaxValues(mProcessor.knobValueMap["EQ_HI_BAND_GAIN"].start, mProcessor.knobValueMap["EQ_HI_BAND_GAIN"].end);
     HighBandGainKnob.setBounds(0, 20 * (i++), 120, 20);
     addAndMakeVisible(HighBandGainKnob);
@@ -143,6 +154,7 @@ EqualizerEditor::EqualizerEditor(OneKnobVocalAudioProcessor& p)
     HighBandCutoffKnob.setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
     HighBandCutoffKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
     HighBandCutoffKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "EQ_HI_BAND_CUTOFF", HighBandCutoffKnob);
+    HighBandCutoffKnob.addListener(this);
     HighBandCutoffKnob.setMinAndMaxValues(mProcessor.knobValueMap["EQ_HI_BAND_CUTOFF"].start, mProcessor.knobValueMap["EQ_HI_BAND_CUTOFF"].end);
     HighBandCutoffKnob.setBounds(0, 20 * (i++), 120, 20);
     addAndMakeVisible(HighBandCutoffKnob);
@@ -154,6 +166,7 @@ EqualizerEditor::EqualizerEditor(OneKnobVocalAudioProcessor& p)
     HighBandQualityKnob.setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
     HighBandQualityKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
     HighBandQualityKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "EQ_HI_BAND_QF", HighBandQualityKnob);
+    HighBandQualityKnob.addListener(this);
     HighBandQualityKnob.setMinAndMaxValues(mProcessor.knobValueMap["EQ_HI_BAND_QF"].start, mProcessor.knobValueMap["EQ_HI_BAND_QF"].end);
     HighBandQualityKnob.setBounds(0, 20 * (i++), 120, 20);
     addAndMakeVisible(HighBandQualityKnob);
@@ -172,3 +185,89 @@ void EqualizerEditor::paint(juce::Graphics& g)
     g.setFont(15.0f);
     g.drawFittedText("Equalizer", getLocalBounds(), juce::Justification::centredTop, 1);
 }
+
+void EqualizerEditor::sliderValueChanged(juce::Slider* slider)
+{
+    if (slider == &PostGainKnob)
+    {
+        if (abs(PostGainKnob.getMinValue() - mProcessor.knobValueMap["EQ_POST_GAIN"].start) < 1e-3 || abs(PostGainKnob.getMaxValue() - mProcessor.knobValueMap["EQ_POST_GAIN"].end) < 1e-3)
+            mProcessor.knobValueMap.set("EQ_POST_GAIN", juce::NormalisableRange<float>(PostGainKnob.getMinValue(), PostGainKnob.getMaxValue()));
+    }
+    else if (slider == &LowBandGainKnob)
+    {
+        if (abs(LowBandGainKnob.getMinValue() - mProcessor.knobValueMap["EQ_LOW_BAND_GAIN"].start) < 1e-3 || abs(LowBandGainKnob.getMaxValue() - mProcessor.knobValueMap["EQ_LOW_BAND_GAIN"].end) < 1e-3)
+            mProcessor.knobValueMap.set("EQ_LOW_BAND_GAIN", juce::NormalisableRange<float>(LowBandGainKnob.getMinValue(), LowBandGainKnob.getMaxValue()));
+    }
+    else if (slider == &LowBandCutoffKnob)
+    {
+        if (abs(LowBandCutoffKnob.getMinValue() - mProcessor.knobValueMap["EQ_LOW_BAND_CUTOFF"].start) < 1e-3 || abs(LowBandCutoffKnob.getMaxValue() - mProcessor.knobValueMap["EQ_LOW_BAND_CUTOFF"].end) < 1e-3)
+            mProcessor.knobValueMap.set("EQ_LOW_BAND_CUTOFF", juce::NormalisableRange<float>(LowBandCutoffKnob.getMinValue(), LowBandCutoffKnob.getMaxValue()));
+    }
+    else if (slider == &LowBandQualityKnob)
+    {
+        if (abs(LowBandQualityKnob.getMinValue() - mProcessor.knobValueMap["EQ_LOW_BAND_QF"].start) < 1e-3 || abs(LowBandQualityKnob.getMaxValue() - mProcessor.knobValueMap["EQ_LOW_BAND_QF"].end) < 1e-3)
+            mProcessor.knobValueMap.set("EQ_LOW_BAND_QF", juce::NormalisableRange<float>(LowBandQualityKnob.getMinValue(), LowBandQualityKnob.getMaxValue()));
+    }
+    else if (slider == &LowMidBandGainKnob)
+    {
+        if (abs(LowMidBandGainKnob.getMinValue() - mProcessor.knobValueMap["EQ_LOWMID_BAND_GAIN"].start) < 1e-3 || abs(LowMidBandGainKnob.getMaxValue() - mProcessor.knobValueMap["EQ_LOWMID_BAND_GAIN"].end) < 1e-3)
+            mProcessor.knobValueMap.set("EQ_LOWMID_BAND_GAIN", juce::NormalisableRange<float>(LowMidBandGainKnob.getMinValue(), LowMidBandGainKnob.getMaxValue()));
+    }
+    else if (slider == &LowMidBandFreqKnob)
+    {
+        if (abs(LowMidBandFreqKnob.getMinValue() - mProcessor.knobValueMap["EQ_LOWMID_BAND_FREQ"].start) < 1e-3 || abs(LowMidBandFreqKnob.getMaxValue() - mProcessor.knobValueMap["EQ_LOWMID_BAND_FREQ"].end) < 1e-3)
+            mProcessor.knobValueMap.set("EQ_LOWMID_BAND_FREQ", juce::NormalisableRange<float>(LowMidBandFreqKnob.getMinValue(), LowMidBandFreqKnob.getMaxValue()));
+    }
+    else if (slider == &LowMidBandQualityKnob)
+    {
+        if (abs(LowMidBandQualityKnob.getMinValue() - mProcessor.knobValueMap["EQ_LOWMID_BAND_QF"].start) < 1e-3 || abs(LowMidBandQualityKnob.getMaxValue() - mProcessor.knobValueMap["EQ_LOWMID_BAND_QF"].end) < 1e-3)
+            mProcessor.knobValueMap.set("EQ_LOWMID_BAND_QF", juce::NormalisableRange<float>(LowMidBandQualityKnob.getMinValue(), LowMidBandQualityKnob.getMaxValue()));
+    }
+    else if (slider == &HighMidBandGainKnob)
+    {
+        if (abs(HighMidBandGainKnob.getMinValue() - mProcessor.knobValueMap["EQ_HIMID_BAND_GAIN"].start) < 1e-3 || abs(HighMidBandGainKnob.getMaxValue() - mProcessor.knobValueMap["EQ_HIMID_BAND_GAIN"].end) < 1e-3)
+            mProcessor.knobValueMap.set("EQ_HIMID_BAND_GAIN", juce::NormalisableRange<float>(HighMidBandGainKnob.getMinValue(), HighMidBandGainKnob.getMaxValue()));
+    }
+    else if (slider == &HighMidBandFreqKnob)
+    {
+        if (abs(HighMidBandFreqKnob.getMinValue() - mProcessor.knobValueMap["EQ_HIMID_BAND_FREQ"].start) < 1e-3 || abs(HighMidBandFreqKnob.getMaxValue() - mProcessor.knobValueMap["EQ_HIMID_BAND_FREQ"].end) < 1e-3)
+            mProcessor.knobValueMap.set("EQ_HIMID_BAND_FREQ", juce::NormalisableRange<float>(HighMidBandFreqKnob.getMinValue(), HighMidBandFreqKnob.getMaxValue()));
+    }
+    else if (slider == &HighMidBandQualityKnob)
+    {
+        if (abs(HighMidBandQualityKnob.getMinValue() - mProcessor.knobValueMap["EQ_HIMID_BAND_QF"].start) < 1e-3 || abs(HighMidBandQualityKnob.getMaxValue() - mProcessor.knobValueMap["EQ_HIMID_BAND_QF"].end) < 1e-3)
+            mProcessor.knobValueMap.set("EQ_HIMID_BAND_QF", juce::NormalisableRange<float>(HighMidBandQualityKnob.getMinValue(), HighMidBandQualityKnob.getMaxValue()));
+    }
+    else if (slider == &HighBandGainKnob)
+    {
+        if (abs(HighBandGainKnob.getMinValue() - mProcessor.knobValueMap["EQ_HI_BAND_GAIN"].start) < 1e-3 || abs(HighBandGainKnob.getMaxValue() - mProcessor.knobValueMap["EQ_HI_BAND_GAIN"].end) < 1e-3)
+            mProcessor.knobValueMap.set("EQ_HI_BAND_GAIN", juce::NormalisableRange<float>(HighBandGainKnob.getMinValue(), HighBandGainKnob.getMaxValue()));
+    }
+    else if (slider == &HighBandCutoffKnob)
+    {
+        if (abs(HighBandCutoffKnob.getMinValue() - mProcessor.knobValueMap["EQ_HI_BAND_CUTOFF"].start) < 1e-3 || abs(HighBandCutoffKnob.getMaxValue() - mProcessor.knobValueMap["EQ_HI_BAND_CUTOFF"].end) < 1e-3)
+            mProcessor.knobValueMap.set("EQ_HI_BAND_CUTOFF", juce::NormalisableRange<float>(HighBandCutoffKnob.getMinValue(), HighBandCutoffKnob.getMaxValue()));
+    }
+    else if (slider == &HighBandQualityKnob)
+    {
+        if (abs(HighBandQualityKnob.getMinValue() - mProcessor.knobValueMap["EQ_HI_BAND_QF"].start) < 1e-3 || abs(HighBandQualityKnob.getMaxValue() - mProcessor.knobValueMap["EQ_HI_BAND_QF"].end) < 1e-3)
+            mProcessor.knobValueMap.set("EQ_HI_BAND_QF", juce::NormalisableRange<float>(HighBandQualityKnob.getMinValue(), HighBandQualityKnob.getMaxValue()));
+    }
+}
+
+void EqualizerEditor::oneKnobMapping(float oneKnobSliderValue)
+{
+    PostGainKnob.setValue(mProcessor.knobValueMap["EQ_POST_GAIN"].convertFrom0to1(oneKnobSliderValue));
+    LowBandGainKnob.setValue(mProcessor.knobValueMap["EQ_LOW_BAND_GAIN"].convertFrom0to1(oneKnobSliderValue));
+    LowBandCutoffKnob.setValue(mProcessor.knobValueMap["EQ_LOW_BAND_CUTOFF"].convertFrom0to1(oneKnobSliderValue));
+    LowBandQualityKnob.setValue(mProcessor.knobValueMap["EQ_LOW_BAND_QF"].convertFrom0to1(oneKnobSliderValue));
+    LowMidBandGainKnob.setValue(mProcessor.knobValueMap["EQ_LOWMID_BAND_GAIN"].convertFrom0to1(oneKnobSliderValue));
+    LowMidBandFreqKnob.setValue(mProcessor.knobValueMap["EQ_LOWMID_BAND_FREQ"].convertFrom0to1(oneKnobSliderValue));
+    LowMidBandQualityKnob.setValue(mProcessor.knobValueMap["EQ_LOWMID_BAND_QF"].convertFrom0to1(oneKnobSliderValue));
+    HighMidBandGainKnob.setValue(mProcessor.knobValueMap["EQ_HIMID_BAND_GAIN"].convertFrom0to1(oneKnobSliderValue));
+    HighMidBandFreqKnob.setValue(mProcessor.knobValueMap["EQ_HIMID_BAND_FREQ"].convertFrom0to1(oneKnobSliderValue));
+    HighMidBandQualityKnob.setValue(mProcessor.knobValueMap["EQ_HIMID_BAND_QF"].convertFrom0to1(oneKnobSliderValue));
+    HighBandGainKnob.setValue(mProcessor.knobValueMap["EQ_HI_BAND_GAIN"].convertFrom0to1(oneKnobSliderValue));
+    HighBandCutoffKnob.setValue(mProcessor.knobValueMap["EQ_HI_BAND_CUTOFF"].convertFrom0to1(oneKnobSliderValue));
+    HighBandQualityKnob.setValue(mProcessor.knobValueMap["EQ_HI_BAND_QF"].convertFrom0to1(oneKnobSliderValue));
+}   

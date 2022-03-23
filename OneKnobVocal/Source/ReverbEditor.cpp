@@ -94,3 +94,47 @@ void ReverbEditor::paint(juce::Graphics& g)
     g.setFont(15.0f);
     g.drawFittedText("Reverb", getLocalBounds(), juce::Justification::centredTop, 1);
 }
+
+void ReverbEditor::sliderValueChanged(juce::Slider* slider)
+{
+    if (slider == &PostGainKnob)
+    {
+        if (abs(PostGainKnob.getMinValue() - mProcessor.knobValueMap["REVERB_POST_GAIN"].start) < 1e-3 || abs(PostGainKnob.getMaxValue() - mProcessor.knobValueMap["REVERB_POST_GAIN"].end) < 1e-3)
+            mProcessor.knobValueMap.set("REVERB_POST_GAIN", juce::NormalisableRange<float>(PostGainKnob.getMinValue(), PostGainKnob.getMaxValue()));
+    }
+    else if (slider == &RoomSizeKnob)
+    {
+        if (abs(RoomSizeKnob.getMinValue() - mProcessor.knobValueMap["REVERB_ROOM_SIZE"].start) < 1e-3 || abs(RoomSizeKnob.getMaxValue() - mProcessor.knobValueMap["REVERB_ROOM_SIZE"].end) < 1e-3)
+            mProcessor.knobValueMap.set("REVERB_ROOM_SIZE", juce::NormalisableRange<float>(RoomSizeKnob.getMinValue(), RoomSizeKnob.getMaxValue()));
+    }
+    else if (slider == &DampingKnob)
+    {
+        if (abs(DampingKnob.getMinValue() - mProcessor.knobValueMap["REVERB_DAMPING"].start) < 1e-3 || abs(DampingKnob.getMaxValue() - mProcessor.knobValueMap["REVERB_DAMPING"].end) < 1e-3)
+            mProcessor.knobValueMap.set("REVERB_DAMPING", juce::NormalisableRange<float>(DampingKnob.getMinValue(), DampingKnob.getMaxValue()));
+    }
+    else if (slider == &WetLevelKnob)
+    {
+        if (abs(WetLevelKnob.getMinValue() - mProcessor.knobValueMap["REVERB_WET_LEVEL"].start) < 1e-3 || abs(WetLevelKnob.getMaxValue() - mProcessor.knobValueMap["REVERB_WET_LEVEL"].end) < 1e-3)
+            mProcessor.knobValueMap.set("REVERB_WET_LEVEL", juce::NormalisableRange<float>(WetLevelKnob.getMinValue(), WetLevelKnob.getMaxValue()));
+    }
+    else if (slider == &DryLevelKnob)
+    {
+        if (abs(DryLevelKnob.getMinValue() - mProcessor.knobValueMap["REVERB_DRY_LEVEL"].start) < 1e-3 || abs(DryLevelKnob.getMaxValue() - mProcessor.knobValueMap["REVERB_DRY_LEVEL"].end) < 1e-3)
+            mProcessor.knobValueMap.set("REVERB_DRY_LEVEL", juce::NormalisableRange<float>(DryLevelKnob.getMinValue(), DryLevelKnob.getMaxValue()));
+    }
+    else if (slider == &WidthKnob)
+    {
+        if (abs(WidthKnob.getMinValue() - mProcessor.knobValueMap["REVERB_WIDTH"].start) < 1e-3 || abs(WidthKnob.getMaxValue() - mProcessor.knobValueMap["REVERB_WIDTH"].end) < 1e-3)
+            mProcessor.knobValueMap.set("REVERB_WIDTH", juce::NormalisableRange<float>(WidthKnob.getMinValue(), WidthKnob.getMaxValue()));
+    }
+}
+
+void ReverbEditor::oneKnobMapping(float oneKnobSliderValue)
+{
+    PostGainKnob.setValue(mProcessor.knobValueMap["REVERB_POST_GAIN"].convertFrom0to1(oneKnobSliderValue));
+    RoomSizeKnob.setValue(mProcessor.knobValueMap["REVERB_ROOM_SIZE"].convertFrom0to1(oneKnobSliderValue));
+    DampingKnob.setValue(mProcessor.knobValueMap["REVERB_DAMPING"].convertFrom0to1(oneKnobSliderValue));
+    WetLevelKnob.setValue(mProcessor.knobValueMap["REVERB_WET_LEVEL"].convertFrom0to1(oneKnobSliderValue));
+    DryLevelKnob.setValue(mProcessor.knobValueMap["REVERB_DRY_LEVEL"].convertFrom0to1(oneKnobSliderValue));
+    WidthKnob.setValue(mProcessor.knobValueMap["REVERB_WIDTH"].convertFrom0to1(oneKnobSliderValue));
+}
