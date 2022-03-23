@@ -33,6 +33,16 @@ public:
 
     void sliderValueChanged(juce::Slider* slider) override;
 
+    void updateRanges()
+    {
+        mGateEditor->updateRanges();
+        mDeEsserEditor->updateRanges();
+        mEqualizerEditor->updateRanges();
+        mCompressorEditor->updateRanges();
+        mSaturatorEditor->updateRanges();
+        mReverbEditor->updateRanges();
+    }
+
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.

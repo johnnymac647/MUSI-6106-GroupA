@@ -120,11 +120,11 @@ void GateEditor::sliderValueChanged(juce::Slider* slider)
     }
 }
 
-void GateEditor::oneKnobMapping(float oneKnobSliderValue)
+void GateEditor::updateRanges()
 {
-    VolumeKnob.setValue(mProcessor.knobValueMap["GATE_POST_GAIN"].convertFrom0to1(oneKnobSliderValue));
-    ThresholdKnob.setValue(mProcessor.knobValueMap["GATE_THRESHOLD"].convertFrom0to1(oneKnobSliderValue));
-    RatioKnob.setValue(mProcessor.knobValueMap["GATE_RATIO"].convertFrom0to1(oneKnobSliderValue));
-    AttackKnob.setValue(mProcessor.knobValueMap["GATE_ATTACK"].convertFrom0to1(oneKnobSliderValue));
-    ReleaseKnob.setValue(mProcessor.knobValueMap["GATE_RELEASE"].convertFrom0to1(oneKnobSliderValue));
+    VolumeKnob.setMinAndMaxValues(mProcessor.knobValueMap["GATE_POST_GAIN"].start, mProcessor.knobValueMap["GATE_POST_GAIN"].end);
+    ThresholdKnob.setMinAndMaxValues(mProcessor.knobValueMap["GATE_THRESHOLD"].start, mProcessor.knobValueMap["GATE_THRESHOLD"].end);
+    RatioKnob.setMinAndMaxValues(mProcessor.knobValueMap["GATE_RATIO"].start, mProcessor.knobValueMap["GATE_RATIO"].end);
+    AttackKnob.setMinAndMaxValues(mProcessor.knobValueMap["GATE_ATTACK"].start, mProcessor.knobValueMap["GATE_ATTACK"].end);
+    ReleaseKnob.setMinAndMaxValues(mProcessor.knobValueMap["GATE_RELEASE"].start, mProcessor.knobValueMap["GATE_RELEASE"].end);
 }

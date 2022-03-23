@@ -165,6 +165,12 @@ void OneKnobVocalAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
+    juce::HashMap<juce::String, juce::NormalisableRange<float>>::Iterator i(knobValueMap);
+    while (i.next())
+    {
+        apvts.getParameter(i.getKey())->setValueNotifyingHost(apvts.getParameter(i.getKey())->convertTo0to1(i.getValue().convertFrom0to1(apvts.getParameter("ONE_KNOB")->getValue())));
+    }
+
     // In case we have more outputs than inputs, this code clears any output
     // channels that didn't contain input data, (because these aren't
     // guaranteed to be empty - they may contain garbage).
@@ -207,7 +213,11 @@ void OneKnobVocalAudioProcessor::getStateInformation (juce::MemoryBlock& destDat
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
-    auto state = apvts.copyState();
+    auto paramsValueTree = apvts.copyState();
+    auto mappingValueTree = saveMapToValueTree();
+    juce::ValueTree state("SavingState");
+    state.addChild(paramsValueTree, -1, nullptr);
+    state.addChild(mappingValueTree, -1, nullptr);
     std::unique_ptr<juce::XmlElement> xml(state.createXml());
     copyXmlToBinary(*xml, destData);
 }
@@ -219,8 +229,15 @@ void OneKnobVocalAudioProcessor::setStateInformation (const void* data, int size
     std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
 
     if (xmlState.get() != nullptr)
-        if (xmlState->hasTagName(apvts.state.getType()))
-            apvts.replaceState(juce::ValueTree::fromXml(*xmlState));
+    {
+        auto state = juce::ValueTree::fromXml(*xmlState);
+
+        loadMapFromValueTree(state);
+
+        if (state.getChildWithName(apvts.state.getType()).isValid())
+            apvts.replaceState(state.getChildWithName(apvts.state.getType()));
+    }
+
 }
 
 //==============================================================================

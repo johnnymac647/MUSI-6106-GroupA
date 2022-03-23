@@ -81,7 +81,40 @@ private:
     juce::AudioProcessorGraph::Node::Ptr audioOutputNode;
 
 
+    juce::ValueTree saveMapToValueTree()
+    {
+        juce::ValueTree mapValueTree("Mappings");
+        juce::HashMap<juce::String, juce::NormalisableRange<float>>::Iterator i(knobValueMap);
+        while (i.next())
+        {
+            juce::ValueTree currentMappingValue("NormRange");
+            currentMappingValue.setProperty("id", i.getKey(), nullptr);
+            currentMappingValue.setProperty("Start", i.getValue().start, nullptr);
+            currentMappingValue.setProperty("End", i.getValue().end, nullptr);
+            mapValueTree.addChild(currentMappingValue.createCopy(), -1, nullptr);
+        }
+        return mapValueTree.createCopy();
+    }
+
+    void loadMapFromValueTree(juce::ValueTree state)
+    {
+        if (state.getChildWithName("Mappings").isValid())
+        {
+            for (auto range : state.getChildWithName("Mappings"))
+            {
+                if (range.hasType("NormRange"))
+                {
+                    knobValueMap.set(range["id"].toString(), juce::NormalisableRange<float>(range["Start"], range["End"]));
+                }
+            }
+        }
+        if (apvts.getParameter("ONE_KNOB")->getValue() != 0)
+            apvts.getParameter("ONE_KNOB")->setValueNotifyingHost(0);
+        else
+            apvts.getParameter("ONE_KNOB")->setValueNotifyingHost(0.01);
+    }
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OneKnobVocalAudioProcessor)
 };
+ 

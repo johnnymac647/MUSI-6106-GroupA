@@ -255,19 +255,19 @@ void EqualizerEditor::sliderValueChanged(juce::Slider* slider)
     }
 }
 
-void EqualizerEditor::oneKnobMapping(float oneKnobSliderValue)
+void EqualizerEditor::updateRanges()
 {
-    PostGainKnob.setValue(mProcessor.knobValueMap["EQ_POST_GAIN"].convertFrom0to1(oneKnobSliderValue));
-    LowBandGainKnob.setValue(mProcessor.knobValueMap["EQ_LOW_BAND_GAIN"].convertFrom0to1(oneKnobSliderValue));
-    LowBandCutoffKnob.setValue(mProcessor.knobValueMap["EQ_LOW_BAND_CUTOFF"].convertFrom0to1(oneKnobSliderValue));
-    LowBandQualityKnob.setValue(mProcessor.knobValueMap["EQ_LOW_BAND_QF"].convertFrom0to1(oneKnobSliderValue));
-    LowMidBandGainKnob.setValue(mProcessor.knobValueMap["EQ_LOWMID_BAND_GAIN"].convertFrom0to1(oneKnobSliderValue));
-    LowMidBandFreqKnob.setValue(mProcessor.knobValueMap["EQ_LOWMID_BAND_FREQ"].convertFrom0to1(oneKnobSliderValue));
-    LowMidBandQualityKnob.setValue(mProcessor.knobValueMap["EQ_LOWMID_BAND_QF"].convertFrom0to1(oneKnobSliderValue));
-    HighMidBandGainKnob.setValue(mProcessor.knobValueMap["EQ_HIMID_BAND_GAIN"].convertFrom0to1(oneKnobSliderValue));
-    HighMidBandFreqKnob.setValue(mProcessor.knobValueMap["EQ_HIMID_BAND_FREQ"].convertFrom0to1(oneKnobSliderValue));
-    HighMidBandQualityKnob.setValue(mProcessor.knobValueMap["EQ_HIMID_BAND_QF"].convertFrom0to1(oneKnobSliderValue));
-    HighBandGainKnob.setValue(mProcessor.knobValueMap["EQ_HI_BAND_GAIN"].convertFrom0to1(oneKnobSliderValue));
-    HighBandCutoffKnob.setValue(mProcessor.knobValueMap["EQ_HI_BAND_CUTOFF"].convertFrom0to1(oneKnobSliderValue));
-    HighBandQualityKnob.setValue(mProcessor.knobValueMap["EQ_HI_BAND_QF"].convertFrom0to1(oneKnobSliderValue));
+    PostGainKnob.setMinAndMaxValues(mProcessor.knobValueMap["EQ_POST_GAIN"].start, mProcessor.knobValueMap["EQ_POST_GAIN"].end);
+    LowBandGainKnob.setMinAndMaxValues(mProcessor.knobValueMap["EQ_LOW_BAND_GAIN"].start, mProcessor.knobValueMap["EQ_LOW_BAND_GAIN"].end);
+    LowBandCutoffKnob.setMinAndMaxValues(mProcessor.knobValueMap["EQ_LOW_BAND_CUTOFF"].start, mProcessor.knobValueMap["EQ_LOW_BAND_CUTOFF"].end);
+    LowBandQualityKnob.setMinAndMaxValues(mProcessor.knobValueMap["EQ_LOW_BAND_QF"].start, mProcessor.knobValueMap["EQ_LOW_BAND_QF"].end);
+    LowMidBandGainKnob.setMinAndMaxValues(mProcessor.knobValueMap["EQ_LOWMID_BAND_GAIN"].start, mProcessor.knobValueMap["EQ_LOWMID_BAND_GAIN"].end);
+    LowMidBandFreqKnob.setMinAndMaxValues(mProcessor.knobValueMap["EQ_LOWMID_BAND_FREQ"].start, mProcessor.knobValueMap["EQ_LOWMID_BAND_FREQ"].end);
+    LowMidBandQualityKnob.setMinAndMaxValues(mProcessor.knobValueMap["EQ_LOWMID_BAND_QF"].start, mProcessor.knobValueMap["EQ_LOWMID_BAND_QF"].end);
+    HighMidBandGainKnob.setMinAndMaxValues(mProcessor.knobValueMap["EQ_HIMID_BAND_GAIN"].start, mProcessor.knobValueMap["EQ_HIMID_BAND_GAIN"].end);
+    HighMidBandFreqKnob.setMinAndMaxValues(mProcessor.knobValueMap["EQ_HIMID_BAND_FREQ"].start, mProcessor.knobValueMap["EQ_HIMID_BAND_FREQ"].end);
+    HighMidBandQualityKnob.setMinAndMaxValues(mProcessor.knobValueMap["EQ_HIMID_BAND_QF"].start, mProcessor.knobValueMap["EQ_HIMID_BAND_QF"].end);
+    HighBandGainKnob.setMinAndMaxValues(mProcessor.knobValueMap["EQ_HI_BAND_GAIN"].start, mProcessor.knobValueMap["EQ_HI_BAND_GAIN"].end);
+    HighBandCutoffKnob.setMinAndMaxValues(mProcessor.knobValueMap["EQ_HI_BAND_CUTOFF"].start, mProcessor.knobValueMap["EQ_HI_BAND_CUTOFF"].end);
+    HighBandQualityKnob.setMinAndMaxValues(mProcessor.knobValueMap["EQ_HI_BAND_QF"].start, mProcessor.knobValueMap["EQ_HI_BAND_QF"].end);
 }   

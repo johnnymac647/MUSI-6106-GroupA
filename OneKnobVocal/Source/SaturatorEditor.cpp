@@ -85,9 +85,9 @@ void SaturatorEditor::sliderValueChanged(juce::Slider* slider)
     }
 }
 
-void SaturatorEditor::oneKnobMapping(float oneKnobSliderValue)
+void SaturatorEditor::updateRanges()
 {
-    GainKnob.setValue(mProcessor.knobValueMap["SATURATOR_PRE_GAIN"].convertFrom0to1(oneKnobSliderValue));
-    MixKnob.setValue(mProcessor.knobValueMap["SATURATOR_MIX"].convertFrom0to1(oneKnobSliderValue));
-    VolumeKnob.setValue(mProcessor.knobValueMap["SATURATOR_POST_GAIN"].convertFrom0to1(oneKnobSliderValue));
+    GainKnob.setMinAndMaxValues(mProcessor.knobValueMap["SATURATOR_PRE_GAIN"].start, mProcessor.knobValueMap["SATURATOR_PRE_GAIN"].end);
+    MixKnob.setMinAndMaxValues(mProcessor.knobValueMap["SATURATOR_MIX"].start, mProcessor.knobValueMap["SATURATOR_MIX"].end);
+    VolumeKnob.setMinAndMaxValues(mProcessor.knobValueMap["SATURATOR_POST_GAIN"].start, mProcessor.knobValueMap["SATURATOR_POST_GAIN"].end);
 }

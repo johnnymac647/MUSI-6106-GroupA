@@ -18,8 +18,7 @@ public:
     ~EqualizerEditor() override;
     void paint(juce::Graphics&) override;
     void sliderValueChanged(juce::Slider* slider) override;
-
-    void oneKnobMapping(float oneKnobSliderValue);
+    void updateRanges();
 private:
     OneKnobVocalAudioProcessor& mProcessor;
 

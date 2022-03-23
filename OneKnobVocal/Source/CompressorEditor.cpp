@@ -151,13 +151,13 @@ void CompressorEditor::sliderValueChanged(juce::Slider* slider)
     }
 }
 
-void CompressorEditor::oneKnobMapping(float oneKnobSliderValue)
+void CompressorEditor::updateRanges()
 {
-    InputGainKnob.setValue(mProcessor.knobValueMap["COMPRESSOR_PRE_GAIN"].convertFrom0to1(oneKnobSliderValue));
-    ThresholdKnob.setValue(mProcessor.knobValueMap["COMPRESSOR_THRESHOLD"].convertFrom0to1(oneKnobSliderValue));
-    RatioKnob.setValue(mProcessor.knobValueMap["COMPRESSOR_RATIO"].convertFrom0to1(oneKnobSliderValue));
-    AttackKnob.setValue(mProcessor.knobValueMap["COMPRESSOR_ATTACK"].convertFrom0to1(oneKnobSliderValue));
-    ReleaseKnob.setValue(mProcessor.knobValueMap["COMPRESSOR_RELEASE"].convertFrom0to1(oneKnobSliderValue));
-    MakeUpGainKnob.setValue(mProcessor.knobValueMap["COMPRESSOR_MAKEUP_GAIN"].convertFrom0to1(oneKnobSliderValue));
-    OutputGainKnob.setValue(mProcessor.knobValueMap["COMPRESSOR_POST_GAIN"].convertFrom0to1(oneKnobSliderValue));
+    InputGainKnob.setMinAndMaxValues(mProcessor.knobValueMap["COMPRESSOR_PRE_GAIN"].start, mProcessor.knobValueMap["COMPRESSOR_PRE_GAIN"].end);
+    ThresholdKnob.setMinAndMaxValues(mProcessor.knobValueMap["COMPRESSOR_THRESHOLD"].start, mProcessor.knobValueMap["COMPRESSOR_THRESHOLD"].end);
+    RatioKnob.setMinAndMaxValues(mProcessor.knobValueMap["COMPRESSOR_RATIO"].start, mProcessor.knobValueMap["COMPRESSOR_RATIO"].end);
+    AttackKnob.setMinAndMaxValues(mProcessor.knobValueMap["COMPRESSOR_ATTACK"].start, mProcessor.knobValueMap["COMPRESSOR_ATTACK"].end);
+    ReleaseKnob.setMinAndMaxValues(mProcessor.knobValueMap["COMPRESSOR_RELEASE"].start, mProcessor.knobValueMap["COMPRESSOR_RELEASE"].end);
+    MakeUpGainKnob.setMinAndMaxValues(mProcessor.knobValueMap["COMPRESSOR_MAKEUP_GAIN"].start, mProcessor.knobValueMap["COMPRESSOR_MAKEUP_GAIN"].end);
+    OutputGainKnob.setMinAndMaxValues(mProcessor.knobValueMap["COMPRESSOR_POST_GAIN"].start, mProcessor.knobValueMap["COMPRESSOR_POST_GAIN"].end);
 }
