@@ -20,7 +20,8 @@
 //==============================================================================
 /**
 */
-class OneKnobVocalAudioProcessorEditor  : public juce::AudioProcessorEditor
+class OneKnobVocalAudioProcessorEditor  : public juce::AudioProcessorEditor,
+    public juce::Slider::Listener
 {
 public:
     OneKnobVocalAudioProcessorEditor (OneKnobVocalAudioProcessor&);
@@ -30,10 +31,16 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
+    void sliderValueChanged(juce::Slider* slider) override;
+
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     OneKnobVocalAudioProcessor& audioProcessor;
+
+
+    juce::Slider mOneKnobSlider;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> OneKnobAttach;
 
     std::unique_ptr<GateEditor> mGateEditor;
     std::unique_ptr<DeEsserEditor> mDeEsserEditor;

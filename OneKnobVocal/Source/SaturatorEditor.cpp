@@ -19,30 +19,33 @@ SaturatorEditor::SaturatorEditor(OneKnobVocalAudioProcessor& p)
     GainKnobLabel.setBounds(0, 20 * (i++), 120, 20);
     addAndMakeVisible(GainKnobLabel);
 
-    GainKnob.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
+    GainKnob.setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
     GainKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
     addAndMakeVisible(GainKnob);
     GainKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "SATURATOR_PRE_GAIN", GainKnob);
+    GainKnob.setMinAndMaxValues(mProcessor.knobValueMap["SATURATOR_PRE_GAIN"].start, mProcessor.knobValueMap["SATURATOR_PRE_GAIN"].end);
     GainKnob.setBounds(0, 20 * (i++), 120, 20);
 
     MixKnobLabel.setText("Mix", juce::NotificationType::dontSendNotification);
     MixKnobLabel.setBounds(0, 20 * (i++), 120, 20);
     addAndMakeVisible(MixKnobLabel);
     
-    MixKnob.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
+    MixKnob.setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
     MixKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
     addAndMakeVisible(MixKnob);
     MixKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "SATURATOR_MIX", MixKnob);
+    MixKnob.setMinAndMaxValues(mProcessor.knobValueMap["SATURATOR_MIX"].start, mProcessor.knobValueMap["SATURATOR_MIX"].end);
     MixKnob.setBounds(0, 20 * (i++), 120, 20);
 
     VolumeKnobLabel.setText("Post Gain", juce::NotificationType::dontSendNotification);
     VolumeKnobLabel.setBounds(0, 20 * (i++), 120, 20);
     addAndMakeVisible(VolumeKnobLabel);
 
-    VolumeKnob.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
+    VolumeKnob.setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
     VolumeKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
     addAndMakeVisible(VolumeKnob);
     VolumeKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "SATURATOR_POST_GAIN", VolumeKnob);
+    VolumeKnob.setMinAndMaxValues(mProcessor.knobValueMap["SATURATOR_POST_GAIN"].start, mProcessor.knobValueMap["SATURATOR_POST_GAIN"].end);
     VolumeKnob.setBounds(0, 20 * (i++), 120, 20);
     
     

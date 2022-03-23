@@ -30,6 +30,12 @@ OneKnobVocalAudioProcessor::OneKnobVocalAudioProcessor()
     apvts{ *this, nullptr, "Parameters", createParameterLayout() }
 #endif
 {
+    Gate::addToKnobMap(knobValueMap);
+    Deesser::addToKnobMap(knobValueMap);
+    Equalizer::addToKnobMap(knobValueMap);
+    Compressor::addToKnobMap(knobValueMap);
+    Saturator::addToKnobMap(knobValueMap);
+    Reverb::addToKnobMap(knobValueMap);
 }
 
 OneKnobVocalAudioProcessor::~OneKnobVocalAudioProcessor()
@@ -301,6 +307,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout OneKnobVocalAudioProcessor::
     Compressor::addToParameterLayout(params);
     Saturator::addToParameterLayout(params);
     Reverb::addToParameterLayout(params);
+
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("ONE_KNOB", "OneKnob", 0.0f, 1.0f, 0.5f));
 
     return { params.begin() , params.end() };
 }

@@ -22,7 +22,7 @@ OneKnobVocalAudioProcessorEditor::OneKnobVocalAudioProcessorEditor (OneKnobVocal
 {
 
     mGateEditor = std::make_unique<GateEditor>(p);
-    mGateEditor->setSize(133, 600);
+    mGateEditor->setSize(133, 400);
     mGateEditor->setTopLeftPosition(0, 0);
     addAndMakeVisible(mGateEditor.get());
 
@@ -51,6 +51,14 @@ OneKnobVocalAudioProcessorEditor::OneKnobVocalAudioProcessorEditor (OneKnobVocal
     mReverbEditor->setTopLeftPosition(667, 0);
     addAndMakeVisible(mReverbEditor.get());
 
+    mOneKnobSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    mOneKnobSlider.setRange(0, 1);
+    mOneKnobSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 80, 20);
+    mOneKnobSlider.setBounds(0, 450, 120, 120);
+    mOneKnobSlider.addListener(this);
+    OneKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts, "ONE_KNOB", mOneKnobSlider);
+    addAndMakeVisible(mOneKnobSlider);
+
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     setSize (800, 600);
@@ -75,4 +83,12 @@ void OneKnobVocalAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
+}
+
+void OneKnobVocalAudioProcessorEditor::sliderValueChanged(juce::Slider* slider)
+{
+    if (slider == &mOneKnobSlider)
+    {
+        mGateEditor->oneKnobMapping(mOneKnobSlider.getValue());
+    }
 }

@@ -42,6 +42,23 @@ public:
         params.push_back(std::make_unique<juce::AudioParameterFloat>("EQ_HI_BAND_QF", "EQHighBandQFactor", 0.01f, 10.0f, 0.71f));
     }
 
+    static void addToKnobMap(juce::HashMap<juce::String, juce::NormalisableRange<float>>& knobValueMap)
+    {
+        knobValueMap.set("EQ_POST_GAIN", juce::NormalisableRange<float>(-96.0f, 12.0f));
+        knobValueMap.set("EQ_LOW_BAND_GAIN", juce::NormalisableRange<float>(-24.0f, 12.0f));
+        knobValueMap.set("EQ_LOW_BAND_CUTOFF", juce::NormalisableRange<float>(50.0f, 200.0f));
+        knobValueMap.set("EQ_LOW_BAND_QF", juce::NormalisableRange<float>(0.01f, 10.0f));
+        knobValueMap.set("EQ_LOWMID_BAND_GAIN", juce::NormalisableRange<float>(-24.0f, 12.0f));
+        knobValueMap.set("EQ_LOWMID_BAND_FREQ", juce::NormalisableRange<float>(100.0f, 2000.0f));
+        knobValueMap.set("EQ_LOWMID_BAND_QF", juce::NormalisableRange<float>(0.01f, 10.0f));
+        knobValueMap.set("EQ_HIMID_BAND_GAIN", juce::NormalisableRange<float>(-24.0f, 12.0f));
+        knobValueMap.set("EQ_HIMID_BAND_FREQ", juce::NormalisableRange<float>(800.0f, 8000.0f));
+        knobValueMap.set("EQ_HIMID_BAND_QF", juce::NormalisableRange<float>(0.01f, 10.0f));
+        knobValueMap.set("EQ_HI_BAND_GAIN", juce::NormalisableRange<float>(-24.0f, 12.0f));
+        knobValueMap.set("EQ_HI_BAND_CUTOFF", juce::NormalisableRange<float>(2000.0f, 16000.0f));
+        knobValueMap.set("EQ_HI_BAND_QF", juce::NormalisableRange<float>(0.01f, 10.0f));
+    }
+
     Equalizer(juce::AudioProcessorValueTreeState* mainApvts)
     {
         ptr_apvts = mainApvts;

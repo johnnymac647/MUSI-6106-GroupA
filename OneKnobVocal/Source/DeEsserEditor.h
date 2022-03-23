@@ -11,12 +11,16 @@
 #pragma once
 #include "PluginProcessor.h"
 
-class DeEsserEditor : public juce::AudioProcessorEditor
+class DeEsserEditor : public juce::AudioProcessorEditor,
+    public juce::Slider::Listener
 {
 public:
     DeEsserEditor(OneKnobVocalAudioProcessor&);
     ~DeEsserEditor() override;
     void paint(juce::Graphics&) override;
+    void sliderValueChanged(juce::Slider* slider) override;
+
+    void oneKnobMapping(float oneKnobSliderValue);
 private:
     OneKnobVocalAudioProcessor& mProcessor;
     juce::Slider VolumeKnob;

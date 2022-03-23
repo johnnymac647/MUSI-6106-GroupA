@@ -63,6 +63,7 @@ public:
     juce::AudioProcessorGraph::Node::Ptr outputGainNode;
 
     juce::AudioProcessorValueTreeState apvts;
+    juce::HashMap<juce::String, juce::NormalisableRange<float>> knobValueMap;
 
 private:
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();

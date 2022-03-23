@@ -19,50 +19,60 @@ GateEditor::GateEditor(OneKnobVocalAudioProcessor& p)
     VolumeKnobLabel.setBounds(0, 20 * (i++), 120, 20);
     addAndMakeVisible(VolumeKnobLabel);
 
-    VolumeKnob.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
+    VolumeKnob.setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
     VolumeKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
+    VolumeKnob.addListener(this);
     addAndMakeVisible(VolumeKnob);
     VolumeKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "GATE_POST_GAIN", VolumeKnob);
+    VolumeKnob.setMinAndMaxValues(mProcessor.knobValueMap["GATE_POST_GAIN"].start, mProcessor.knobValueMap["GATE_POST_GAIN"].end);
     VolumeKnob.setBounds(0, 20 * (i++), 120, 20);
 
     ThresholdKnobLabel.setText("Threshold", juce::NotificationType::dontSendNotification);
     ThresholdKnobLabel.setBounds(0, 20 * (i++), 120, 20);
     addAndMakeVisible(ThresholdKnobLabel);
 
-    ThresholdKnob.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
+    ThresholdKnob.setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
     ThresholdKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
+    ThresholdKnob.addListener(this);
     addAndMakeVisible(ThresholdKnob);
     ThresholdKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "GATE_THRESHOLD", ThresholdKnob);
+    ThresholdKnob.setMinAndMaxValues(mProcessor.knobValueMap["GATE_THRESHOLD"].start, mProcessor.knobValueMap["GATE_THRESHOLD"].end);
     ThresholdKnob.setBounds(0, 20 * (i++), 120, 20);
 
     RatioKnobLabel.setText("Ratio", juce::NotificationType::dontSendNotification);
     RatioKnobLabel.setBounds(0, 20 * (i++), 120, 20);
     addAndMakeVisible(RatioKnobLabel);
 
-    RatioKnob.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
+    RatioKnob.setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
     RatioKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
+    RatioKnob.addListener(this);
     addAndMakeVisible(RatioKnob);
     RatioKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "GATE_RATIO", RatioKnob);
+    RatioKnob.setMinAndMaxValues(mProcessor.knobValueMap["GATE_RATIO"].start, mProcessor.knobValueMap["GATE_RATIO"].end);
     RatioKnob.setBounds(0, 20 * (i++), 120, 20);
 
     AttackKnobLabel.setText("Attack", juce::NotificationType::dontSendNotification);
     AttackKnobLabel.setBounds(0, 20 * (i++), 120, 20);
     addAndMakeVisible(AttackKnobLabel);
 
-    AttackKnob.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
+    AttackKnob.setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
     AttackKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
+    AttackKnob.addListener(this);
     addAndMakeVisible(AttackKnob);
     AttackKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "GATE_ATTACK", AttackKnob);
+    AttackKnob.setMinAndMaxValues(mProcessor.knobValueMap["GATE_ATTACK"].start, mProcessor.knobValueMap["GATE_ATTACK"].end);
     AttackKnob.setBounds(0, 20 * (i++), 120, 20);
 
     ReleaseKnobLabel.setText("Release", juce::NotificationType::dontSendNotification);
     ReleaseKnobLabel.setBounds(0, 20 * (i++), 120, 20);
     addAndMakeVisible(ReleaseKnobLabel);
 
-    ReleaseKnob.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
+    ReleaseKnob.setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
     ReleaseKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
+    ReleaseKnob.addListener(this);
     addAndMakeVisible(ReleaseKnob);
     ReleaseKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "GATE_RELEASE", ReleaseKnob);
+    ReleaseKnob.setMinAndMaxValues(mProcessor.knobValueMap["GATE_RELEASE"].start, mProcessor.knobValueMap["GATE_RELEASE"].end);
     ReleaseKnob.setBounds(0, 20 * (i++), 120, 20);
 
 }
@@ -79,4 +89,37 @@ void GateEditor::paint(juce::Graphics& g)
     g.setColour(juce::Colours::white);
     g.setFont(15.0f);
     g.drawFittedText("Gate", getLocalBounds(), juce::Justification::centredTop, 1);
+}
+
+void GateEditor::sliderValueChanged(juce::Slider* slider)
+{
+    if (slider == &VolumeKnob)
+    {
+        mProcessor.knobValueMap.set("GATE_POST_GAIN", juce::NormalisableRange<float>(VolumeKnob.getMinValue(), VolumeKnob.getMaxValue()));
+    }
+    else if (slider == &ThresholdKnob)
+    {
+        mProcessor.knobValueMap.set("GATE_THRESHOLD", juce::NormalisableRange<float>(ThresholdKnob.getMinValue(), ThresholdKnob.getMaxValue()));
+    }
+    else if (slider == &RatioKnob)
+    {
+        mProcessor.knobValueMap.set("GATE_RATIO", juce::NormalisableRange<float>(RatioKnob.getMinValue(), RatioKnob.getMaxValue()));
+    }
+    else if (slider == &AttackKnob)
+    {
+        mProcessor.knobValueMap.set("GATE_ATTACK", juce::NormalisableRange<float>(AttackKnob.getMinValue(), AttackKnob.getMaxValue()));
+    }
+    else if (slider == &ReleaseKnob)
+    {
+        mProcessor.knobValueMap.set("GATE_RELEASE", juce::NormalisableRange<float>(ReleaseKnob.getMinValue(), ReleaseKnob.getMaxValue()));
+    }
+}
+
+void GateEditor::oneKnobMapping(float oneKnobSliderValue)
+{
+    VolumeKnob.setValue(mProcessor.knobValueMap["GATE_POST_GAIN"].convertFrom0to1(oneKnobSliderValue));
+    ThresholdKnob.setValue(mProcessor.knobValueMap["GATE_THRESHOLD"].convertFrom0to1(oneKnobSliderValue));
+    RatioKnob.setValue(mProcessor.knobValueMap["GATE_RATIO"].convertFrom0to1(oneKnobSliderValue));
+    AttackKnob.setValue(mProcessor.knobValueMap["GATE_ATTACK"].convertFrom0to1(oneKnobSliderValue));
+    ReleaseKnob.setValue(mProcessor.knobValueMap["GATE_RELEASE"].convertFrom0to1(oneKnobSliderValue));
 }

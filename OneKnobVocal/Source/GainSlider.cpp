@@ -14,7 +14,7 @@ GainSlider::GainSlider(Gain& p, juce::Colour c)
     :AudioProcessorEditor(&p), mProcessor(p)
 {
     mBackgroundColour = c;
-    VolumeKnob.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
+    VolumeKnob.setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
     VolumeKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
     addAndMakeVisible(VolumeKnob);
     VolumeKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "GAIN", VolumeKnob);

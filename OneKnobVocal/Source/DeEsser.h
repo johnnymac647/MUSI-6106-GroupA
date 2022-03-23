@@ -25,6 +25,16 @@ public:
         params.push_back(std::make_unique<juce::AudioParameterFloat>("DEESSER_CROSSOVERFREQ", "DeesserCrossoverFreq", 20.0f, 20000.0f, 5000.0f));
     }
 
+    static void addToKnobMap(juce::HashMap<juce::String, juce::NormalisableRange<float>>& knobValueMap)
+    {
+        knobValueMap.set("DEESSER_POST_GAIN", juce::NormalisableRange<float>(-96.0f, 12.0f));
+        knobValueMap.set("DEESSER_THRESHOLD", juce::NormalisableRange<float>(-60.0f, 0.0f));
+        knobValueMap.set("DEESSER_ATTACK", juce::NormalisableRange<float>(0.0f, 1000.0f));
+        knobValueMap.set("DEESSER_RELEASE", juce::NormalisableRange<float>(0.0f, 5000.0f));
+        knobValueMap.set("DEESSER_RATIO", juce::NormalisableRange<float>(1.0f, 100.0f));
+        knobValueMap.set("DEESSER_CROSSOVERFREQ", juce::NormalisableRange<float>(20.0f, 20000.0f));
+    }
+
     Deesser(juce::AudioProcessorValueTreeState* mainApvts)
     {
         ptr_apvts = mainApvts;

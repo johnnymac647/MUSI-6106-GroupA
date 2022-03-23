@@ -24,6 +24,15 @@ public:
         params.push_back(std::make_unique<juce::AudioParameterFloat>("GATE_RATIO", "GateRatio", 1.0f, 100.0f, 10.0f));
     }
 
+    static void addToKnobMap(juce::HashMap<juce::String, juce::NormalisableRange<float>>& knobValueMap)
+    {
+        knobValueMap.set("GATE_POST_GAIN", juce::NormalisableRange<float>(-96.0f, 12.0f));
+        knobValueMap.set("GATE_THRESHOLD", juce::NormalisableRange<float>(-60.0f, 0.0f));
+        knobValueMap.set("GATE_ATTACK", juce::NormalisableRange<float>(0.0f, 1000.0f));
+        knobValueMap.set("GATE_RELEASE", juce::NormalisableRange<float>(0.0f, 5000.0f));
+        knobValueMap.set("GATE_RATIO", juce::NormalisableRange<float>(1.0f, 100.0f));
+    }
+
     Gate(juce::AudioProcessorValueTreeState* mainApvts)
     {
         ptr_apvts = mainApvts;

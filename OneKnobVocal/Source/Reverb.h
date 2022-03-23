@@ -25,6 +25,16 @@ public:
         params.push_back(std::make_unique<juce::AudioParameterFloat>("REVERB_WIDTH", "ReverbWidth", 0.f, 1.f, 0.5f));
     }
 
+    static void addToKnobMap(juce::HashMap<juce::String, juce::NormalisableRange<float>>& knobValueMap)
+    {
+        knobValueMap.set("REVERB_POST_GAIN", juce::NormalisableRange<float>(-96.0f, 12.0f));
+        knobValueMap.set("REVERB_ROOM_SIZE", juce::NormalisableRange<float>(0.f, 1.f));
+        knobValueMap.set("REVERB_DAMPING", juce::NormalisableRange<float>(0.f, 1.f));
+        knobValueMap.set("REVERB_WET_LEVEL", juce::NormalisableRange<float>(-96.0f, 12.0f));
+        knobValueMap.set("REVERB_DRY_LEVEL", juce::NormalisableRange<float>(-96.0f, 12.0f));
+        knobValueMap.set("REVERB_WIDTH", juce::NormalisableRange<float>(0.f, 1.f));
+    }
+
     Reverb(juce::AudioProcessorValueTreeState* mainApvts)
     {
         ptr_apvts = mainApvts;
