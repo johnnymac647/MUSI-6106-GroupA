@@ -15,7 +15,8 @@
 //==============================================================================
 /**
 */
-class OneKnobVocalAudioProcessor  : public juce::AudioProcessor
+class OneKnobVocalAudioProcessor  : public juce::AudioProcessor,
+    juce::AudioProcessorValueTreeState::Listener
 {
 public:
     //==============================================================================
@@ -54,6 +55,19 @@ public:
     //==============================================================================
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
+
+    void parameterChanged(const juce::String& parameterID, float newValue)
+    {
+        if (parameterID == "ONE_KNOB")
+        {
+            juce::HashMap<juce::String, ModdedNormalisableRange<float>>::Iterator i(knobValueMap);
+            while (i.next())
+            {
+                apvts.getParameter(i.getKey())->setValueNotifyingHost(apvts.getParameter(i.getKey())->convertTo0to1(i.getValue().convertFrom0to1(newValue)));
+            }
+        }
+    }
+
 
     juce::AudioProcessorGraph::Node::Ptr inputGainNode;
     juce::AudioProcessorGraph::Node::Ptr gateNode;

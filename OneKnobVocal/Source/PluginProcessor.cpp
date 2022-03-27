@@ -36,6 +36,8 @@ OneKnobVocalAudioProcessor::OneKnobVocalAudioProcessor()
     Compressor::addToKnobMap(knobValueMap);
     Saturator::addToKnobMap(knobValueMap);
     Reverb::addToKnobMap(knobValueMap);
+
+    apvts.addParameterListener("ONE_KNOB", this);
 }
 
 OneKnobVocalAudioProcessor::~OneKnobVocalAudioProcessor()
@@ -164,12 +166,6 @@ void OneKnobVocalAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
-
-    juce::HashMap<juce::String, ModdedNormalisableRange<float>>::Iterator i(knobValueMap);
-    while (i.next())
-    {
-        apvts.getParameter(i.getKey())->setValueNotifyingHost(apvts.getParameter(i.getKey())->convertTo0to1(i.getValue().convertFrom0to1(apvts.getParameter("ONE_KNOB")->getValue())));
-    }
 
     // In case we have more outputs than inputs, this code clears any output
     // channels that didn't contain input data, (because these aren't
