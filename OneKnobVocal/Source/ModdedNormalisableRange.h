@@ -188,7 +188,7 @@ public:
     void setSkewForCentre(ValueType centrePointValue) noexcept
     {
         jassert(centrePointValue >= start);
-        jassert(centrePointValue =< end);
+        jassert(centrePointValue <= end);
 
         symmetricSkew = false;
         skew = std::log(static_cast<ValueType> (0.5)) / std::log((centrePointValue - start) / (end - start));
