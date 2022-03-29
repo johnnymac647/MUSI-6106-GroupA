@@ -15,9 +15,15 @@ GateEditor::GateEditor(OneKnobVocalAudioProcessor& p)
 {
     int i = 1;
 
+    VolumeButton.setClickingTogglesState(true);
+    VolumeButton.setBounds(90, 20 * i, 20, 20);
+    VolumeButton.onClick = [this] { updateToggleState(&VolumeButton); };
+
     VolumeKnobLabel.setText("Post Gain", juce::NotificationType::dontSendNotification);
     VolumeKnobLabel.setBounds(0, 20 * (i++), 120, 20);
     addAndMakeVisible(VolumeKnobLabel);
+
+    addAndMakeVisible(VolumeButton);
 
     VolumeKnob.setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
     VolumeKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);

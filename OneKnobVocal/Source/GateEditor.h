@@ -21,6 +21,14 @@ public:
     void paint(juce::Graphics&) override;
     void sliderValueChanged(juce::Slider* slider) override;
     void updateRanges();
+    void updateToggleState(juce::Button* button)
+    {
+        auto state = button->getToggleState();
+        juce::String stateString = state ? "ON" : "OFF";
+        juce::String selectedString = state ? "+" : "-";
+
+        button->setButtonText(selectedString);
+    }
 
 private:
     OneKnobVocalAudioProcessor& mProcessor;
@@ -41,6 +49,8 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> RatioKnobAttach;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> AttackKnobAttach;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> ReleaseKnobAttach;
+
+    juce::TextButton VolumeButton {"+"};
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GateEditor);
 };

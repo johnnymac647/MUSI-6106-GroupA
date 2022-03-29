@@ -21,7 +21,7 @@
 /**
 */
 class OneKnobVocalAudioProcessorEditor  : public juce::AudioProcessorEditor,
-    public juce::Slider::Listener
+    public juce::ChangeListener
 {
 public:
     OneKnobVocalAudioProcessorEditor (OneKnobVocalAudioProcessor&);
@@ -31,7 +31,10 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
-    void sliderValueChanged(juce::Slider* slider) override;
+    void changeListenerCallback(juce::ChangeBroadcaster* source)
+    {
+        updateRanges();
+    }
 
     void updateRanges()
     {

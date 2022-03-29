@@ -37,6 +37,12 @@ OneKnobVocalAudioProcessor::OneKnobVocalAudioProcessor()
     Saturator::addToKnobMap(knobValueMap);
     Reverb::addToKnobMap(knobValueMap);
 
+    juce::HashMap<juce::String, ModdedNormalisableRange<float>>::Iterator i(knobValueMap);
+    while (i.next())
+    {
+        mappingRangeFlip.set(i.getKey(), false);
+    }
+
     apvts.addParameterListener("ONE_KNOB", this);
 }
 
@@ -229,7 +235,6 @@ void OneKnobVocalAudioProcessor::setStateInformation (const void* data, int size
         auto state = juce::ValueTree::fromXml(*xmlState);
 
         loadMapFromValueTree(state);
-
         if (state.getChildWithName(apvts.state.getType()).isValid())
             apvts.replaceState(state.getChildWithName(apvts.state.getType()));
     }

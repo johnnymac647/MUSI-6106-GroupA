@@ -80,6 +80,10 @@ public:
 
     juce::AudioProcessorValueTreeState apvts;
     juce::HashMap<juce::String, ModdedNormalisableRange<float>> knobValueMap;
+    juce::HashMap<juce::String, bool> mappingRangeFlip;
+
+
+    juce::ChangeBroadcaster loadedPreset;
 
 private:
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
@@ -107,6 +111,7 @@ private:
             currentMappingValue.setProperty("id", i.getKey(), nullptr);
             currentMappingValue.setProperty("Start", i.getValue().start, nullptr);
             currentMappingValue.setProperty("End", i.getValue().end, nullptr);
+            currentMappingValue.setProperty("Flip", mappingRangeFlip[i.getKey()], nullptr);
             mapValueTree.addChild(currentMappingValue.createCopy(), -1, nullptr);
         }
         return mapValueTree.createCopy();
@@ -121,13 +126,11 @@ private:
                 if (range.hasType("NormRange"))
                 {
                     knobValueMap.set(range["id"].toString(), ModdedNormalisableRange<float>(range["Start"], range["End"]));
+                    mappingRangeFlip.set(range["id"].toString(), range["Flip"]);
                 }
             }
         }
-        if (apvts.getParameter("ONE_KNOB")->getValue() != 0)
-            apvts.getParameter("ONE_KNOB")->setValueNotifyingHost(0);
-        else
-            apvts.getParameter("ONE_KNOB")->setValueNotifyingHost(0.01);
+        loadedPreset.sendChangeMessage();
     }
 
     //==============================================================================
