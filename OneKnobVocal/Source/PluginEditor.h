@@ -39,6 +39,7 @@ public:
     void updateRanges()
     {
         mGateEditor->updateRanges();
+        mGateEditor->setAllButtonState();
         mDeEsserEditor->updateRanges();
         mEqualizerEditor->updateRanges();
         mCompressorEditor->updateRanges();

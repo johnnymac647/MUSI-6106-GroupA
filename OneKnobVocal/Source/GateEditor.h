@@ -13,22 +13,13 @@
 #include "ModdedNormalisableRange.h"
 
 class GateEditor : public juce::AudioProcessorEditor,
-    public juce::Slider::Listener,
-    public juce::Button::Listener
+    public juce::Slider::Listener
 {
 public:
     GateEditor(OneKnobVocalAudioProcessor&);
     ~GateEditor() override;
     void paint(juce::Graphics&) override;
     void sliderValueChanged(juce::Slider* slider) override;
-    void buttonClicked(juce::Button* button) override {};
-    void buttonStateChanged(juce::Button* button) override
-    {
-        if (button == &VolumeButton)
-        {
-            mProcessor.mappingRangeFlip.set("GATE_POST_GAIN", button->getToggleState());
-        }
-    }
 
     void updateRanges();
     void changeToggleStateOnClick(juce::Button* button)
@@ -37,6 +28,27 @@ public:
         juce::String selectedString = state ? "-" : "+";
 
         button->setButtonText(selectedString);
+
+        if (button == &VolumeButton)
+        {
+            mProcessor.mappingRangeFlip.set("GATE_POST_GAIN", state);
+        }
+        else if (button == &ThresholdButton)
+        {
+            mProcessor.mappingRangeFlip.set("GATE_THRESHOLD", state);
+        }
+        else if (button == &AttackButton)
+        {
+            mProcessor.mappingRangeFlip.set("GATE_ATTACK", state);
+        }
+        else if (button == &ReleaseButton)
+        {
+            mProcessor.mappingRangeFlip.set("GATE_RELEASE", state);
+        }
+        else if (button == &RatioButton)
+        {
+            mProcessor.mappingRangeFlip.set("GATE_RATIO", state);
+        }
     }
 
     void updateToggleStateFromProcessor(juce::Button* button, juce::String id)
@@ -50,6 +62,10 @@ public:
     void setAllButtonState()
     {
         updateToggleStateFromProcessor(&VolumeButton, "GATE_POST_GAIN");
+        updateToggleStateFromProcessor(&ThresholdButton, "GATE_THRESHOLD");
+        updateToggleStateFromProcessor(&AttackButton, "GATE_ATTACK");
+        updateToggleStateFromProcessor(&ReleaseButton, "GATE_RELEASE");
+        updateToggleStateFromProcessor(&RatioButton, "GATE_RATIO");
     }
 
 private:
@@ -72,7 +88,11 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> AttackKnobAttach;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> ReleaseKnobAttach;
 
-    juce::TextButton VolumeButton {"-"};
+    juce::TextButton VolumeButton{ "-" };
+    juce::TextButton ThresholdButton{ "-" };
+    juce::TextButton AttackButton{ "-" };
+    juce::TextButton ReleaseButton{ "-" };
+    juce::TextButton RatioButton{ "-" };
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GateEditor);
 };

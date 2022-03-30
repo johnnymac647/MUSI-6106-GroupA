@@ -18,7 +18,6 @@ GateEditor::GateEditor(OneKnobVocalAudioProcessor& p)
     VolumeButton.setClickingTogglesState(true);
     VolumeButton.setBounds(90, 20 * i, 20, 20);
     VolumeButton.onClick = [this] { changeToggleStateOnClick(&VolumeButton); };
-    VolumeButton.addListener(this);
 
     VolumeKnobLabel.setText("Post Gain", juce::NotificationType::dontSendNotification);
     VolumeKnobLabel.setBounds(0, 20 * (i++), 120, 20);
@@ -34,9 +33,16 @@ GateEditor::GateEditor(OneKnobVocalAudioProcessor& p)
     VolumeKnob.setMinAndMaxValues(mProcessor.knobValueMap["GATE_POST_GAIN"].start, mProcessor.knobValueMap["GATE_POST_GAIN"].end);
     VolumeKnob.setBounds(0, 20 * (i++), 120, 20);
 
+
+    ThresholdButton.setClickingTogglesState(true);
+    ThresholdButton.setBounds(90, 20 * i, 20, 20);
+    ThresholdButton.onClick = [this] { changeToggleStateOnClick(&ThresholdButton); };
+
     ThresholdKnobLabel.setText("Threshold", juce::NotificationType::dontSendNotification);
     ThresholdKnobLabel.setBounds(0, 20 * (i++), 120, 20);
     addAndMakeVisible(ThresholdKnobLabel);
+
+    addAndMakeVisible(ThresholdButton);
 
     ThresholdKnob.setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
     ThresholdKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
@@ -46,9 +52,15 @@ GateEditor::GateEditor(OneKnobVocalAudioProcessor& p)
     ThresholdKnob.setMinAndMaxValues(mProcessor.knobValueMap["GATE_THRESHOLD"].start, mProcessor.knobValueMap["GATE_THRESHOLD"].end);
     ThresholdKnob.setBounds(0, 20 * (i++), 120, 20);
 
+    RatioButton.setClickingTogglesState(true);
+    RatioButton.setBounds(90, 20 * i, 20, 20);
+    RatioButton.onClick = [this] { changeToggleStateOnClick(&RatioButton); };
+
     RatioKnobLabel.setText("Ratio", juce::NotificationType::dontSendNotification);
     RatioKnobLabel.setBounds(0, 20 * (i++), 120, 20);
     addAndMakeVisible(RatioKnobLabel);
+
+    addAndMakeVisible(RatioButton);
 
     RatioKnob.setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
     RatioKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
@@ -58,9 +70,15 @@ GateEditor::GateEditor(OneKnobVocalAudioProcessor& p)
     RatioKnob.setMinAndMaxValues(mProcessor.knobValueMap["GATE_RATIO"].start, mProcessor.knobValueMap["GATE_RATIO"].end);
     RatioKnob.setBounds(0, 20 * (i++), 120, 20);
 
+    AttackButton.setClickingTogglesState(true);
+    AttackButton.setBounds(90, 20 * i, 20, 20);
+    AttackButton.onClick = [this] { changeToggleStateOnClick(&AttackButton); };
+
     AttackKnobLabel.setText("Attack", juce::NotificationType::dontSendNotification);
     AttackKnobLabel.setBounds(0, 20 * (i++), 120, 20);
     addAndMakeVisible(AttackKnobLabel);
+
+    addAndMakeVisible(AttackButton);
 
     AttackKnob.setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
     AttackKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
@@ -70,9 +88,15 @@ GateEditor::GateEditor(OneKnobVocalAudioProcessor& p)
     AttackKnob.setMinAndMaxValues(mProcessor.knobValueMap["GATE_ATTACK"].start, mProcessor.knobValueMap["GATE_ATTACK"].end);
     AttackKnob.setBounds(0, 20 * (i++), 120, 20);
 
+    ReleaseButton.setClickingTogglesState(true);
+    ReleaseButton.setBounds(90, 20 * i, 20, 20);
+    ReleaseButton.onClick = [this] { changeToggleStateOnClick(&ReleaseButton); };
+
     ReleaseKnobLabel.setText("Release", juce::NotificationType::dontSendNotification);
     ReleaseKnobLabel.setBounds(0, 20 * (i++), 120, 20);
     addAndMakeVisible(ReleaseKnobLabel);
+
+    addAndMakeVisible(ReleaseButton);
 
     ReleaseKnob.setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
     ReleaseKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
