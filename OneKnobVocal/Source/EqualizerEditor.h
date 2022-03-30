@@ -11,6 +11,7 @@
 #pragma once
 #include "PluginProcessor.h"
 #include "ModdedNormalisableRange.h"
+#include "Equalizer.h"
 
 class EqualizerEditor : public juce::AudioProcessorEditor,
     public juce::Slider::Listener
@@ -21,62 +22,46 @@ public:
     void paint(juce::Graphics&) override;
     void sliderValueChanged(juce::Slider* slider) override;
     void updateRanges();
-    void setAllButtonState() {};
+
+    void changeToggleStateOnClick(juce::Button* button)
+    {
+        auto state = button->getToggleState();
+        juce::String selectedString = state ? "-" : "+";
+
+        button->setButtonText(selectedString);
+
+        for (int i = 0; i < Equalizer::effectParameters::kNumOfParameters; i++)
+        {
+            if (button == &flipToggleButtons[i])
+            {
+                mProcessor.mappingRangeFlip.set(Equalizer::parameterIDs[i], state);
+                break;
+            }
+
+        }
+    }
+    void updateToggleStateFromProcessor(juce::Button* button, juce::String id)
+    {
+        auto state = mProcessor.mappingRangeFlip[id];
+        button->setToggleState(state, juce::dontSendNotification);
+        juce::String selectedString = state ? "-" : "+";
+        button->setButtonText(selectedString);
+    }
+
+    void setAllButtonState()
+    {
+        for (int i = 0; i < Equalizer::effectParameters::kNumOfParameters; i++)
+        {
+            updateToggleStateFromProcessor(&flipToggleButtons[i], Equalizer::parameterIDs[i]);
+        }
+    }
 private:
     OneKnobVocalAudioProcessor& mProcessor;
 
-
-    juce::Slider PostGainKnob;
-    juce::Label PostGainLabel;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> PostGainKnobAttach;
-
-    juce::Slider LowBandGainKnob;
-    juce::Label LowBandGainKnobLabel;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> LowBandGainKnobAttach;
-
-    juce::Slider LowBandCutoffKnob;
-    juce::Label LowBandCutoffKnobLabel;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> LowBandCutoffKnobAttach;
-
-    juce::Slider LowBandQualityKnob;
-    juce::Label LowBandQualityKnobLabel;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> LowBandQualityKnobAttach;
-
-    juce::Slider LowMidBandGainKnob;
-    juce::Label LowMidBandGainKnobLabel;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> LowMidBandGainKnobAttach;
-
-    juce::Slider LowMidBandFreqKnob;
-    juce::Label LowMidBandFreqKnobLabel;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> LowMidBandFreqKnobAttach;
-
-    juce::Slider LowMidBandQualityKnob;
-    juce::Label LowMidBandQualityKnobLabel;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> LowMidBandQualityKnobAttach;
-
-    juce::Slider HighMidBandGainKnob;
-    juce::Label HighMidBandGainKnobLabel;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> HighMidBandGainKnobAttach;
-
-    juce::Slider HighMidBandFreqKnob;
-    juce::Label HighMidBandFreqKnobLabel;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> HighMidBandFreqKnobAttach;
-
-    juce::Slider HighMidBandQualityKnob;
-    juce::Label HighMidBandQualityKnobLabel;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> HighMidBandQualityKnobAttach;
-
-    juce::Slider HighBandGainKnob;
-    juce::Label HighBandGainKnobLabel;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> HighBandGainKnobAttach;
-
-    juce::Slider HighBandCutoffKnob;
-    juce::Label HighBandCutoffKnobLabel;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> HighBandCutoffKnobAttach;
-
-    juce::Slider HighBandQualityKnob;
-    juce::Label HighBandQualityKnobLabel;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> HighBandQualityKnobAttach;
+    juce::Slider editorSliders[Equalizer::effectParameters::kNumOfParameters];
+    juce::Label editorLabels[Equalizer::effectParameters::kNumOfParameters];
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> sliderAttachments[Equalizer::effectParameters::kNumOfParameters];
+    juce::TextButton flipToggleButtons[Equalizer::effectParameters::kNumOfParameters];
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(EqualizerEditor);
 };

@@ -11,6 +11,7 @@
 #pragma once
 #include "PluginProcessor.h"
 #include "ModdedNormalisableRange.h"
+#include "Compressor.h" 
 
 class CompressorEditor : public juce::AudioProcessorEditor,
     public juce::Slider::Listener
@@ -21,34 +22,45 @@ public:
     void paint(juce::Graphics&) override;
     void sliderValueChanged(juce::Slider* slider) override;
     void updateRanges();
-    void setAllButtonState() {};
+    void changeToggleStateOnClick(juce::Button* button)
+    {
+        auto state = button->getToggleState();
+        juce::String selectedString = state ? "-" : "+";
+
+        button->setButtonText(selectedString);
+
+        for (int i = 0; i < Compressor::effectParameters::kNumOfParameters; i++)
+        {
+            if (button == &flipToggleButtons[i])
+            {
+                mProcessor.mappingRangeFlip.set(Compressor::parameterIDs[i], state);
+                break;
+            }
+
+        }
+    }
+    void updateToggleStateFromProcessor(juce::Button* button, juce::String id)
+    {
+        auto state = mProcessor.mappingRangeFlip[id];
+        button->setToggleState(state, juce::dontSendNotification);
+        juce::String selectedString = state ? "-" : "+";
+        button->setButtonText(selectedString);
+    }
+
+    void setAllButtonState()
+    {
+        for (int i = 0; i < Compressor::effectParameters::kNumOfParameters; i++)
+        {
+            updateToggleStateFromProcessor(&flipToggleButtons[i], Compressor::parameterIDs[i]);
+        }
+    }
 private:
     OneKnobVocalAudioProcessor& mProcessor;
     
-    
-    juce::Slider InputGainKnob;
-    juce::Slider ThresholdKnob;
-    juce::Slider AttackKnob;
-    juce::Slider ReleaseKnob;
-    juce::Slider RatioKnob;
-    juce::Slider MakeUpGainKnob;
-    juce::Slider OutputGainKnob;
-
-    juce::Label InputGainKnobLabel;
-    juce::Label ThresholdKnobLabel;
-    juce::Label AttackKnobLabel;
-    juce::Label ReleaseKnobLabel;
-    juce::Label RatioKnobLabel;
-    juce::Label MakeUpGainKnobLabel;
-    juce::Label OutputGainKnobLabel;
-    
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> InputGainKnobAttach;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> ThresholdKnobAttach;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> AttackKnobAttach;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> ReleaseKnobAttach;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> RatioKnobAttach;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> MakeUpGainKnobAttach;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> OutputGainKnobAttach;
+    juce::Slider editorSliders[Compressor::effectParameters::kNumOfParameters];
+    juce::Label editorLabels[Compressor::effectParameters::kNumOfParameters];
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> sliderAttachments[Compressor::effectParameters::kNumOfParameters];
+    juce::TextButton flipToggleButtons[Compressor::effectParameters::kNumOfParameters];
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CompressorEditor);
 };

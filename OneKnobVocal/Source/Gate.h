@@ -17,7 +17,7 @@ class Gate : public ProcessorBase
 {
 public:
 
-    enum gateParameters
+    enum effectParameters
     {
         kPostGain = 0,
         kThreshold,
@@ -27,7 +27,7 @@ public:
         kNumOfParameters
     };
 
-    inline static const juce::String parameterIDs[gateParameters::kNumOfParameters]
+    inline static const juce::String parameterIDs[effectParameters::kNumOfParameters]
     {
     "GATE_POST_GAIN",
     "GATE_THRESHOLD",
@@ -36,7 +36,7 @@ public:
     "GATE_RATIO"
     };
 
-    inline static const juce::String parameterNames[gateParameters::kNumOfParameters]
+    inline static const juce::String parameterNames[effectParameters::kNumOfParameters]
     {
     "Post Gain",
     "Threshold",
@@ -45,7 +45,7 @@ public:
     "Ratio"
     };
 
-    inline static const float parameterSettings[gateParameters::kNumOfParameters][parameterRange::kParameterRangeNumbers]
+    inline static const float parameterSettings[effectParameters::kNumOfParameters][parameterRange::kParameterRangeNumbers]
     {
         {-96.0f, 12.0f, 0.0f},
         {-60.0f, 0.0f, -18.0f},
@@ -56,7 +56,7 @@ public:
 
     static void addToParameterLayout(std::vector<std::unique_ptr<juce::RangedAudioParameter>>& params)
     {
-        for (int i = 0; i < gateParameters::kNumOfParameters; i++)
+        for (int i = 0; i < effectParameters::kNumOfParameters; i++)
         {
             params.push_back(std::make_unique<juce::AudioParameterFloat>(parameterIDs[i],
                 "Gate " + parameterNames[i], 
@@ -68,7 +68,7 @@ public:
 
     static void addToKnobMap(juce::HashMap<juce::String, ModdedNormalisableRange<float>>& knobValueMap)
     {
-        for (int i = 0; i < gateParameters::kNumOfParameters; i++)
+        for (int i = 0; i < effectParameters::kNumOfParameters; i++)
         {
             knobValueMap.set(parameterIDs[i],
                 ModdedNormalisableRange<float>(parameterSettings[i][parameterRange::kParameterDefault],

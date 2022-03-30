@@ -13,7 +13,7 @@
 GateEditor::GateEditor(OneKnobVocalAudioProcessor& p)
     :AudioProcessorEditor(&p), mProcessor(p)
 {
-    for (int i = 0; i < Gate::gateParameters::kNumOfParameters; i++)
+    for (int i = 0; i < Gate::effectParameters::kNumOfParameters; i++)
     {
         editorLabels[i].setText(Gate::parameterNames[i], juce::NotificationType::dontSendNotification);
         editorLabels[i].setBounds(0, i * 40 + 20, 120, 20);
@@ -56,8 +56,7 @@ void GateEditor::paint(juce::Graphics& g)
 
 void GateEditor::sliderValueChanged(juce::Slider* slider)
 {
-
-    for (int i = 0; i < Gate::gateParameters::kNumOfParameters; i++)
+    for (int i = 0; i < Gate::effectParameters::kNumOfParameters; i++)
     {
         if (slider == &editorSliders[i])
         {
@@ -72,7 +71,7 @@ void GateEditor::sliderValueChanged(juce::Slider* slider)
 
 void GateEditor::updateRanges()
 {
-    for (int i = 0; i < Gate::gateParameters::kNumOfParameters; i++)
+    for (int i = 0; i < Gate::effectParameters::kNumOfParameters; i++)
     {
         editorSliders[i].setMinAndMaxValues(mProcessor.knobValueMap[Gate::parameterIDs[i]].start,
             mProcessor.knobValueMap[Gate::parameterIDs[i]].end);

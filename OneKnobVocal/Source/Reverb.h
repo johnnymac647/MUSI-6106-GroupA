@@ -16,24 +16,68 @@
 class Reverb : public ProcessorBase
 {
 public:
+
+    enum effectParameters
+    {
+        kPostGain = 0,
+        kRoomSize,
+        kDamping,
+        kWetLevel,
+        kDryLevel,
+        kWidth,
+        kNumOfParameters
+    };
+
+    inline static const juce::String parameterIDs[effectParameters::kNumOfParameters]
+    {
+        "REVERB_POST_GAIN",
+        "REVERB_ROOM_SIZE",
+        "REVERB_DAMPING",
+        "REVERB_WET_LEVEL",
+        "REVERB_DRY_LEVEL",
+        "REVERB_WIDTH"
+    };
+
+    inline static const juce::String parameterNames[effectParameters::kNumOfParameters]
+    {
+        "Post Gain",
+        "Room Size",
+        "Damping",
+        "Wet Level",
+        "Dry Level",
+        "Width"
+    };
+
+    inline static const float parameterSettings[effectParameters::kNumOfParameters][parameterRange::kParameterRangeNumbers]
+    {
+        {-96.0f, 12.0f, 0.0f},
+        {0.f, 1.f, 0.5f},
+        {0.f, 1.f, 0.5f},
+        {-96.0f, 12.0f, 0.0f},
+        {-96.0f, 12.0f, 0.0f},
+        {0.f, 1.f, 0.5f}
+    };
+
     static void addToParameterLayout(std::vector<std::unique_ptr<juce::RangedAudioParameter>>& params)
     {
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("REVERB_POST_GAIN", "ReverbPostGain", -96.0f, 12.0f, 0.0f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("REVERB_ROOM_SIZE", "ReverbRoomSize", 0.f, 1.f, 0.5f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("REVERB_DAMPING", "ReverbDamping", 0.f, 1.f, 0.5f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("REVERB_WET_LEVEL", "ReverbWetLevel", -96.0f, 12.0f, -96.0f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("REVERB_DRY_LEVEL", "ReverbDryLevel", -96.0f, 12.0f, 0.0f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("REVERB_WIDTH", "ReverbWidth", 0.f, 1.f, 0.5f));
+        for (int i = 0; i < effectParameters::kNumOfParameters; i++)
+        {
+            params.push_back(std::make_unique<juce::AudioParameterFloat>(parameterIDs[i],
+                "Reverb " + parameterNames[i],
+                parameterSettings[i][parameterRange::kParameterStart],
+                parameterSettings[i][parameterRange::kParameterEnd],
+                parameterSettings[i][parameterRange::kParameterDefault]));
+        }
     }
 
     static void addToKnobMap(juce::HashMap<juce::String, ModdedNormalisableRange<float>>& knobValueMap)
     {
-        knobValueMap.set("REVERB_POST_GAIN", ModdedNormalisableRange<float>(0.0f, 0.01f));
-        knobValueMap.set("REVERB_ROOM_SIZE", ModdedNormalisableRange<float>(0.5f, 0.51f));
-        knobValueMap.set("REVERB_DAMPING", ModdedNormalisableRange<float>(0.5f, 0.51f));
-        knobValueMap.set("REVERB_WET_LEVEL", ModdedNormalisableRange<float>(-96.0f, -95.99f));
-        knobValueMap.set("REVERB_DRY_LEVEL", ModdedNormalisableRange<float>(0.0f, 0.01f));
-        knobValueMap.set("REVERB_WIDTH", ModdedNormalisableRange<float>(0.5f, 0.51f));
+        for (int i = 0; i < effectParameters::kNumOfParameters; i++)
+        {
+            knobValueMap.set(parameterIDs[i],
+                ModdedNormalisableRange<float>(parameterSettings[i][parameterRange::kParameterDefault],
+                    parameterSettings[i][parameterRange::kParameterDefault]));
+        }
     }
 
     Reverb(juce::AudioProcessorValueTreeState* mainApvts)

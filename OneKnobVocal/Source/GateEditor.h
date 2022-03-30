@@ -31,7 +31,7 @@ public:
 
         button->setButtonText(selectedString);
 
-        for (int i = 0; i < Gate::gateParameters::kNumOfParameters; i++)
+        for (int i = 0; i < Gate::effectParameters::kNumOfParameters; i++)
         {
             if (button == &flipToggleButtons[i])
             {
@@ -52,7 +52,7 @@ public:
 
     void setAllButtonState()
     {
-        for (int i = 0; i < Gate::gateParameters::kNumOfParameters; i++)
+        for (int i = 0; i < Gate::effectParameters::kNumOfParameters; i++)
         {
             updateToggleStateFromProcessor(&flipToggleButtons[i], Gate::parameterIDs[i]);
         }
@@ -61,10 +61,10 @@ public:
 private:
     OneKnobVocalAudioProcessor& mProcessor;
 
-    juce::Slider editorSliders[Gate::gateParameters::kNumOfParameters];
-    juce::Label editorLabels[Gate::gateParameters::kNumOfParameters];
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> sliderAttachments[Gate::gateParameters::kNumOfParameters];
-    juce::TextButton flipToggleButtons[Gate::gateParameters::kNumOfParameters];
+    juce::Slider editorSliders[Gate::effectParameters::kNumOfParameters];
+    juce::Label editorLabels[Gate::effectParameters::kNumOfParameters];
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> sliderAttachments[Gate::effectParameters::kNumOfParameters];
+    juce::TextButton flipToggleButtons[Gate::effectParameters::kNumOfParameters];
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GateEditor);
 };

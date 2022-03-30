@@ -26,38 +26,95 @@ EQSettings getEQSettings(juce::AudioProcessorValueTreeState& apvts);
 class Equalizer : public ProcessorBase
 {
 public:
+    enum effectParameters
+    {
+        kPostGain = 0,
+        kLowBandGain,
+        kLowBandCutoff,
+        kLowBandQ,
+        kLowMidBandGain,
+        kLowMidBandFreq,
+        kLowMidBandQ,
+        kHighMidBandGain,
+        kHighMidBandFreq,
+        kHighMidBandQ,
+        kHighBandGain,
+        kHighBandCutoff,
+        kHighBandQ,
+        kNumOfParameters
+    };
+
+    inline static const juce::String parameterIDs[effectParameters::kNumOfParameters]
+    {
+        "EQ_POST_GAIN",
+        "EQ_LOW_BAND_GAIN",
+        "EQ_LOW_BAND_CUTOFF",
+        "EQ_LOW_BAND_QF",
+        "EQ_LOWMID_BAND_GAIN",
+        "EQ_LOWMID_BAND_FREQ",
+        "EQ_LOWMID_BAND_QF",
+        "EQ_HIMID_BAND_GAIN",
+        "EQ_HIMID_BAND_FREQ",
+        "EQ_HIMID_BAND_QF",
+        "EQ_HI_BAND_GAIN",
+        "EQ_HI_BAND_CUTOFF",
+        "EQ_HI_BAND_QF"
+    };
+
+    inline static const juce::String parameterNames[effectParameters::kNumOfParameters]
+    {
+        "Post Gain",
+        "Low Band Gain",
+        "Low Band Cutoff",
+        "Low Band Q",
+        "Low-mid Band Gain",
+        "Low-mid Band Freq",
+        "Low-mid Band Q",
+        "High-mid Band Gain",
+        "High-mid Band Freq",
+        "High-mid Band Q",
+        "High Band Gain",
+        "High Band Cutoff",
+        "High Band Q"
+    };
+
+    inline static const float parameterSettings[effectParameters::kNumOfParameters][parameterRange::kParameterRangeNumbers]
+    {
+        {-96.0f, 12.0f, 0.0f},
+        {-24.0f, 12.0f, 0.0f},
+        {50.0f, 200.0f, 100.0f},
+        {0.01f, 10.0f, 0.71f},
+        {-24.0f, 12.0f, 0.0f},
+        {100.0f, 2000.0f, 400.0f},
+        {0.01f, 10.0f, 0.71f},
+        {-24.0f, 12.0f, 0.0f},
+        {800.0f, 8000.0f, 1000.0f},
+        {0.01f, 10.0f, 0.71f},
+        {-24.0f, 12.0f, 0.0f},
+        {2000.0f, 16000.0f, 8000.0f},
+        {0.01f, 10.0f, 0.71f},
+    };
+
     static void addToParameterLayout(std::vector<std::unique_ptr<juce::RangedAudioParameter>>& params)
     {
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("EQ_POST_GAIN", "EqualizerPostGain", -96.0f, 12.0f, 0.0f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("EQ_LOW_BAND_GAIN", "EQLowBandGain", -24.0f, 12.0f, 0.0f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("EQ_LOW_BAND_CUTOFF", "EQLowBandCutoff", 50.0f, 200.0f, 100.0f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("EQ_LOW_BAND_QF", "EQLowBandQFactor", 0.01f, 10.0f, 0.71f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("EQ_LOWMID_BAND_GAIN", "EQLowMidBandGain", -24.0f, 12.0f, 0.0f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("EQ_LOWMID_BAND_FREQ", "EQLowMidBandFrequency", 100.0f, 2000.0f, 400.0f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("EQ_LOWMID_BAND_QF", "EQLowMidBandQFactor", 0.01f, 10.0f, 0.71f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("EQ_HIMID_BAND_GAIN", "EQHighMidBandGain", -24.0f, 12.0f, 0.0f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("EQ_HIMID_BAND_FREQ", "EQHighMidBandFrequency", 800.0f, 8000.0f, 1000.0f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("EQ_HIMID_BAND_QF", "EQHighMidBandQFactor", 0.01f, 10.0f, 0.71f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("EQ_HI_BAND_GAIN", "EQHighBandGain", -24.0f, 12.0f, 0.0f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("EQ_HI_BAND_CUTOFF", "EQHighBandCutoff", 2000.0f, 16000.0f, 8000.0f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("EQ_HI_BAND_QF", "EQHighBandQFactor", 0.01f, 10.0f, 0.71f));
+        for (int i = 0; i < effectParameters::kNumOfParameters; i++)
+        {
+            params.push_back(std::make_unique<juce::AudioParameterFloat>(parameterIDs[i],
+                "EQ " + parameterNames[i],
+                parameterSettings[i][parameterRange::kParameterStart],
+                parameterSettings[i][parameterRange::kParameterEnd],
+                parameterSettings[i][parameterRange::kParameterDefault]));
+        }
     }
 
     static void addToKnobMap(juce::HashMap<juce::String, ModdedNormalisableRange<float>>& knobValueMap)
     {
-        knobValueMap.set("EQ_POST_GAIN", ModdedNormalisableRange<float>(0.f, 0.01f));
-        knobValueMap.set("EQ_LOW_BAND_GAIN", ModdedNormalisableRange<float>(0.f, 0.01f));
-        knobValueMap.set("EQ_LOW_BAND_CUTOFF", ModdedNormalisableRange<float>(100.f, 100.01f));
-        knobValueMap.set("EQ_LOW_BAND_QF", ModdedNormalisableRange<float>(0.70f, 0.71f));
-        knobValueMap.set("EQ_LOWMID_BAND_GAIN", ModdedNormalisableRange<float>(0.f, 0.01f));
-        knobValueMap.set("EQ_LOWMID_BAND_FREQ", ModdedNormalisableRange<float>(400.0f, 400.01f));
-        knobValueMap.set("EQ_LOWMID_BAND_QF", ModdedNormalisableRange<float>(0.70f, 0.71f));
-        knobValueMap.set("EQ_HIMID_BAND_GAIN", ModdedNormalisableRange<float>(0.f, 0.01f));
-        knobValueMap.set("EQ_HIMID_BAND_FREQ", ModdedNormalisableRange<float>(1000.0f, 1000.01f));
-        knobValueMap.set("EQ_HIMID_BAND_QF", ModdedNormalisableRange<float>(0.70f, 0.71f));
-        knobValueMap.set("EQ_HI_BAND_GAIN", ModdedNormalisableRange<float>(0.f, 0.01f));
-        knobValueMap.set("EQ_HI_BAND_CUTOFF", ModdedNormalisableRange<float>(8000.0f, 8000.01f));
-        knobValueMap.set("EQ_HI_BAND_QF", ModdedNormalisableRange<float>(0.70f, 0.71f));
+        for (int i = 0; i < effectParameters::kNumOfParameters; i++)
+        {
+            knobValueMap.set(parameterIDs[i],
+                ModdedNormalisableRange<float>(parameterSettings[i][parameterRange::kParameterDefault],
+                    parameterSettings[i][parameterRange::kParameterDefault]));
+        }
     }
 
     Equalizer(juce::AudioProcessorValueTreeState* mainApvts)
