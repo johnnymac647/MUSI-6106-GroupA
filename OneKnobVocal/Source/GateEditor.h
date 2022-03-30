@@ -13,21 +13,43 @@
 #include "ModdedNormalisableRange.h"
 
 class GateEditor : public juce::AudioProcessorEditor,
-    public juce::Slider::Listener
+    public juce::Slider::Listener,
+    public juce::Button::Listener
 {
 public:
     GateEditor(OneKnobVocalAudioProcessor&);
     ~GateEditor() override;
     void paint(juce::Graphics&) override;
     void sliderValueChanged(juce::Slider* slider) override;
+    void buttonClicked(juce::Button* button) override {};
+    void buttonStateChanged(juce::Button* button) override
+    {
+        if (button == &VolumeButton)
+        {
+            mProcessor.mappingRangeFlip.set("GATE_POST_GAIN", button->getToggleState());
+        }
+    }
+
     void updateRanges();
-    void updateToggleState(juce::Button* button)
+    void changeToggleStateOnClick(juce::Button* button)
     {
         auto state = button->getToggleState();
-        juce::String stateString = state ? "ON" : "OFF";
-        juce::String selectedString = state ? "+" : "-";
+        juce::String selectedString = state ? "-" : "+";
 
         button->setButtonText(selectedString);
+    }
+
+    void updateToggleStateFromProcessor(juce::Button* button, juce::String id)
+    {
+        auto state = mProcessor.mappingRangeFlip[id];
+        button->setToggleState(state, juce::dontSendNotification);
+        juce::String selectedString = state ? "-" : "+";
+        button->setButtonText(selectedString);
+    }
+
+    void setAllButtonState()
+    {
+        updateToggleStateFromProcessor(&VolumeButton, "GATE_POST_GAIN");
     }
 
 private:
@@ -50,7 +72,7 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> AttackKnobAttach;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> ReleaseKnobAttach;
 
-    juce::TextButton VolumeButton {"+"};
+    juce::TextButton VolumeButton {"-"};
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GateEditor);
 };

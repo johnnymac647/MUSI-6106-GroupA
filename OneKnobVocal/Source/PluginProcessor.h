@@ -63,7 +63,14 @@ public:
             juce::HashMap<juce::String, ModdedNormalisableRange<float>>::Iterator i(knobValueMap);
             while (i.next())
             {
-                apvts.getParameter(i.getKey())->setValueNotifyingHost(apvts.getParameter(i.getKey())->convertTo0to1(i.getValue().convertFrom0to1(newValue)));
+                if (mappingRangeFlip[i.getKey()])
+                {
+                    apvts.getParameter(i.getKey())->setValueNotifyingHost(apvts.getParameter(i.getKey())->convertTo0to1(i.getValue().convertFrom0to1(1 - newValue)));
+                }
+                else 
+                {
+                    apvts.getParameter(i.getKey())->setValueNotifyingHost(apvts.getParameter(i.getKey())->convertTo0to1(i.getValue().convertFrom0to1(newValue)));
+                }
             }
         }
     }

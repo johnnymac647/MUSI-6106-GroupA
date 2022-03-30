@@ -17,7 +17,8 @@ GateEditor::GateEditor(OneKnobVocalAudioProcessor& p)
 
     VolumeButton.setClickingTogglesState(true);
     VolumeButton.setBounds(90, 20 * i, 20, 20);
-    VolumeButton.onClick = [this] { updateToggleState(&VolumeButton); };
+    VolumeButton.onClick = [this] { changeToggleStateOnClick(&VolumeButton); };
+    VolumeButton.addListener(this);
 
     VolumeKnobLabel.setText("Post Gain", juce::NotificationType::dontSendNotification);
     VolumeKnobLabel.setBounds(0, 20 * (i++), 120, 20);
@@ -81,6 +82,7 @@ GateEditor::GateEditor(OneKnobVocalAudioProcessor& p)
     ReleaseKnob.setMinAndMaxValues(mProcessor.knobValueMap["GATE_RELEASE"].start, mProcessor.knobValueMap["GATE_RELEASE"].end);
     ReleaseKnob.setBounds(0, 20 * (i++), 120, 20);
 
+    setAllButtonState();
 }
 
 GateEditor::~GateEditor()
