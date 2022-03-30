@@ -13,7 +13,31 @@
 GateEditor::GateEditor(OneKnobVocalAudioProcessor& p)
     :AudioProcessorEditor(&p), mProcessor(p)
 {
-    int i = 1;
+    for (int i = 0; i < Gate::gateParameters::kNumOfParameters; i++)
+    {
+        editorLabels[i].setText(Gate::parameterNames[i], juce::NotificationType::dontSendNotification);
+        editorLabels[i].setBounds(0, i * 40 + 20, 120, 20);
+        addAndMakeVisible(editorLabels[i]);
+
+        flipToggleButtons[i].setClickingTogglesState(true);
+        flipToggleButtons[i].setBounds(90, i * 40 + 20, 20, 20);
+        flipToggleButtons[i].onClick = [this, i] { changeToggleStateOnClick(&flipToggleButtons[i]); };
+        addAndMakeVisible(flipToggleButtons[i]);
+
+        editorSliders[i].setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
+        editorSliders[i].setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
+        editorSliders[i].addListener(this);
+        addAndMakeVisible(editorSliders[i]);
+
+        sliderAttachments[i] = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts,
+            Gate::parameterIDs[i],
+            editorSliders[i]);
+        editorSliders[i].setMinAndMaxValues(mProcessor.knobValueMap[Gate::parameterIDs[i]].start,
+            mProcessor.knobValueMap[Gate::parameterIDs[i]].end);
+        editorSliders[i].setBounds(0, i * 40 + 40, 120, 20);
+    }
+
+    /*int i = 1;
 
     VolumeButton.setClickingTogglesState(true);
     VolumeButton.setBounds(90, 20 * i, 20, 20);
@@ -104,7 +128,7 @@ GateEditor::GateEditor(OneKnobVocalAudioProcessor& p)
     addAndMakeVisible(ReleaseKnob);
     ReleaseKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "GATE_RELEASE", ReleaseKnob);
     ReleaseKnob.setMinAndMaxValues(mProcessor.knobValueMap["GATE_RELEASE"].start, mProcessor.knobValueMap["GATE_RELEASE"].end);
-    ReleaseKnob.setBounds(0, 20 * (i++), 120, 20);
+    ReleaseKnob.setBounds(0, 20 * (i++), 120, 20);*/
 
     setAllButtonState();
 }
@@ -125,38 +149,57 @@ void GateEditor::paint(juce::Graphics& g)
 
 void GateEditor::sliderValueChanged(juce::Slider* slider)
 {
-    if (slider == &VolumeKnob)
+
+    for (int i = 0; i < Gate::gateParameters::kNumOfParameters; i++)
     {
-        if (abs(VolumeKnob.getMinValue() - mProcessor.knobValueMap["GATE_POST_GAIN"].start) < 1e-3 || abs(VolumeKnob.getMaxValue() - mProcessor.knobValueMap["GATE_POST_GAIN"].end) < 1e-3)
-            mProcessor.knobValueMap.set("GATE_POST_GAIN", ModdedNormalisableRange<float>(VolumeKnob.getMinValue(), VolumeKnob.getMaxValue()));
+        if (slider == &editorSliders[i])
+        {
+            if (abs(slider->getMinValue() - mProcessor.knobValueMap[Gate::parameterIDs[i]].start) > 1e-3
+                || abs(slider->getMaxValue() - mProcessor.knobValueMap[Gate::parameterIDs[i]].end) > 1e-3)
+                mProcessor.knobValueMap.set(Gate::parameterIDs[i],
+                    ModdedNormalisableRange<float>(slider->getMinValue(), slider->getMaxValue()));
+        }
+
     }
-    else if (slider == &ThresholdKnob)
-    {
-        if (abs(ThresholdKnob.getMinValue() - mProcessor.knobValueMap["GATE_THRESHOLD"].start) < 1e-3 || abs(ThresholdKnob.getMaxValue() - mProcessor.knobValueMap["GATE_THRESHOLD"].end) < 1e-3)
-            mProcessor.knobValueMap.set("GATE_THRESHOLD", ModdedNormalisableRange<float>(ThresholdKnob.getMinValue(), ThresholdKnob.getMaxValue()));
-    }
-    else if (slider == &RatioKnob)
-    {
-        if (abs(RatioKnob.getMinValue() - mProcessor.knobValueMap["GATE_RATIO"].start) < 1e-3 || abs(RatioKnob.getMaxValue() - mProcessor.knobValueMap["GATE_RATIO"].end) < 1e-3)
-            mProcessor.knobValueMap.set("GATE_RATIO", ModdedNormalisableRange<float>(RatioKnob.getMinValue(), RatioKnob.getMaxValue()));
-    }
-    else if (slider == &AttackKnob)
-    {
-        if (abs(AttackKnob.getMinValue() - mProcessor.knobValueMap["GATE_ATTACK"].start) < 1e-3 || abs(AttackKnob.getMaxValue() - mProcessor.knobValueMap["GATE_ATTACK"].end) < 1e-3)
-            mProcessor.knobValueMap.set("GATE_ATTACK", ModdedNormalisableRange<float>(AttackKnob.getMinValue(), AttackKnob.getMaxValue()));
-    }
-    else if (slider == &ReleaseKnob)
-    {
-        if (abs(ReleaseKnob.getMinValue() - mProcessor.knobValueMap["GATE_RELEASE"].start) < 1e-3 || abs(ReleaseKnob.getMaxValue() - mProcessor.knobValueMap["GATE_RELEASE"].end) < 1e-3)
-            mProcessor.knobValueMap.set("GATE_RELEASE", ModdedNormalisableRange<float>(ReleaseKnob.getMinValue(), ReleaseKnob.getMaxValue()));
-    }
+
+    //if (slider == &VolumeKnob)
+    //{
+    //    if (abs(VolumeKnob.getMinValue() - mProcessor.knobValueMap["GATE_POST_GAIN"].start) < 1e-3 || abs(VolumeKnob.getMaxValue() - mProcessor.knobValueMap["GATE_POST_GAIN"].end) < 1e-3)
+    //        mProcessor.knobValueMap.set("GATE_POST_GAIN", ModdedNormalisableRange<float>(VolumeKnob.getMinValue(), VolumeKnob.getMaxValue()));
+    //}
+    //else if (slider == &ThresholdKnob)
+    //{
+    //    if (abs(ThresholdKnob.getMinValue() - mProcessor.knobValueMap["GATE_THRESHOLD"].start) < 1e-3 || abs(ThresholdKnob.getMaxValue() - mProcessor.knobValueMap["GATE_THRESHOLD"].end) < 1e-3)
+    //        mProcessor.knobValueMap.set("GATE_THRESHOLD", ModdedNormalisableRange<float>(ThresholdKnob.getMinValue(), ThresholdKnob.getMaxValue()));
+    //}
+    //else if (slider == &RatioKnob)
+    //{
+    //    if (abs(RatioKnob.getMinValue() - mProcessor.knobValueMap["GATE_RATIO"].start) < 1e-3 || abs(RatioKnob.getMaxValue() - mProcessor.knobValueMap["GATE_RATIO"].end) < 1e-3)
+    //        mProcessor.knobValueMap.set("GATE_RATIO", ModdedNormalisableRange<float>(RatioKnob.getMinValue(), RatioKnob.getMaxValue()));
+    //}
+    //else if (slider == &AttackKnob)
+    //{
+    //    if (abs(AttackKnob.getMinValue() - mProcessor.knobValueMap["GATE_ATTACK"].start) < 1e-3 || abs(AttackKnob.getMaxValue() - mProcessor.knobValueMap["GATE_ATTACK"].end) < 1e-3)
+    //        mProcessor.knobValueMap.set("GATE_ATTACK", ModdedNormalisableRange<float>(AttackKnob.getMinValue(), AttackKnob.getMaxValue()));
+    //}
+    //else if (slider == &ReleaseKnob)
+    //{
+    //    if (abs(ReleaseKnob.getMinValue() - mProcessor.knobValueMap["GATE_RELEASE"].start) < 1e-3 || abs(ReleaseKnob.getMaxValue() - mProcessor.knobValueMap["GATE_RELEASE"].end) < 1e-3)
+    //        mProcessor.knobValueMap.set("GATE_RELEASE", ModdedNormalisableRange<float>(ReleaseKnob.getMinValue(), ReleaseKnob.getMaxValue()));
+    //}
 }
 
 void GateEditor::updateRanges()
 {
-    VolumeKnob.setMinAndMaxValues(mProcessor.knobValueMap["GATE_POST_GAIN"].start, mProcessor.knobValueMap["GATE_POST_GAIN"].end);
+    for (int i = 0; i < Gate::gateParameters::kNumOfParameters; i++)
+    {
+        editorSliders[i].setMinAndMaxValues(mProcessor.knobValueMap[Gate::parameterIDs[i]].start,
+            mProcessor.knobValueMap[Gate::parameterIDs[i]].end);
+    }
+
+    /*VolumeKnob.setMinAndMaxValues(mProcessor.knobValueMap["GATE_POST_GAIN"].start, mProcessor.knobValueMap["GATE_POST_GAIN"].end);
     ThresholdKnob.setMinAndMaxValues(mProcessor.knobValueMap["GATE_THRESHOLD"].start, mProcessor.knobValueMap["GATE_THRESHOLD"].end);
     RatioKnob.setMinAndMaxValues(mProcessor.knobValueMap["GATE_RATIO"].start, mProcessor.knobValueMap["GATE_RATIO"].end);
     AttackKnob.setMinAndMaxValues(mProcessor.knobValueMap["GATE_ATTACK"].start, mProcessor.knobValueMap["GATE_ATTACK"].end);
-    ReleaseKnob.setMinAndMaxValues(mProcessor.knobValueMap["GATE_RELEASE"].start, mProcessor.knobValueMap["GATE_RELEASE"].end);
+    ReleaseKnob.setMinAndMaxValues(mProcessor.knobValueMap["GATE_RELEASE"].start, mProcessor.knobValueMap["GATE_RELEASE"].end);*/
 }
