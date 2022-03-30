@@ -21,6 +21,7 @@ public:
     void paint(juce::Graphics&) override;
     void sliderValueChanged(juce::Slider* slider) override;
     void updateRanges();
+    void setAllButtonState() {};
 private:
     OneKnobVocalAudioProcessor& mProcessor;
 

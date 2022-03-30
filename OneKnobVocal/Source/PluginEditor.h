@@ -40,11 +40,20 @@ public:
     {
         mGateEditor->updateRanges();
         mGateEditor->setAllButtonState();
+
         mDeEsserEditor->updateRanges();
+        mDeEsserEditor->setAllButtonState();
+
         mEqualizerEditor->updateRanges();
+        mEqualizerEditor->setAllButtonState();
+
         mCompressorEditor->updateRanges();
+        mCompressorEditor->setAllButtonState();
+
         mSaturatorEditor->updateRanges();
+        mSaturatorEditor->setAllButtonState();
         mReverbEditor->updateRanges();
+        mReverbEditor->setAllButtonState();
     }
 
 private:

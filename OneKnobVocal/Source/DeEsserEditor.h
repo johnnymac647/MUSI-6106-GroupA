@@ -22,6 +22,7 @@ public:
     void sliderValueChanged(juce::Slider* slider) override;
 
     void updateRanges();
+    void setAllButtonState() {};
 private:
     OneKnobVocalAudioProcessor& mProcessor;
     juce::Slider VolumeKnob;
