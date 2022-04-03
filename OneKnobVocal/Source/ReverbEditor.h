@@ -11,6 +11,7 @@
 #pragma once
 #include "PluginProcessor.h"
 #include "ModdedNormalisableRange.h"
+#include "Reverb.h"
 
 class ReverbEditor : public juce::AudioProcessorEditor,
     public juce::Slider::Listener
@@ -21,34 +22,46 @@ public:
     void paint(juce::Graphics&) override;
     void sliderValueChanged(juce::Slider* slider) override;
     void updateRanges();
-    void setAllButtonState() {};
+    void changeToggleStateOnClick(juce::Button* button)
+    {
+        auto state = button->getToggleState();
+        juce::String selectedString = state ? "-" : "+";
+
+        button->setButtonText(selectedString);
+
+        for (int i = 0; i < Reverb::effectParameters::kNumOfParameters; i++)
+        {
+            if (button == &flipToggleButtons[i])
+            {
+                mProcessor.mappingRangeFlip.set(Reverb::parameterIDs[i], state);
+                break;
+            }
+
+        }
+    }
+
+    void updateToggleStateFromProcessor(juce::Button* button, juce::String id)
+    {
+        auto state = mProcessor.mappingRangeFlip[id];
+        button->setToggleState(state, juce::dontSendNotification);
+        juce::String selectedString = state ? "-" : "+";
+        button->setButtonText(selectedString);
+    }
+
+    void setAllButtonState()
+    {
+        for (int i = 0; i < Reverb::effectParameters::kNumOfParameters; i++)
+        {
+            updateToggleStateFromProcessor(&flipToggleButtons[i], Reverb::parameterIDs[i]);
+        }
+    }
 private:
     OneKnobVocalAudioProcessor& mProcessor;
 
-    
-    juce::Slider PostGainKnob;
-    juce::Label PostGainLabel;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> PostGainKnobAttach;
-
-    juce::Slider RoomSizeKnob;
-    juce::Label RoomSizeLabel;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> RoomSizeKnobAttach;
-
-    juce::Slider DampingKnob;
-    juce::Label DampingLabel;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> DampingKnobAttach;
-
-    juce::Slider WetLevelKnob;
-    juce::Label WetLevelLabel;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> WetLevelKnobAttach;
-
-    juce::Slider DryLevelKnob;
-    juce::Label DryLevelLabel;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> DryLevelKnobAttach;
-
-    juce::Slider WidthKnob;
-    juce::Label WidthLabel;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> WidthKnobAttach;
+    juce::Slider editorSliders[Reverb::effectParameters::kNumOfParameters];
+    juce::Label editorLabels[Reverb::effectParameters::kNumOfParameters];
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> sliderAttachments[Reverb::effectParameters::kNumOfParameters];
+    juce::TextButton flipToggleButtons[Reverb::effectParameters::kNumOfParameters];
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ReverbEditor);
 };

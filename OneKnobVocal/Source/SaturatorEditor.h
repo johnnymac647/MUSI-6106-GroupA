@@ -11,6 +11,7 @@
 #pragma once
 #include "PluginProcessor.h"
 #include "ModdedNormalisableRange.h"
+#include "Saturator.h"
 
 class SaturatorEditor : public juce::AudioProcessorEditor,
     public juce::Slider::Listener
@@ -21,19 +22,46 @@ public:
     void paint(juce::Graphics&) override;
     void sliderValueChanged(juce::Slider* slider) override;
     void updateRanges();
-    void setAllButtonState() {};
+    void changeToggleStateOnClick(juce::Button* button)
+    {
+        auto state = button->getToggleState();
+        juce::String selectedString = state ? "-" : "+";
+
+        button->setButtonText(selectedString);
+
+        for (int i = 0; i < Saturator::effectParameters::kNumOfParameters; i++)
+        {
+            if (button == &flipToggleButtons[i])
+            {
+                mProcessor.mappingRangeFlip.set(Saturator::parameterIDs[i], state);
+                break;
+            }
+
+        }
+    }
+
+    void updateToggleStateFromProcessor(juce::Button* button, juce::String id)
+    {
+        auto state = mProcessor.mappingRangeFlip[id];
+        button->setToggleState(state, juce::dontSendNotification);
+        juce::String selectedString = state ? "-" : "+";
+        button->setButtonText(selectedString);
+    }
+
+    void setAllButtonState()
+    {
+        for (int i = 0; i < Saturator::effectParameters::kNumOfParameters; i++)
+        {
+            updateToggleStateFromProcessor(&flipToggleButtons[i], Saturator::parameterIDs[i]);
+        }
+    }
 private:
     OneKnobVocalAudioProcessor& mProcessor;
-    juce::Slider GainKnob;
-    juce::Slider MixKnob;
-    juce::Slider VolumeKnob;
 
-    juce::Label GainKnobLabel;
-    juce::Label MixKnobLabel;
-    juce::Label VolumeKnobLabel;
+    juce::Slider editorSliders[Saturator::effectParameters::kNumOfParameters];
+    juce::Label editorLabels[Saturator::effectParameters::kNumOfParameters];
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> sliderAttachments[Saturator::effectParameters::kNumOfParameters];
+    juce::TextButton flipToggleButtons[Saturator::effectParameters::kNumOfParameters];
 
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> GainKnobAttach;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> MixKnobAttach;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> VolumeKnobAttach;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SaturatorEditor);
 };

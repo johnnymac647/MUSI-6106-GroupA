@@ -16,26 +16,72 @@
 class Compressor : public ProcessorBase
 {
 public:
+
+    enum effectParameters
+    {
+        kPostGain = 0,
+        kPreGain,
+        kThreshold,
+        kAttack,
+        kRelease,
+        kRatio,
+        kMakeupGain,
+        kNumOfParameters
+    };
+
+    inline static const juce::String parameterIDs[effectParameters::kNumOfParameters]
+    {
+        "COMPRESSOR_POST_GAIN",
+        "COMPRESSOR_PRE_GAIN",
+        "COMPRESSOR_THRESHOLD",
+        "COMPRESSOR_ATTACK",
+        "COMPRESSOR_RELEASE",
+        "COMPRESSOR_RATIO",
+        "COMPRESSOR_MAKEUP_GAIN"
+    };
+
+    inline static const juce::String parameterNames[effectParameters::kNumOfParameters]
+    {
+        "Post Gain",
+        "Pre Gain",
+        "Threshold",
+        "Attack",
+        "Release",
+        "Ratio",
+        "Makeup Gain"
+    };
+
+    inline static const float parameterSettings[effectParameters::kNumOfParameters][parameterRange::kParameterRangeNumbers]
+    {
+        {-96.0f, 12.0f, 0.0f},
+        {-96.0f, 12.0f, 0.0f},
+        {-60.0f, 0.0f, -18.0f},
+        {0.0f, 1000.0f, 1.0f},
+        {0.0f, 5000.0f, 100.0f},
+        {1.0f, 100.0f, 10.0f},
+        {-96.0f, 12.0f, 0.0f}
+    };
+
     static void addToParameterLayout(std::vector<std::unique_ptr<juce::RangedAudioParameter>>& params)
     {
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("COMPRESSOR_PRE_GAIN", "CompressorPreGain", -96.0f, 12.0f, 0.0f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("COMPRESSOR_POST_GAIN", "CompressorPostGain", -96.0f, 12.0f, 0.0f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("COMPRESSOR_MAKEUP_GAIN", "CompressorMakeupGain", -96.0f, 12.0f, 0.0f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("COMPRESSOR_ATTACK", "CompressorAttack", 0.0f, 1000.0f, 1.0f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("COMPRESSOR_RELEASE", "CompressorRelease", 0.0f, 5000.0f, 10.0f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("COMPRESSOR_THRESHOLD", "CompressorThreshold", -60.0f, 0.0f, -18.0f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("COMPRESSOR_RATIO", "CompressorRatio", 1.0f, 100.0f, 1.0f));
+        for (int i = 0; i < effectParameters::kNumOfParameters; i++)
+        {
+            params.push_back(std::make_unique<juce::AudioParameterFloat>(parameterIDs[i],
+                "Compressor " + parameterNames[i],
+                parameterSettings[i][parameterRange::kParameterStart],
+                parameterSettings[i][parameterRange::kParameterEnd],
+                parameterSettings[i][parameterRange::kParameterDefault]));
+        }
     }
 
     static void addToKnobMap(juce::HashMap<juce::String, ModdedNormalisableRange<float>>& knobValueMap)
     {
-        knobValueMap.set("COMPRESSOR_PRE_GAIN", ModdedNormalisableRange<float>(0.0f, 0.01f));
-        knobValueMap.set("COMPRESSOR_POST_GAIN", ModdedNormalisableRange<float>(0.0f, 0.01f));
-        knobValueMap.set("COMPRESSOR_MAKEUP_GAIN", ModdedNormalisableRange<float>(0.0f, 0.01f));
-        knobValueMap.set("COMPRESSOR_ATTACK", ModdedNormalisableRange<float>(1.0f, 1.01f));
-        knobValueMap.set("COMPRESSOR_RELEASE", ModdedNormalisableRange<float>(10.0f, 10.01f));
-        knobValueMap.set("COMPRESSOR_THRESHOLD", ModdedNormalisableRange<float>(-18.0f, -17.99f));
-        knobValueMap.set("COMPRESSOR_RATIO", ModdedNormalisableRange<float>(1.0f, 1.01f));
+        for (int i = 0; i < effectParameters::kNumOfParameters; i++)
+        {
+            knobValueMap.set(parameterIDs[i],
+                ModdedNormalisableRange<float>(parameterSettings[i][parameterRange::kParameterDefault],
+                    parameterSettings[i][parameterRange::kParameterDefault]));
+        }
     }
 
     Compressor(juce::AudioProcessorValueTreeState* mainApvts)

@@ -52,6 +52,7 @@ public:
 
         mSaturatorEditor->updateRanges();
         mSaturatorEditor->setAllButtonState();
+
         mReverbEditor->updateRanges();
         mReverbEditor->setAllButtonState();
     }

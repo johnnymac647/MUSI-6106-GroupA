@@ -17,18 +17,56 @@
 class Saturator : public ProcessorBase
 {
 public:
+
+    enum effectParameters
+    {
+        kPostGain = 0,
+        kMix,
+        kPreGain,
+        kNumOfParameters
+    };
+
+    inline static const juce::String parameterIDs[effectParameters::kNumOfParameters]
+    {
+        "SATURATOR_POST_GAIN",
+        "SATURATOR_MIX",
+        "SATURATOR_PRE_GAIN"
+    };
+
+    inline static const juce::String parameterNames[effectParameters::kNumOfParameters]
+    {
+        "Post Gain",
+        "Mix",
+        "Pre Gain"
+    };
+
+    inline static const float parameterSettings[effectParameters::kNumOfParameters][parameterRange::kParameterRangeNumbers]
+    {
+        {-96.0f, 12.0f, 0.0f},
+        {0.0f, 1.0f, 0.0f},
+        {0.01f, 10.0f, 1.0f}
+    };
+
     static void addToParameterLayout(std::vector<std::unique_ptr<juce::RangedAudioParameter>>& params)
     {
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("SATURATOR_PRE_GAIN", "SaturatorPreGain", 0.01f, 10.0f, 1.0f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("SATURATOR_MIX", "SaturatorMix", 0.0f, 1.0f, 0.0f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("SATURATOR_POST_GAIN", "SaturatorPostGain", -96.0f, 12.0f, 0.0f));
+        for (int i = 0; i < effectParameters::kNumOfParameters; i++)
+        {
+            params.push_back(std::make_unique<juce::AudioParameterFloat>(parameterIDs[i],
+                "Saturator " + parameterNames[i],
+                parameterSettings[i][parameterRange::kParameterStart],
+                parameterSettings[i][parameterRange::kParameterEnd],
+                parameterSettings[i][parameterRange::kParameterDefault]));
+        }
     }
 
     static void addToKnobMap(juce::HashMap<juce::String, ModdedNormalisableRange<float>>& knobValueMap)
     {
-        knobValueMap.set("SATURATOR_PRE_GAIN", ModdedNormalisableRange<float>(1.0f, 1.01f));
-        knobValueMap.set("SATURATOR_MIX", ModdedNormalisableRange<float>(0.0f, 0.01f));
-        knobValueMap.set("SATURATOR_POST_GAIN", ModdedNormalisableRange<float>(0.0f, 0.01f));
+        for (int i = 0; i < effectParameters::kNumOfParameters; i++)
+        {
+            knobValueMap.set(parameterIDs[i],
+                ModdedNormalisableRange<float>(parameterSettings[i][parameterRange::kParameterDefault],
+                    parameterSettings[i][parameterRange::kParameterDefault]));
+        }
     }
 
     Saturator(juce::AudioProcessorValueTreeState* parantApvts) 

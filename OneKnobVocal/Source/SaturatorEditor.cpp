@@ -13,44 +13,31 @@
 SaturatorEditor::SaturatorEditor(OneKnobVocalAudioProcessor& p)
     :AudioProcessorEditor(&p), mProcessor(p)
 {
-    int i = 1;
+    for (int i = 0; i < Saturator::effectParameters::kNumOfParameters; i++)
+    {
+        editorLabels[i].setText(Saturator::parameterNames[i], juce::NotificationType::dontSendNotification);
+        editorLabels[i].setBounds(0, i * 40 + 20, 120, 20);
+        addAndMakeVisible(editorLabels[i]);
 
-    GainKnobLabel.setText("Pre Gain", juce::NotificationType::dontSendNotification);
-    GainKnobLabel.setBounds(0, 20 * (i++), 120, 20);
-    addAndMakeVisible(GainKnobLabel);
+        flipToggleButtons[i].setClickingTogglesState(true);
+        flipToggleButtons[i].setBounds(90, i * 40 + 20, 20, 20);
+        flipToggleButtons[i].onClick = [this, i] { changeToggleStateOnClick(&flipToggleButtons[i]); };
+        addAndMakeVisible(flipToggleButtons[i]);
 
-    GainKnob.setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
-    GainKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
-    addAndMakeVisible(GainKnob);
-    GainKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "SATURATOR_PRE_GAIN", GainKnob);
-    GainKnob.addListener(this);
-    GainKnob.setMinAndMaxValues(mProcessor.knobValueMap["SATURATOR_PRE_GAIN"].start, mProcessor.knobValueMap["SATURATOR_PRE_GAIN"].end);
-    GainKnob.setBounds(0, 20 * (i++), 120, 20);
+        editorSliders[i].setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
+        editorSliders[i].setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
+        editorSliders[i].addListener(this);
+        addAndMakeVisible(editorSliders[i]);
 
-    MixKnobLabel.setText("Mix", juce::NotificationType::dontSendNotification);
-    MixKnobLabel.setBounds(0, 20 * (i++), 120, 20);
-    addAndMakeVisible(MixKnobLabel);
-    
-    MixKnob.setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
-    MixKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
-    addAndMakeVisible(MixKnob);
-    MixKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "SATURATOR_MIX", MixKnob);
-    MixKnob.addListener(this);
-    MixKnob.setMinAndMaxValues(mProcessor.knobValueMap["SATURATOR_MIX"].start, mProcessor.knobValueMap["SATURATOR_MIX"].end);
-    MixKnob.setBounds(0, 20 * (i++), 120, 20);
+        sliderAttachments[i] = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts,
+            Saturator::parameterIDs[i],
+            editorSliders[i]);
+        editorSliders[i].setMinAndMaxValues(mProcessor.knobValueMap[Saturator::parameterIDs[i]].start,
+            mProcessor.knobValueMap[Saturator::parameterIDs[i]].end);
+        editorSliders[i].setBounds(0, i * 40 + 40, 120, 20);
+    }
 
-    VolumeKnobLabel.setText("Post Gain", juce::NotificationType::dontSendNotification);
-    VolumeKnobLabel.setBounds(0, 20 * (i++), 120, 20);
-    addAndMakeVisible(VolumeKnobLabel);
-
-    VolumeKnob.setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
-    VolumeKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
-    addAndMakeVisible(VolumeKnob);
-    VolumeKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "SATURATOR_POST_GAIN", VolumeKnob);
-    VolumeKnob.addListener(this);
-    VolumeKnob.setMinAndMaxValues(mProcessor.knobValueMap["SATURATOR_POST_GAIN"].start, mProcessor.knobValueMap["SATURATOR_POST_GAIN"].end);
-    VolumeKnob.setBounds(0, 20 * (i++), 120, 20);
-    
+    setAllButtonState();
     
 }
 SaturatorEditor::~SaturatorEditor()
@@ -68,26 +55,24 @@ void SaturatorEditor::paint(juce::Graphics& g)
 
 void SaturatorEditor::sliderValueChanged(juce::Slider* slider)
 {
-    if (slider == &GainKnob)
+    for (int i = 0; i < Saturator::effectParameters::kNumOfParameters; i++)
     {
-        if (abs(GainKnob.getMinValue() - mProcessor.knobValueMap["SATURATOR_PRE_GAIN"].start) < 1e-3 || abs(GainKnob.getMaxValue() - mProcessor.knobValueMap["SATURATOR_PRE_GAIN"].end) < 1e-3)
-            mProcessor.knobValueMap.set("SATURATOR_PRE_GAIN", ModdedNormalisableRange<float>(GainKnob.getMinValue(), GainKnob.getMaxValue()));
-    }
-    else if (slider == &MixKnob)
-    {
-        if (abs(MixKnob.getMinValue() - mProcessor.knobValueMap["SATURATOR_MIX"].start) < 1e-3 || abs(MixKnob.getMaxValue() - mProcessor.knobValueMap["SATURATOR_MIX"].end) < 1e-3)
-            mProcessor.knobValueMap.set("SATURATOR_MIX", ModdedNormalisableRange<float>(MixKnob.getMinValue(), MixKnob.getMaxValue()));
-    }
-    else if (slider == &VolumeKnob)
-    {
-        if (abs(VolumeKnob.getMinValue() - mProcessor.knobValueMap["SATURATOR_POST_GAIN"].start) < 1e-3 || abs(VolumeKnob.getMaxValue() - mProcessor.knobValueMap["SATURATOR_POST_GAIN"].end) < 1e-3)
-            mProcessor.knobValueMap.set("SATURATOR_POST_GAIN", ModdedNormalisableRange<float>(VolumeKnob.getMinValue(), VolumeKnob.getMaxValue()));
+        if (slider == &editorSliders[i])
+        {
+            if (abs(slider->getMinValue() - mProcessor.knobValueMap[Saturator::parameterIDs[i]].start) > 1e-3
+                || abs(slider->getMaxValue() - mProcessor.knobValueMap[Saturator::parameterIDs[i]].end) > 1e-3)
+                mProcessor.knobValueMap.set(Saturator::parameterIDs[i],
+                    ModdedNormalisableRange<float>(slider->getMinValue(), slider->getMaxValue()));
+        }
+
     }
 }
 
 void SaturatorEditor::updateRanges()
 {
-    GainKnob.setMinAndMaxValues(mProcessor.knobValueMap["SATURATOR_PRE_GAIN"].start, mProcessor.knobValueMap["SATURATOR_PRE_GAIN"].end);
-    MixKnob.setMinAndMaxValues(mProcessor.knobValueMap["SATURATOR_MIX"].start, mProcessor.knobValueMap["SATURATOR_MIX"].end);
-    VolumeKnob.setMinAndMaxValues(mProcessor.knobValueMap["SATURATOR_POST_GAIN"].start, mProcessor.knobValueMap["SATURATOR_POST_GAIN"].end);
+    for (int i = 0; i < Saturator::effectParameters::kNumOfParameters; i++)
+    {
+        editorSliders[i].setMinAndMaxValues(mProcessor.knobValueMap[Saturator::parameterIDs[i]].start,
+            mProcessor.knobValueMap[Saturator::parameterIDs[i]].end);
+    }
 }

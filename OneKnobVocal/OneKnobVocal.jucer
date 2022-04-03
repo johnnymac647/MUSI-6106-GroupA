@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="yHeTrN" name="OneKnobVocal" projectType="audioplug" useAppConfig="0"
-              addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1">
+              addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
+              cppLanguageStandard="17">
   <MAINGROUP id="t5B24K" name="OneKnobVocal">
     <GROUP id="{BB5D406B-BE58-476C-AAD2-D1F0F7FAE07C}" name="Inc">
       <FILE id="CFzKbp" name="ModdedNormalisableRange.h" compile="0" resource="0"

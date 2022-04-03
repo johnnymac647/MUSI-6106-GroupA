@@ -16,22 +16,64 @@
 class Gate : public ProcessorBase
 {
 public:
+
+    enum effectParameters
+    {
+        kPostGain = 0,
+        kThreshold,
+        kAttack,
+        kRelease,
+        kRatio,
+        kNumOfParameters
+    };
+
+    inline static const juce::String parameterIDs[effectParameters::kNumOfParameters]
+    {
+    "GATE_POST_GAIN",
+    "GATE_THRESHOLD",
+    "GATE_ATTACK",
+    "GATE_RELEASE",
+    "GATE_RATIO"
+    };
+
+    inline static const juce::String parameterNames[effectParameters::kNumOfParameters]
+    {
+    "Post Gain",
+    "Threshold",
+    "Attack",
+    "Release",
+    "Ratio"
+    };
+
+    inline static const float parameterSettings[effectParameters::kNumOfParameters][parameterRange::kParameterRangeNumbers]
+    {
+        {-96.0f, 12.0f, 0.0f},
+        {-60.0f, 0.0f, -18.0f},
+        {0.0f, 1000.0f, 1.0f},
+        {0.0f, 5000.0f, 100.0f},
+        {1.0f, 100.0f, 10.0f}
+    };
+
     static void addToParameterLayout(std::vector<std::unique_ptr<juce::RangedAudioParameter>>& params)
     {
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("GATE_POST_GAIN", "GatePostGain", -96.0f, 12.0f, 0.0f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("GATE_THRESHOLD", "GateThreshold", -60.0f, 0.0f, -18.0f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("GATE_ATTACK", "GateAttack", 0.0f, 1000.0f, 1.0f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("GATE_RELEASE", "GateRelease", 0.0f, 5000.0f, 100.0f));
-        params.push_back(std::make_unique<juce::AudioParameterFloat>("GATE_RATIO", "GateRatio", 1.0f, 100.0f, 10.0f));
+        for (int i = 0; i < effectParameters::kNumOfParameters; i++)
+        {
+            params.push_back(std::make_unique<juce::AudioParameterFloat>(parameterIDs[i],
+                "Gate " + parameterNames[i], 
+                parameterSettings[i][parameterRange::kParameterStart], 
+                parameterSettings[i][parameterRange::kParameterEnd],
+                parameterSettings[i][parameterRange::kParameterDefault]));
+        }
     }
 
     static void addToKnobMap(juce::HashMap<juce::String, ModdedNormalisableRange<float>>& knobValueMap)
     {
-        knobValueMap.set("GATE_POST_GAIN", ModdedNormalisableRange<float>(0.0f, 0.01f));
-        knobValueMap.set("GATE_THRESHOLD", ModdedNormalisableRange<float>(-18.0f, -17.99f));
-        knobValueMap.set("GATE_ATTACK", ModdedNormalisableRange<float>(1.0f, 1.01f));
-        knobValueMap.set("GATE_RELEASE", ModdedNormalisableRange<float>(10.0f, 10.01f));
-        knobValueMap.set("GATE_RATIO", ModdedNormalisableRange<float>(1.0f, 1.01f));
+        for (int i = 0; i < effectParameters::kNumOfParameters; i++)
+        {
+            knobValueMap.set(parameterIDs[i],
+                ModdedNormalisableRange<float>(parameterSettings[i][parameterRange::kParameterDefault],
+                    parameterSettings[i][parameterRange::kParameterDefault]));
+        }
     }
 
     Gate(juce::AudioProcessorValueTreeState* mainApvts)
