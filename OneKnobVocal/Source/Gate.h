@@ -91,6 +91,13 @@ public:
 
     void processBlock(juce::AudioSampleBuffer& buffer, juce::MidiBuffer&) override
     {
+        
+        //calculate the RMS of the block size.
+        //The time resolution depends on the block size of the host, but it's acceptable.
+        rmsLevelLeft = juce::Decibels::gainToDecibels(buffer.getRMSLevel(0, 0, buffer.getNumSamples()));
+        rmsLevelRight = juce::Decibels::gainToDecibels(buffer.getRMSLevel(1, 0, buffer.getNumSamples()));
+        
+        
         gain.setGainDecibels(ptr_apvts->getRawParameterValue("GATE_POST_GAIN")->load());
         
         noiseGate.setAttack(ptr_apvts->getRawParameterValue("GATE_ATTACK")->load());
@@ -119,5 +126,7 @@ public:
 private:
     juce::dsp::Gain<float> gain;
     juce::dsp::NoiseGate<float> noiseGate;
+    
+    float rmsLevelLeft, rmsLevelRight;
 
 };

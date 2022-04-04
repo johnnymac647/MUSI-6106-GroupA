@@ -102,6 +102,25 @@ public:
         juce::dsp::ProcessContextReplacing<float> context(block);
         reverb.process(context);
         gain.process(context);
+        
+        
+        //convert context to AudioBlock
+        juce::dsp::AudioBlock<float> outputBlock = context.getOutputBlock();
+        
+        int maxNumChannels = static_cast<int> (outputBlock.getNumChannels());
+        float* channels[maxNumChannels];
+
+        for (size_t c = 0; c < outputBlock.getNumChannels(); ++c)
+            channels[c] = outputBlock.getChannelPointer (c);
+
+        //convert AudioBlock to AudioBuffer
+        juce::AudioBuffer<float> outputBuffer {channels, static_cast<int>(outputBlock.getNumChannels()), static_cast<int>(outputBlock.getNumSamples()) };
+        
+    
+        //calculate the RMS of the block size.
+        //The time resolution depends on the block size of the host, but it's acceptable.
+        rmsLevelLeft = juce::Decibels::gainToDecibels(outputBuffer.getRMSLevel(0, 0, buffer.getNumSamples()));
+        rmsLevelRight = juce::Decibels::gainToDecibels(outputBuffer.getRMSLevel(1, 0, buffer.getNumSamples()));
     }
 
     void reset() override
@@ -117,4 +136,6 @@ private:
     void getReverbParameters(const juce::AudioProcessorValueTreeState &apvts);
     juce::dsp::Reverb reverb;
     juce::dsp::Gain<float> gain;
+    
+    float rmsLevelLeft, rmsLevelRight;
 };
