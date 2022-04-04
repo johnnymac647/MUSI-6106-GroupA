@@ -93,6 +93,9 @@ public:
     juce::ChangeBroadcaster loadedPreset;
 
 private:
+    
+    float rmsInputLeft, rmsInputRight, rmsOutputLeft, rmsOutputRight;
+    
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
 
     std::unique_ptr<juce::AudioProcessorGraph> mainProcessor;
