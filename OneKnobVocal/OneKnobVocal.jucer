@@ -31,8 +31,6 @@
             file="Source/SaturatorEditor.cpp"/>
       <FILE id="QiNTrQ" name="SaturatorEditor.h" compile="0" resource="0"
             file="Source/SaturatorEditor.h"/>
-      <FILE id="YUM2tk" name="VerticalDiscreteMeter.cpp" compile="1" resource="0"
-            file="Source/VerticalDiscreteMeter.cpp"/>
       <FILE id="OP9bHp" name="VerticalDiscreteMeter.h" compile="0" resource="0"
             file="Source/VerticalDiscreteMeter.h"/>
     </GROUP>

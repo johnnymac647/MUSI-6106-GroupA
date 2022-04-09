@@ -95,8 +95,8 @@ public:
     juce::ChangeBroadcaster loadedPreset;
 
 private:
-    
-    float rmsInputLeft, rmsInputRight, rmsOutputLeft, rmsOutputRight;
+    //RMS level smoothing
+    juce::LinearSmoothedValue<float> mRmsInputLeft, mRmsInputRight, mRmsOutputLeft, mRmsOutputRight;
     
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
 
