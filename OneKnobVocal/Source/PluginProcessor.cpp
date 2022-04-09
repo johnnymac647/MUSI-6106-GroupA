@@ -252,6 +252,34 @@ void OneKnobVocalAudioProcessor::setStateInformation (const void* data, int size
 
 }
 
+
+
+float OneKnobVocalAudioProcessor::getRmsValue(const int channel, const int position) const
+{
+    jassert(channel == 0 || channel == 1); //only accept stereo
+    jassert(position == 0 || position == 1); //only two position: intput (0) and output (1)
+    
+    
+    if (channel == 0)
+    {
+        if(position == 0)
+            return rmsInputLeft;
+        else if (position == 1)
+            return rmsOutputLeft;
+    }
+    
+    if (channel == 1)
+    {
+        if(position == 0)
+            return rmsInputRight;
+        else if (position == 1)
+            return rmsOutputRight;
+    }
+    
+    return 0.f;
+
+}
+
 //==============================================================================
 // This creates new instances of the plugin..
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
