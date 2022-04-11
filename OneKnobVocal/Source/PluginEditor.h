@@ -16,7 +16,7 @@
 #include "CompressorEditor.h"
 #include "SaturatorEditor.h"
 #include "ReverbEditor.h"
-#include "VerticalDiscreteMeter.h"
+#include "VerticalMeter.h"
 
 //==============================================================================
 /**
@@ -60,7 +60,7 @@ public:
     }
 
 private:
-    VerticalDiscreteMeter mMeterInLeft, mMeterInRight, mMeterOutLeft, mMeterOutRight;
+    VerticalMeter mMeterInLeft, mMeterInRight, mMeterOutLeft, mMeterOutRight;
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     OneKnobVocalAudioProcessor& audioProcessor;
