@@ -55,6 +55,8 @@ public:
     //==============================================================================
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
+    
+    float getRmsValue(const int channel, const int position) const;
 
     void parameterChanged(const juce::String& parameterID, float newValue)
     {
@@ -93,6 +95,9 @@ public:
     juce::ChangeBroadcaster loadedPreset;
 
 private:
+    //RMS level smoothing
+    juce::LinearSmoothedValue<float> mRmsInputLeft, mRmsInputRight, mRmsOutputLeft, mRmsOutputRight;
+    
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
 
     std::unique_ptr<juce::AudioProcessorGraph> mainProcessor;

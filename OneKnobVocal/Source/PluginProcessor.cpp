@@ -133,6 +133,16 @@ void OneKnobVocalAudioProcessor::prepareToPlay (double sampleRate, int samplesPe
     }
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
+    
+    mRmsInputLeft.reset(sampleRate, 0.5); //smooth the value when it goes down
+    mRmsInputRight.reset(sampleRate, 0.5);
+    mRmsOutputLeft.reset(sampleRate, 0.5);
+    mRmsOutputRight.reset(sampleRate, 0.5);
+    
+    mRmsInputLeft.setCurrentAndTargetValue(-100.f); //set the initial value
+    mRmsInputRight.setCurrentAndTargetValue(-100.f);;
+    mRmsOutputLeft.setCurrentAndTargetValue(-100.f);;
+    mRmsOutputRight.setCurrentAndTargetValue(-100.f);;
 }
 
 void OneKnobVocalAudioProcessor::releaseResources()
@@ -189,7 +199,52 @@ void OneKnobVocalAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
 
+    
+    
+    /*
+    calculate the RMS of the block size.
+    The time resolution depends on the block size of the host, but it's acceptable.
+     */
+    
+    // the next smoothed value is after the length of the processing block
+    mRmsInputLeft.skip(buffer.getNumSamples());
+    mRmsInputRight.skip(buffer.getNumSamples());
+    mRmsOutputLeft.skip(buffer.getNumSamples());
+    mRmsOutputRight.skip(buffer.getNumSamples());
+    
+    float rmsInputLeft = juce::Decibels::gainToDecibels(buffer.getRMSLevel(0, 0, buffer.getNumSamples()));
+    if (rmsInputLeft < mRmsInputLeft.getCurrentValue())
+        mRmsInputLeft.setTargetValue(rmsInputLeft); //smooth the value only when it goes down
+    else
+        mRmsInputLeft.setCurrentAndTargetValue(rmsInputLeft);
+    
+    float rmsInputRight = juce::Decibels::gainToDecibels(buffer.getRMSLevel(1, 0, buffer.getNumSamples()));
+    if (rmsInputRight < mRmsInputRight.getCurrentValue())
+        mRmsInputRight.setTargetValue(rmsInputRight); //smooth the value only when it goes down
+    else
+        mRmsInputRight.setCurrentAndTargetValue(rmsInputRight);
+    
+    
+    //all the audio processing
     mainProcessor->processBlock(buffer, midiMessages);
+    
+
+    
+    float rmsOutputLeft = juce::Decibels::gainToDecibels(buffer.getRMSLevel(0, 0, buffer.getNumSamples()));
+    if (rmsOutputLeft < mRmsOutputLeft.getCurrentValue())
+        mRmsOutputLeft.setTargetValue(rmsOutputLeft); //smooth the value only when it goes down
+    else
+        mRmsOutputLeft.setCurrentAndTargetValue(rmsOutputLeft);
+    
+    
+    float rmsOutputRight = juce::Decibels::gainToDecibels(buffer.getRMSLevel(1, 0, buffer.getNumSamples()));
+    if (rmsOutputRight < mRmsOutputRight.getCurrentValue())
+        mRmsOutputRight.setTargetValue(rmsOutputRight); //smooth the value only when it goes down
+    else
+        mRmsOutputRight.setCurrentAndTargetValue(rmsOutputRight);
+    
+    
+    
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         auto* channelData = buffer.getWritePointer (channel);
@@ -238,6 +293,34 @@ void OneKnobVocalAudioProcessor::setStateInformation (const void* data, int size
         if (state.getChildWithName(apvts.state.getType()).isValid())
             apvts.replaceState(state.getChildWithName(apvts.state.getType()));
     }
+
+}
+
+
+
+float OneKnobVocalAudioProcessor::getRmsValue(const int channel, const int position) const
+{
+    jassert(channel == 0 || channel == 1); //only accept stereo
+    jassert(position == 0 || position == 1); //only two position: intput (0) and output (1)
+    
+    
+    if (channel == 0)
+    {
+        if(position == 0)
+            return mRmsInputLeft.getCurrentValue();
+        else if (position == 1)
+            return mRmsOutputLeft.getCurrentValue();
+    }
+    
+    if (channel == 1)
+    {
+        if(position == 0)
+            return mRmsInputRight.getCurrentValue();
+        else if (position == 1)
+            return mRmsOutputRight.getCurrentValue();
+    }
+    
+    return 0.f;
 
 }
 

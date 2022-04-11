@@ -119,5 +119,4 @@ public:
 private:
     juce::dsp::Gain<float> gain;
     juce::dsp::NoiseGate<float> noiseGate;
-
 };

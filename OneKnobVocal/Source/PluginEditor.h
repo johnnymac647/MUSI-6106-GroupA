@@ -16,11 +16,12 @@
 #include "CompressorEditor.h"
 #include "SaturatorEditor.h"
 #include "ReverbEditor.h"
+#include "VerticalMeter.h"
 
 //==============================================================================
 /**
 */
-class OneKnobVocalAudioProcessorEditor  : public juce::AudioProcessorEditor,
+class OneKnobVocalAudioProcessorEditor  : public juce::AudioProcessorEditor, public juce::Timer,
     public juce::ChangeListener
 {
 public:
@@ -28,6 +29,7 @@ public:
     ~OneKnobVocalAudioProcessorEditor() override;
 
     //==============================================================================
+    void timerCallback() override;
     void paint (juce::Graphics&) override;
     void resized() override;
 
@@ -58,6 +60,7 @@ public:
     }
 
 private:
+    VerticalMeter mMeterInLeft, mMeterInRight, mMeterOutLeft, mMeterOutRight;
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     OneKnobVocalAudioProcessor& audioProcessor;
