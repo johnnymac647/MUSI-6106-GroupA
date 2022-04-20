@@ -47,7 +47,7 @@ EqualizerEditor::~EqualizerEditor()
 
 void EqualizerEditor::paint(juce::Graphics& g)
 {
-    g.fillAll(juce::Colours::seagreen);
+    g.fillAll(juce::Colours::purple);
 
     g.setColour(juce::Colours::white);
     g.setFont(15.0f);

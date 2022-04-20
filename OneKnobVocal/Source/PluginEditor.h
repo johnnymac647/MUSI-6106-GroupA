@@ -59,15 +59,64 @@ public:
         mReverbEditor->setAllButtonState();
     }
 
+    // Alison: Toggle for main vs advanced setting switch
+    //==============================================================================
+    void changeToggleStateOnClick(juce::Button* button)
+    {
+        auto state = button->getToggleState();
+        juce::String selectedString = state ? "Advanced" : "Basic";
+
+        button->setButtonText(selectedString);
+        
+        if (selectedString == "Advanced")
+        {
+            addAndMakeVisible(mGateEditor.get());
+            addAndMakeVisible(mDeEsserEditor.get());
+            addAndMakeVisible(mEqualizerEditor.get());
+            addAndMakeVisible(mCompressorEditor.get());
+            addAndMakeVisible(mSaturatorEditor.get());
+            addAndMakeVisible(mReverbEditor.get());
+            mOneKnobSlider.setVisible(false);
+        }
+        else
+        {
+            addAndMakeVisible(mOneKnobSlider);
+            mGateEditor.get()->setVisible(false);
+            mDeEsserEditor.get()->setVisible(false);
+            mEqualizerEditor.get()->setVisible(false);
+            mCompressorEditor.get()->setVisible(false);
+            mSaturatorEditor.get()->setVisible(false);
+            mReverbEditor.get()->setVisible(false);
+        }
+
+        
+    }
+
+    // void updateToggleStateFromProcessor(juce::Button* button, juce::String id)
+    // {
+    //     // auto state = mProcessor.mappingRangeFlip[id];
+    //     button->setToggleState(state, juce::dontSendNotification);
+    //     juce::String selectedString = state ? "Advanced" : "Basic";
+    //     button->setButtonText(selectedString);
+    // }
+    //==============================================================================
+
 private:
     VerticalMeter mMeterInLeft, mMeterInRight, mMeterOutLeft, mMeterOutRight;
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     OneKnobVocalAudioProcessor& audioProcessor;
 
-
+    juce::LookAndFeel_V4 royalTheme;
+    juce::Colour backgroundColor = juce::Colour(0xff0f0038); //dark purple
+    juce::Colour textColor = juce::Colour(0xffc2b948); // gold
+    juce::Colour darkGold = juce::Colour(0xff423E12);
+    juce::Colour lightPurple = juce::Colour(0xff6B43E0);
+    juce::Colour clear = juce::Colour(0x00000000);
+    
     juce::Slider mOneKnobSlider;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> OneKnobAttach;
+    juce::TextButton viewToggleButtons;
 
     std::unique_ptr<GateEditor> mGateEditor;
     std::unique_ptr<DeEsserEditor> mDeEsserEditor;

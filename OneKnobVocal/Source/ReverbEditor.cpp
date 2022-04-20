@@ -45,7 +45,7 @@ ReverbEditor::~ReverbEditor()
 }
 void ReverbEditor::paint(juce::Graphics& g)
 {
-    g.fillAll(juce::Colours::silver);
+    g.fillAll(juce::Colours::orchid);
 
     g.setColour(juce::Colours::white);
     g.setFont(15.0f);

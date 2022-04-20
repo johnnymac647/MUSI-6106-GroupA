@@ -45,7 +45,7 @@ CompressorEditor::~CompressorEditor()
 }
 void CompressorEditor::paint(juce::Graphics& g)
 {
-    g.fillAll(juce::Colours::plum);
+    g.fillAll(juce::Colours::orchid);
 
     g.setColour(juce::Colours::white);
     g.setFont(15.0f);
