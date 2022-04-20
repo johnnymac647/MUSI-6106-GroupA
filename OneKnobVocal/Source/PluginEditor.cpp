@@ -125,8 +125,9 @@ void OneKnobVocalAudioProcessorEditor::paint (juce::Graphics& g)
     // g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
     g.fillAll (backgroundColor);
     g.setColour(textColor);
-    g.setFont(juce::Font("Savoye LET", 100.0f, juce::Font::italic));
-    g.drawText("Voce Dolce", getWidth()/2 - 150, 110, 300, 20, juce::Justification::centred, true);
+    // g.setFont(juce::Font("Savoye LET", 100.0f, juce::Font::italic));
+    g.setFont(savoyeItalic.withHeight(100.0f));
+    g.drawText("Voce Dolce", getWidth()/2 - 200, 110, 400, 20, juce::Justification::centred, true);
 
 }
 

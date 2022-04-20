@@ -4,6 +4,10 @@
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
               cppLanguageStandard="17">
   <MAINGROUP id="t5B24K" name="OneKnobVocal">
+    <GROUP id="{C569CEEF-0225-098C-FDAB-8A44D07C245A}" name="Resources">
+      <FILE id="LfKqTx" name="Savoye Regular.ttf" compile="0" resource="1"
+            file="Resources/Savoye Regular.ttf"/>
+    </GROUP>
     <GROUP id="{BB5D406B-BE58-476C-AAD2-D1F0F7FAE07C}" name="Inc">
       <FILE id="CFzKbp" name="ModdedNormalisableRange.h" compile="0" resource="0"
             file="Source/ModdedNormalisableRange.h"/>

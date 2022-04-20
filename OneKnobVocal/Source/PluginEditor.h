@@ -107,6 +107,9 @@ private:
     // access the processor object that created it.
     OneKnobVocalAudioProcessor& audioProcessor;
 
+
+    inline static juce::Font savoyeItalic{juce::Font(juce::Typeface::createSystemTypefaceFor(BinaryData::Savoye_Regular_ttf, BinaryData::Savoye_Regular_ttfSize ))};
+
     juce::LookAndFeel_V4 royalTheme;
     juce::Colour backgroundColor = juce::Colour(0xff0f0038); //dark purple
     juce::Colour textColor = juce::Colour(0xffc2b948); // gold
