@@ -128,5 +128,52 @@ private:
     std::unique_ptr<SaturatorEditor> mSaturatorEditor;
     std::unique_ptr<ReverbEditor> mReverbEditor;
 
+    juce::ComboBox mainDropdownBox;
+
+    juce::TextButton savePresetButton{"Save"};
+
+    std::unique_ptr<juce::FileChooser> myChooser;
+
+ /* juce::Toolbar mainToolbar;
+
+    class mainToolbarFactory : public juce::ToolbarItemFactory
+    {
+    public:
+        enum mainToolbarIDs
+        {
+            filesButton = 1
+        };
+        mainToolbarFactory() {};
+        ~mainToolbarFactory() {};
+        void getAllToolbarItemIds(juce::Array<int>& ids) override
+        {
+            ids.add(filesButton);
+        }
+        void getDefaultItemSet(juce::Array<int>& ids) override
+        {
+            ids.add(filesButton);
+        }
+        juce::ToolbarItemComponent* createItem(int itemId) override
+        {
+            juce::DrawableText text;
+            switch (itemId)
+            {
+            case filesButton:
+                text.setText("Files");
+                text.setFontHeight(20);
+                text.setSize(60, 25);
+                text.setColour(juce::Colours::aliceblue);
+                return new juce::ToolbarButton(itemId, juce::String("Files"),
+                    text.createCopy(),
+                    nullptr);
+            default:
+                return 0;
+            }
+        }
+    private:
+    };
+
+    mainToolbarFactory mainToobarFactoryInstance;*/
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OneKnobVocalAudioProcessorEditor)
 };

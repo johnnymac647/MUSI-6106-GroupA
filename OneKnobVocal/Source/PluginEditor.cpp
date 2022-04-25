@@ -20,6 +20,45 @@
 OneKnobVocalAudioProcessorEditor::OneKnobVocalAudioProcessorEditor (OneKnobVocalAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
+    savePresetButton.setBounds(520, 40, 80, 20);
+    addAndMakeVisible(savePresetButton);
+
+    myChooser = std::make_unique<juce::FileChooser>("Saving Presets..",
+        juce::File::getSpecialLocation(juce::File::userHomeDirectory),
+        "*.pst");
+
+    savePresetButton.onClick = [&]
+    {
+        
+        auto folderChooserFlags = juce::FileBrowserComponent::saveMode | juce::FileBrowserComponent::canSelectFiles | juce::FileBrowserComponent::warnAboutOverwriting;
+        myChooser->launchAsync(folderChooserFlags, [this](const juce::FileChooser& chooser)
+            {
+                juce::File fileToSave(chooser.getResult());
+
+
+                if (fileToSave.getFullPathName() != "")
+                {
+                    juce::MemoryBlock dataToSave;
+                    audioProcessor.getStateInformation(dataToSave);
+
+
+                    fileToSave.replaceWithData(dataToSave.getData(), dataToSave.getSize());
+                }
+            });
+    };
+
+    //mainToolbar.setBounds(0, 0, 800, 25);
+    //mainToolbar.addDefaultItems(mainToobarFactoryInstance);
+    //mainToolbar.setStyle(juce::Toolbar::ToolbarItemStyle::textOnly);
+    //addAndMakeVisible(mainToolbar);
+
+    //mainToolbar.getItemComponent(0)->onClick = [&]
+    //{
+    //    juce::PopupMenu menu;
+    //    menu.addItem("Load", nullptr);
+    //    menu.addItem("Save", nullptr);
+    //    menu.showMenuAsync(juce::PopupMenu::Options{}.withTargetComponent(mainToolbar.getItemComponent(0)));
+    //};
 
     // Alison: Toggle implement for switch between main vs advanced setting GUI
     //==============================================================================
@@ -83,6 +122,7 @@ OneKnobVocalAudioProcessorEditor::OneKnobVocalAudioProcessorEditor (OneKnobVocal
     royalTheme.setColour(juce::Slider::textBoxOutlineColourId, clear);
     
     mOneKnobSlider.setLookAndFeel(&royalTheme);
+
 
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
