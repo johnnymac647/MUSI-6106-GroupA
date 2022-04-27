@@ -20,15 +20,58 @@
 OneKnobVocalAudioProcessorEditor::OneKnobVocalAudioProcessorEditor (OneKnobVocalAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
-    savePresetButton.setBounds(520, 40, 80, 20);
+    mainDropdownBox.setBounds(280, 40, 160, 20);
+    addAndMakeVisible(mainDropdownBox);
+    mainDropdownBox.addItem("Sample Preset", kSamplePreset);
+    mainDropdownBox.addItem("Select Custom...", kCustomSelect);
+    mainDropdownBox.addItem("Custom", kCustom);
+    mainDropdownBox.setItemEnabled(kCustom, false);
+
+    mainDropdownBox.onChange = [this] { 
+        switch (mainDropdownBox.getSelectedId())
+        {
+        case kSamplePreset:
+            audioProcessor.setStateInformation(BinaryData::SamplePreset_pst, BinaryData::SamplePreset_pstSize);
+            break;
+        case kCustomSelect:
+        {
+            myChooser = std::make_unique<juce::FileChooser>("Loading Custom Presets..",
+                juce::File::getSpecialLocation(juce::File::userHomeDirectory),
+                "*.pst");
+
+            auto folderChooserFlags = juce::FileBrowserComponent::openMode | juce::FileBrowserComponent::canSelectFiles;
+            myChooser->launchAsync(folderChooserFlags, [this](const juce::FileChooser& chooser)
+                {
+                    juce::File fileToLoad(chooser.getResult());
+
+
+                    if (fileToLoad.getFullPathName() != "")
+                    {
+                        juce::MemoryBlock dataToLoad;
+                        fileToLoad.loadFileAsData(dataToLoad);
+
+                        audioProcessor.setStateInformation(dataToLoad.getData(), dataToLoad.getSize());
+                    }
+                });
+            mainDropdownBox.setSelectedId(kCustom);
+            break;
+        }
+        default:
+            break;
+        }
+    };
+    mainDropdownBox.setSelectedId(kSamplePreset);
+
+    savePresetButton.setBounds(460, 40, 60, 20);
     addAndMakeVisible(savePresetButton);
 
-    myChooser = std::make_unique<juce::FileChooser>("Saving Presets..",
-        juce::File::getSpecialLocation(juce::File::userHomeDirectory),
-        "*.pst");
+
 
     savePresetButton.onClick = [&]
     {
+        myChooser = std::make_unique<juce::FileChooser>("Saving Presets..",
+            juce::File::getSpecialLocation(juce::File::userHomeDirectory),
+            "*.pst");
         
         auto folderChooserFlags = juce::FileBrowserComponent::saveMode | juce::FileBrowserComponent::canSelectFiles | juce::FileBrowserComponent::warnAboutOverwriting;
         myChooser->launchAsync(folderChooserFlags, [this](const juce::FileChooser& chooser)

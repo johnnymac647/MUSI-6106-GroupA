@@ -25,6 +25,14 @@ class OneKnobVocalAudioProcessorEditor  : public juce::AudioProcessorEditor, pub
     public juce::ChangeListener
 {
 public:
+    enum kPresets
+    {
+        kSamplePreset=1,
+        kCustomSelect,
+        kCustom
+    };
+
+
     OneKnobVocalAudioProcessorEditor (OneKnobVocalAudioProcessor&);
     ~OneKnobVocalAudioProcessorEditor() override;
 
