@@ -24,8 +24,7 @@ OneKnobVocalAudioProcessorEditor::OneKnobVocalAudioProcessorEditor (OneKnobVocal
     addAndMakeVisible(mainDropdownBox);
     mainDropdownBox.addItem("Sample Preset", kSamplePreset);
     mainDropdownBox.addItem("Select Custom...", kCustomSelect);
-    mainDropdownBox.addItem("Custom", kCustom);
-    mainDropdownBox.setItemEnabled(kCustom, false);
+    mainDropdownBox.setTextWhenNothingSelected("Custom");
 
     mainDropdownBox.onChange = [this] { 
         switch (mainDropdownBox.getSelectedId())
@@ -53,7 +52,7 @@ OneKnobVocalAudioProcessorEditor::OneKnobVocalAudioProcessorEditor (OneKnobVocal
                         audioProcessor.setStateInformation(dataToLoad.getData(), dataToLoad.getSize());
                     }
                 });
-            mainDropdownBox.setSelectedId(kCustom);
+            mainDropdownBox.setSelectedId(0);
             break;
         }
         default:
