@@ -22,15 +22,31 @@ OneKnobVocalAudioProcessorEditor::OneKnobVocalAudioProcessorEditor (OneKnobVocal
 {
     mainDropdownBox.setBounds(280, 40, 160, 20);
     addAndMakeVisible(mainDropdownBox);
-    mainDropdownBox.addItem("Sample Preset", kSamplePreset);
+    mainDropdownBox.addItem("Default", kDefault);
+    mainDropdownBox.addItem("Club", kClub);
+    mainDropdownBox.addItem("Country", kCountry);
+    mainDropdownBox.addItem("Pop", kPop);
+    mainDropdownBox.addItem("Rock", kRock);
     mainDropdownBox.addItem("Select Custom...", kCustomSelect);
     mainDropdownBox.setTextWhenNothingSelected("Custom");
 
     mainDropdownBox.onChange = [this] { 
         switch (mainDropdownBox.getSelectedId())
         {
-        case kSamplePreset:
-            audioProcessor.setStateInformation(BinaryData::SamplePreset_pst, BinaryData::SamplePreset_pstSize);
+        case kDefault:
+            audioProcessor.setStateInformation(BinaryData::Default_pst, BinaryData::Default_pstSize);
+            break;
+        case kClub:
+            audioProcessor.setStateInformation(BinaryData::Club_pst, BinaryData::Club_pstSize);
+            break;
+        case kCountry:
+            audioProcessor.setStateInformation(BinaryData::Country_pst, BinaryData::Country_pstSize);
+            break;
+        case kPop:
+            audioProcessor.setStateInformation(BinaryData::Pop_pst, BinaryData::Pop_pstSize);
+            break;
+        case kRock:
+            audioProcessor.setStateInformation(BinaryData::Rock_pst, BinaryData::Rock_pstSize);
             break;
         case kCustomSelect:
         {
@@ -59,7 +75,7 @@ OneKnobVocalAudioProcessorEditor::OneKnobVocalAudioProcessorEditor (OneKnobVocal
             break;
         }
     };
-    mainDropdownBox.setSelectedId(kSamplePreset);
+    mainDropdownBox.setSelectedId(kDefault);
 
     savePresetButton.setBounds(460, 40, 60, 20);
     addAndMakeVisible(savePresetButton);

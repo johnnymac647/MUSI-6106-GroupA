@@ -27,9 +27,12 @@ class OneKnobVocalAudioProcessorEditor  : public juce::AudioProcessorEditor, pub
 public:
     enum kPresets
     {
-        kSamplePreset=1,
-        kCustomSelect,
-        kCustom
+        kDefault=1,
+        kClub,
+        kCountry,
+        kPop,
+        kRock,
+        kCustomSelect
     };
 
 
