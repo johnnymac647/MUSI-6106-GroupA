@@ -69,7 +69,7 @@ public:
     {
         if (parameterID == "ONE_KNOB")
         {
-            juce::HashMap<juce::String, ModdedNormalisableRange<float>>::Iterator i(knobValueMap);
+            juce::HashMap<juce::String, ModdedNormalisableRange<double>>::Iterator i(knobValueMap);
             while (i.next())
             {
                 if (mappingRangeFlip[i.getKey()])
@@ -95,7 +95,7 @@ public:
     juce::AudioProcessorGraph::Node::Ptr outputGainNode;
 
     juce::AudioProcessorValueTreeState apvts;
-    juce::HashMap<juce::String, ModdedNormalisableRange<float>> knobValueMap;
+    juce::HashMap<juce::String, ModdedNormalisableRange<double>> knobValueMap;
     juce::HashMap<juce::String, bool> mappingRangeFlip;
 
 
@@ -123,7 +123,7 @@ private:
     juce::ValueTree saveMapToValueTree()
     {
         juce::ValueTree mapValueTree("Mappings");
-        juce::HashMap<juce::String, ModdedNormalisableRange<float>>::Iterator i(knobValueMap);
+        juce::HashMap<juce::String, ModdedNormalisableRange<double>>::Iterator i(knobValueMap);
         while (i.next())
         {
             juce::ValueTree currentMappingValue("NormRange");
@@ -144,7 +144,7 @@ private:
             {
                 if (range.hasType("NormRange"))
                 {
-                    knobValueMap.set(range["id"].toString(), ModdedNormalisableRange<float>(range["Start"], range["End"]));
+                    knobValueMap.set(range["id"].toString(), ModdedNormalisableRange<double>(range["Start"], range["End"]));
                     mappingRangeFlip.set(range["id"].toString(), range["Flip"]);
                 }
             }

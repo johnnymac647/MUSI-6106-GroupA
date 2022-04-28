@@ -71,12 +71,12 @@ public:
         }
     }
 
-    static void addToKnobMap(juce::HashMap<juce::String, ModdedNormalisableRange<float>>& knobValueMap)
+    static void addToKnobMap(juce::HashMap<juce::String, ModdedNormalisableRange<double>>& knobValueMap)
     {
         for (int i = 0; i < effectParameters::kNumOfParameters; i++)
         {
             knobValueMap.set(parameterIDs[i],
-                ModdedNormalisableRange<float>(parameterSettings[i][parameterRange::kParameterDefault],
+                ModdedNormalisableRange<double>(parameterSettings[i][parameterRange::kParameterDefault],
                     parameterSettings[i][parameterRange::kParameterDefault]));
         }
     }

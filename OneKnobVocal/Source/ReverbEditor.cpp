@@ -61,7 +61,7 @@ void ReverbEditor::sliderValueChanged(juce::Slider* slider)
             if (abs(slider->getMinValue() - mProcessor.knobValueMap[Reverb::parameterIDs[i]].start) > 1e-3
                 || abs(slider->getMaxValue() - mProcessor.knobValueMap[Reverb::parameterIDs[i]].end) > 1e-3)
                 mProcessor.knobValueMap.set(Reverb::parameterIDs[i],
-                    ModdedNormalisableRange<float>(slider->getMinValue(), slider->getMaxValue()));
+                    ModdedNormalisableRange<double>(slider->getMinValue(), slider->getMaxValue()));
         }
 
     }

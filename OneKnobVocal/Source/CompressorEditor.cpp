@@ -61,7 +61,7 @@ void CompressorEditor::sliderValueChanged(juce::Slider* slider)
             if (abs(slider->getMinValue() - mProcessor.knobValueMap[Compressor::parameterIDs[i]].start) > 1e-3
                 || abs(slider->getMaxValue() - mProcessor.knobValueMap[Compressor::parameterIDs[i]].end) > 1e-3)
                 mProcessor.knobValueMap.set(Compressor::parameterIDs[i],
-                    ModdedNormalisableRange<float>(slider->getMinValue(), slider->getMaxValue()));
+                    ModdedNormalisableRange<double>(slider->getMinValue(), slider->getMaxValue()));
         }
 
     }

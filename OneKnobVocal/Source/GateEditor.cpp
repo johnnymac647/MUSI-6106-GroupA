@@ -63,7 +63,7 @@ void GateEditor::sliderValueChanged(juce::Slider* slider)
             if (abs(slider->getMinValue() - mProcessor.knobValueMap[Gate::parameterIDs[i]].start) > 1e-3
                 || abs(slider->getMaxValue() - mProcessor.knobValueMap[Gate::parameterIDs[i]].end) > 1e-3)
                 mProcessor.knobValueMap.set(Gate::parameterIDs[i],
-                    ModdedNormalisableRange<float>(slider->getMinValue(), slider->getMaxValue()));
+                    ModdedNormalisableRange<double>(slider->getMinValue(), slider->getMaxValue()));
         }
 
     }

@@ -37,7 +37,7 @@ OneKnobVocalAudioProcessor::OneKnobVocalAudioProcessor()
     Saturator::addToKnobMap(knobValueMap);
     Reverb::addToKnobMap(knobValueMap);
 
-    juce::HashMap<juce::String, ModdedNormalisableRange<float>>::Iterator i(knobValueMap);
+    juce::HashMap<juce::String, ModdedNormalisableRange<double>>::Iterator i(knobValueMap);
     while (i.next())
     {
         mappingRangeFlip.set(i.getKey(), false);
