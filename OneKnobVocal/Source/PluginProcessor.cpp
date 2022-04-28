@@ -363,9 +363,11 @@ void OneKnobVocalAudioProcessor::setStateInformation (const void* data, int size
     {
         auto state = juce::ValueTree::fromXml(*xmlState);
 
-        loadMapFromValueTree(state);
+        apvts.removeParameterListener("ONE_KNOB", this);
         if (state.getChildWithName(apvts.state.getType()).isValid())
             apvts.replaceState(state.getChildWithName(apvts.state.getType()));
+        loadMapFromValueTree(state);
+        apvts.addParameterListener("ONE_KNOB", this);
     }
 
 }
