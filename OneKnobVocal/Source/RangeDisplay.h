@@ -19,9 +19,8 @@
 
 #pragma once
 
-//[Headers]     -- You can add your own extra header files here --
 #include <JuceHeader.h>
-//[/Headers]
+
 
 
 
@@ -128,6 +127,4 @@ private:
 
 };
 
-//[EndFile] You can add extra defines here...
-//[/EndFile]
 

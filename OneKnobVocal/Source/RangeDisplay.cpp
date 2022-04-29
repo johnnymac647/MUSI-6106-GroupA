@@ -17,8 +17,6 @@
   ==============================================================================
 */
 
-//[Headers] You can add your own extra header files here...
-//[/Headers]
 
 #include "RangeDisplay.h"
 
@@ -226,29 +224,4 @@ void RangeDisplay::timerCallback()
     }
 }
 
-
-
-//==============================================================================
-#if 0
-/*  -- Projucer information section --
-
-    This is where the Projucer stores the metadata that describe this GUI layout, so
-    make changes in here at your peril!
-
-BEGIN_JUCER_METADATA
-
-<JUCER_COMPONENT documentType="Component" className="RangeDisplay" componentName=""
-                 parentClasses="public juce::Component" constructorParams="" variableInitialisers=""
-                 snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="1" initialWidth="600" initialHeight="400">
-  <BACKGROUND backgroundColour="ff323e44"/>
-</JUCER_COMPONENT>
-
-END_JUCER_METADATA
-*/
-#endif
-
-
-//[EndFile] You can add extra defines here...
-//[/EndFile]
 
