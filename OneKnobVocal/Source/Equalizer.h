@@ -13,14 +13,7 @@
 #include "ProcessorBase.h"
 #include "ModdedNormalisableRange.h"
 
-struct EQSettings{
-    float postGainDecibels{0}, lowGainDecibels{0}, lowMidGainDecibels{0}, hiMidGainDecibels{0}, hiGainDecibels{0};
-    float lowQ{0}, lowMidQ{0}, hiMidQ{0}, hiQ{0};
-    float lowFreq{0}, lowMidFreq{0}, hiMidFreq{0}, hiFreq{0};
-    
-};
 
-EQSettings getEQSettings(juce::AudioProcessorValueTreeState& apvts);
 
 
 class Equalizer : public ProcessorBase
@@ -206,5 +199,13 @@ private:
     enum ChainPositions{
         low, lowMid, hiMid, hi, gain
     };
+
+    struct EQSettings {
+        float postGainDecibels{ 0 }, lowGainDecibels{ 0 }, lowMidGainDecibels{ 0 }, hiMidGainDecibels{ 0 }, hiGainDecibels{ 0 };
+        float lowQ{ 0 }, lowMidQ{ 0 }, hiMidQ{ 0 }, hiQ{ 0 };
+        float lowFreq{ 0 }, lowMidFreq{ 0 }, hiMidFreq{ 0 }, hiFreq{ 0 };
+    };
+
+    EQSettings getEQSettings(const juce::AudioProcessorValueTreeState& apvts);
 
 };
