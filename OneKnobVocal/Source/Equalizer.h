@@ -57,18 +57,18 @@ public:
     inline static const juce::String parameterNames[effectParameters::kNumOfParameters]
     {
         "Post Gain",
-        "Low Band Gain",
-        "Low Band Cutoff",
-        "Low Band Q",
-        "Low-mid Band Gain",
-        "Low-mid Band Freq",
-        "Low-mid Band Q",
-        "High-mid Band Gain",
-        "High-mid Band Freq",
-        "High-mid Band Q",
-        "High Band Gain",
-        "High Band Cutoff",
-        "High Band Q"
+        "Low Gain",
+        "Low Cutoff",
+        "Low Q",
+        "Low-mid Gain",
+        "Low-mid Freq",
+        "Low-mid Q",
+        "Hi-mid Gain",
+        "Hi-mid Freq",
+        "Hi-mid Q",
+        "High Gain",
+        "High Cutoff",
+        "High Q"
     };
 
     inline static const float parameterSettings[effectParameters::kNumOfParameters][parameterRange::kParameterRangeNumbers]
