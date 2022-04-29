@@ -17,6 +17,7 @@
 #include "SaturatorEditor.h"
 #include "ReverbEditor.h"
 #include "VerticalMeter.h"
+#include "RangeDisplay.h"
 
 //==============================================================================
 /**
@@ -147,6 +148,8 @@ private:
     juce::TextButton savePresetButton{"Save"};
 
     std::unique_ptr<juce::FileChooser> myChooser;
+
+    RangeDisplay mainTooltip{ this };
 
  /* juce::Toolbar mainToolbar;
 

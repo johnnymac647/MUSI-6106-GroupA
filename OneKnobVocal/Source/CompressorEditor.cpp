@@ -34,6 +34,7 @@ CompressorEditor::CompressorEditor(OneKnobVocalAudioProcessor& p)
             editorSliders[i]);
         editorSliders[i].setMinAndMaxValues(mProcessor.knobValueMap[Compressor::parameterIDs[i]].start,
             mProcessor.knobValueMap[Compressor::parameterIDs[i]].end);
+        editorSliders[i].setTooltip("Min: " + std::to_string(editorSliders[i].getMinValue()) + ", " + "Max: " + std::to_string(editorSliders[i].getMaxValue()));
         editorSliders[i].setBounds(0, i * 40 + 40, 120, 20);
     }
 
@@ -60,8 +61,11 @@ void CompressorEditor::sliderValueChanged(juce::Slider* slider)
         {
             if (abs(slider->getMinValue() - mProcessor.knobValueMap[Compressor::parameterIDs[i]].start) > 1e-3
                 || abs(slider->getMaxValue() - mProcessor.knobValueMap[Compressor::parameterIDs[i]].end) > 1e-3)
+            {
                 mProcessor.knobValueMap.set(Compressor::parameterIDs[i],
                     ModdedNormalisableRange<double>(slider->getMinValue(), slider->getMaxValue()));
+                editorSliders[i].setTooltip("Min: " + std::to_string(editorSliders[i].getMinValue()) + ", " + "Max: " + std::to_string(editorSliders[i].getMaxValue()));
+            }
         }
 
     }
@@ -73,5 +77,6 @@ void CompressorEditor::updateRanges()
     {
         editorSliders[i].setMinAndMaxValues(mProcessor.knobValueMap[Compressor::parameterIDs[i]].start,
             mProcessor.knobValueMap[Compressor::parameterIDs[i]].end);
+        editorSliders[i].setTooltip("Min: " + std::to_string(editorSliders[i].getMinValue()) + ", " + "Max: " + std::to_string(editorSliders[i].getMaxValue()));
     }
 }

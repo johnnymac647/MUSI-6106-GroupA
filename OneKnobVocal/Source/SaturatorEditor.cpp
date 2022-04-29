@@ -34,6 +34,7 @@ SaturatorEditor::SaturatorEditor(OneKnobVocalAudioProcessor& p)
             editorSliders[i]);
         editorSliders[i].setMinAndMaxValues(mProcessor.knobValueMap[Saturator::parameterIDs[i]].start,
             mProcessor.knobValueMap[Saturator::parameterIDs[i]].end);
+        editorSliders[i].setTooltip("Min: " + std::to_string(editorSliders[i].getMinValue()) + ", " + "Max: " + std::to_string(editorSliders[i].getMaxValue()));
         editorSliders[i].setBounds(0, i * 40 + 40, 120, 20);
     }
 
@@ -61,8 +62,11 @@ void SaturatorEditor::sliderValueChanged(juce::Slider* slider)
         {
             if (abs(slider->getMinValue() - mProcessor.knobValueMap[Saturator::parameterIDs[i]].start) > 1e-3
                 || abs(slider->getMaxValue() - mProcessor.knobValueMap[Saturator::parameterIDs[i]].end) > 1e-3)
+            {
                 mProcessor.knobValueMap.set(Saturator::parameterIDs[i],
                     ModdedNormalisableRange<double>(slider->getMinValue(), slider->getMaxValue()));
+                editorSliders[i].setTooltip("Min: " + std::to_string(editorSliders[i].getMinValue()) + ", " + "Max: " + std::to_string(editorSliders[i].getMaxValue()));
+            }
         }
 
     }
@@ -74,5 +78,6 @@ void SaturatorEditor::updateRanges()
     {
         editorSliders[i].setMinAndMaxValues(mProcessor.knobValueMap[Saturator::parameterIDs[i]].start,
             mProcessor.knobValueMap[Saturator::parameterIDs[i]].end);
+        editorSliders[i].setTooltip("Min: " + std::to_string(editorSliders[i].getMinValue()) + ", " + "Max: " + std::to_string(editorSliders[i].getMaxValue()));
     }
 }

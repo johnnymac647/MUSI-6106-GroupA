@@ -22,6 +22,7 @@ ReverbEditor::ReverbEditor(OneKnobVocalAudioProcessor& p)
         flipToggleButtons[i].setClickingTogglesState(true);
         flipToggleButtons[i].setBounds(90, i * 40 + 20, 20, 20);
         flipToggleButtons[i].onClick = [this, i] { changeToggleStateOnClick(&flipToggleButtons[i]); };
+        flipToggleButtons[i].setTooltip("Flip the mapping function");
         addAndMakeVisible(flipToggleButtons[i]);
 
         editorSliders[i].setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
@@ -34,6 +35,7 @@ ReverbEditor::ReverbEditor(OneKnobVocalAudioProcessor& p)
             editorSliders[i]);
         editorSliders[i].setMinAndMaxValues(mProcessor.knobValueMap[Reverb::parameterIDs[i]].start,
             mProcessor.knobValueMap[Reverb::parameterIDs[i]].end);
+        editorSliders[i].setTooltip("Min: " + std::to_string(editorSliders[i].getMinValue()) + ", " + "Max: " + std::to_string(editorSliders[i].getMaxValue()));
         editorSliders[i].setBounds(0, i * 40 + 40, 120, 20);
     }
 
@@ -60,8 +62,12 @@ void ReverbEditor::sliderValueChanged(juce::Slider* slider)
         {
             if (abs(slider->getMinValue() - mProcessor.knobValueMap[Reverb::parameterIDs[i]].start) > 1e-3
                 || abs(slider->getMaxValue() - mProcessor.knobValueMap[Reverb::parameterIDs[i]].end) > 1e-3)
+            {
                 mProcessor.knobValueMap.set(Reverb::parameterIDs[i],
-                    ModdedNormalisableRange<double>(slider->getMinValue(), slider->getMaxValue()));
+                                    ModdedNormalisableRange<double>(slider->getMinValue(), slider->getMaxValue()));
+                editorSliders[i].setTooltip("Min: " + std::to_string(editorSliders[i].getMinValue()) + ", " + "Max: " + std::to_string(editorSliders[i].getMaxValue()));
+            }
+                
         }
 
     }
@@ -73,5 +79,6 @@ void ReverbEditor::updateRanges()
     {
         editorSliders[i].setMinAndMaxValues(mProcessor.knobValueMap[Reverb::parameterIDs[i]].start,
             mProcessor.knobValueMap[Reverb::parameterIDs[i]].end);
+        editorSliders[i].setTooltip("Min: " + std::to_string(editorSliders[i].getMinValue()) + ", " + "Max: " + std::to_string(editorSliders[i].getMaxValue()));
     }
 }

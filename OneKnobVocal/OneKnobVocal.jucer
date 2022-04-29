@@ -18,6 +18,9 @@
             file="Resources/Savoye Regular.ttf"/>
     </GROUP>
     <GROUP id="{BB5D406B-BE58-476C-AAD2-D1F0F7FAE07C}" name="Inc">
+      <FILE id="QP8gxv" name="RangeDisplay.cpp" compile="1" resource="0"
+            file="Source/RangeDisplay.cpp"/>
+      <FILE id="c9xRqP" name="RangeDisplay.h" compile="0" resource="0" file="Source/RangeDisplay.h"/>
       <FILE id="CFzKbp" name="ModdedNormalisableRange.h" compile="0" resource="0"
             file="Source/ModdedNormalisableRange.h"/>
     </GROUP>
