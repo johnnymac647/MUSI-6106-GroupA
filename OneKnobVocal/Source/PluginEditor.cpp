@@ -20,6 +20,9 @@
 OneKnobVocalAudioProcessorEditor::OneKnobVocalAudioProcessorEditor (OneKnobVocalAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
+    audioProcessor.isEditorOpen = true;
+
+
     mainDropdownBox.setBounds(280, 40, 160, 20);
     addAndMakeVisible(mainDropdownBox);
     mainDropdownBox.addItem("Default", kDefault);
@@ -192,6 +195,7 @@ OneKnobVocalAudioProcessorEditor::OneKnobVocalAudioProcessorEditor (OneKnobVocal
 
 OneKnobVocalAudioProcessorEditor::~OneKnobVocalAudioProcessorEditor()
 {
+    audioProcessor.isEditorOpen = false;
 }
 
 //==============================================================================

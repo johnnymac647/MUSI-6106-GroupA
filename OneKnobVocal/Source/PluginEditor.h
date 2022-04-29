@@ -68,6 +68,8 @@ public:
 
         mReverbEditor->updateRanges();
         mReverbEditor->setAllButtonState();
+
+        audioProcessor.setAudioParameters();
     }
 
     // Alison: Toggle for main vs advanced setting switch
@@ -117,6 +119,7 @@ private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     OneKnobVocalAudioProcessor& audioProcessor;
+
 
 
     inline static juce::Font savoyeItalic{juce::Font(juce::Typeface::createSystemTypefaceFor(BinaryData::Savoye_Regular_ttf, BinaryData::Savoye_Regular_ttfSize ))};

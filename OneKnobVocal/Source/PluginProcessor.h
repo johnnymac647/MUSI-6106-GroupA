@@ -85,21 +85,20 @@ public:
     }
 
 
-    juce::AudioProcessorGraph::Node::Ptr inputGainNode;
-    juce::AudioProcessorGraph::Node::Ptr gateNode;
-    juce::AudioProcessorGraph::Node::Ptr deEsserNode;
-    juce::AudioProcessorGraph::Node::Ptr equalizerNode;
-    juce::AudioProcessorGraph::Node::Ptr compressorNode;
-    juce::AudioProcessorGraph::Node::Ptr saturatorNode;
-    juce::AudioProcessorGraph::Node::Ptr reverbNode;
-    juce::AudioProcessorGraph::Node::Ptr outputGainNode;
+    void setAudioParameters()
+    {
+        if (audioParameterValuesToLoad.isValid())
+            apvts.replaceState(audioParameterValuesToLoad);
+    }
 
     juce::AudioProcessorValueTreeState apvts;
     juce::HashMap<juce::String, ModdedNormalisableRange<double>> knobValueMap;
     juce::HashMap<juce::String, bool> mappingRangeFlip;
-
+    juce::ValueTree audioParameterValuesToLoad;
 
     juce::ChangeBroadcaster loadedPreset;
+
+    bool isEditorOpen = false;
 
 private:
     //RMS level smoothing
@@ -118,6 +117,13 @@ private:
 
     juce::AudioProcessorGraph::Node::Ptr audioInputNode;
     juce::AudioProcessorGraph::Node::Ptr audioOutputNode;
+
+    juce::AudioProcessorGraph::Node::Ptr gateNode;
+    juce::AudioProcessorGraph::Node::Ptr deEsserNode;
+    juce::AudioProcessorGraph::Node::Ptr equalizerNode;
+    juce::AudioProcessorGraph::Node::Ptr compressorNode;
+    juce::AudioProcessorGraph::Node::Ptr saturatorNode;
+    juce::AudioProcessorGraph::Node::Ptr reverbNode;
 
 
     juce::ValueTree saveMapToValueTree()
