@@ -55,6 +55,22 @@ public:
             updateToggleStateFromProcessor(&flipToggleButtons[i], Equalizer::parameterIDs[i]);
         }
     }
+
+    void addSliderListeners(juce::Slider::Listener* listener)
+    {
+        for (int i = 0; i < Equalizer::effectParameters::kNumOfParameters; i++)
+        {
+            editorSliders[i].addListener(listener);
+        }
+    }
+
+    void removeSliderListeners(juce::Slider::Listener* listener)
+    {
+        for (int i = 0; i < Equalizer::effectParameters::kNumOfParameters; i++)
+        {
+            editorSliders[i].removeListener(listener);
+        }
+    }
 private:
     OneKnobVocalAudioProcessor& mProcessor;
 

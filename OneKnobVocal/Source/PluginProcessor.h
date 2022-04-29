@@ -84,6 +84,7 @@ public:
     {
         if (audioParameterValuesToLoad.isValid())
             apvts.replaceState(audioParameterValuesToLoad);
+        loadedApvts.sendChangeMessage();
     }
 
     juce::AudioProcessorValueTreeState apvts;
@@ -92,6 +93,8 @@ public:
     juce::ValueTree audioParameterValuesToLoad;
 
     juce::ChangeBroadcaster loadedPreset;
+
+    juce::ChangeBroadcaster loadedApvts;
 
     bool isEditorOpen = false;
 

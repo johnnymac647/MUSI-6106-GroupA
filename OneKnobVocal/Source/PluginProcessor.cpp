@@ -299,7 +299,10 @@ void OneKnobVocalAudioProcessor::setStateInformation (const void* data, int size
         apvts.removeParameterListener("ONE_KNOB", this);
         loadMapFromValueTree(state);
         if (state.getChildWithName(apvts.state.getType()).isValid() && !isEditorOpen)
+        {
             apvts.replaceState(state.getChildWithName(apvts.state.getType()));
+            loadedApvts.sendChangeMessage();
+        }
         else
             audioParameterValuesToLoad = state.getChildWithName(apvts.state.getType());
         apvts.addParameterListener("ONE_KNOB", this);

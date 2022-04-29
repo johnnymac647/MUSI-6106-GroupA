@@ -33,49 +33,7 @@ OneKnobVocalAudioProcessorEditor::OneKnobVocalAudioProcessorEditor (OneKnobVocal
     mainDropdownBox.setTextWhenNothingSelected("Custom");
 
     mainDropdownBox.onChange = [this] { 
-        switch (mainDropdownBox.getSelectedId())
-        {
-        case kDefault:
-            audioProcessor.setStateInformation(BinaryData::Default_pst, BinaryData::Default_pstSize);
-            break;
-        case kClub:
-            audioProcessor.setStateInformation(BinaryData::Club_pst, BinaryData::Club_pstSize);
-            break;
-        case kCountry:
-            audioProcessor.setStateInformation(BinaryData::Country_pst, BinaryData::Country_pstSize);
-            break;
-        case kPop:
-            audioProcessor.setStateInformation(BinaryData::Pop_pst, BinaryData::Pop_pstSize);
-            break;
-        case kRock:
-            audioProcessor.setStateInformation(BinaryData::Rock_pst, BinaryData::Rock_pstSize);
-            break;
-        case kCustomSelect:
-        {
-            myChooser = std::make_unique<juce::FileChooser>("Loading Custom Presets..",
-                juce::File::getSpecialLocation(juce::File::userHomeDirectory),
-                "*.pst");
-
-            auto folderChooserFlags = juce::FileBrowserComponent::openMode | juce::FileBrowserComponent::canSelectFiles;
-            myChooser->launchAsync(folderChooserFlags, [this](const juce::FileChooser& chooser)
-                {
-                    juce::File fileToLoad(chooser.getResult());
-
-
-                    if (fileToLoad.getFullPathName() != "")
-                    {
-                        juce::MemoryBlock dataToLoad;
-                        fileToLoad.loadFileAsData(dataToLoad);
-
-                        audioProcessor.setStateInformation(dataToLoad.getData(), dataToLoad.getSize());
-                    }
-                });
-            mainDropdownBox.setSelectedId(0);
-            break;
-        }
-        default:
-            break;
-        }
+        loadPreset();
     };
     mainDropdownBox.setSelectedId(kDefault);
 
@@ -86,25 +44,7 @@ OneKnobVocalAudioProcessorEditor::OneKnobVocalAudioProcessorEditor (OneKnobVocal
 
     savePresetButton.onClick = [&]
     {
-        myChooser = std::make_unique<juce::FileChooser>("Saving Presets..",
-            juce::File::getSpecialLocation(juce::File::userHomeDirectory),
-            "*.pst");
-        
-        auto folderChooserFlags = juce::FileBrowserComponent::saveMode | juce::FileBrowserComponent::canSelectFiles | juce::FileBrowserComponent::warnAboutOverwriting;
-        myChooser->launchAsync(folderChooserFlags, [this](const juce::FileChooser& chooser)
-            {
-                juce::File fileToSave(chooser.getResult());
-
-
-                if (fileToSave.getFullPathName() != "")
-                {
-                    juce::MemoryBlock dataToSave;
-                    audioProcessor.getStateInformation(dataToSave);
-
-
-                    fileToSave.replaceWithData(dataToSave.getData(), dataToSave.getSize());
-                }
-            });
+        savePreset();
     };
 
 
@@ -133,6 +73,7 @@ OneKnobVocalAudioProcessorEditor::OneKnobVocalAudioProcessorEditor (OneKnobVocal
     startTimerHz(24); //refresh the meter at the rate of 24Hz
     
     audioProcessor.loadedPreset.addChangeListener(this);
+    audioProcessor.loadedApvts.addChangeListener(this);
 
     mGateEditor = std::make_unique<GateEditor>(p);
     mGateEditor->setSize(133, 600); // (133, 400)
@@ -175,6 +116,7 @@ OneKnobVocalAudioProcessorEditor::OneKnobVocalAudioProcessorEditor (OneKnobVocal
 
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
+
     setSize (800, 750);
     
 }
