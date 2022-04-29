@@ -72,7 +72,7 @@ public:
     Saturator(juce::AudioProcessorValueTreeState* parantApvts) 
     {
         ptr_apvts = parantApvts;
-        gain.setGainDecibels(ptr_apvts->getRawParameterValue("SATURATOR_POST_GAIN")->load());
+        gain.setGainDecibels(ptr_apvts->getRawParameterValue(parameterIDs[kPostGain])->load());
     }
 
 
@@ -92,7 +92,7 @@ public:
         */
         
         //gain multiplier, amplify the input sample before applying it to the funciton.
-        float k = (ptr_apvts->getRawParameterValue("SATURATOR_PRE_GAIN")->load());
+        float k = (ptr_apvts->getRawParameterValue(parameterIDs[kPreGain])->load());
         
         
         //k applies in the denominators for normalization, optional
@@ -100,7 +100,7 @@ public:
         float atan_k = atan(k);
         
         
-        float mix = (ptr_apvts->getRawParameterValue("SATURATOR_MIX")->load());
+        float mix = (ptr_apvts->getRawParameterValue(parameterIDs[kMix])->load());
         
         
         for (int channel = 0; channel < totalNumInputChannels; ++channel)
@@ -122,7 +122,7 @@ public:
             }
         }
         
-        gain.setGainDecibels(ptr_apvts->getRawParameterValue("SATURATOR_POST_GAIN")->load());
+        gain.setGainDecibels(ptr_apvts->getRawParameterValue(parameterIDs[kPostGain])->load());
         juce::dsp::AudioBlock<float> block(buffer);
         juce::dsp::ProcessContextReplacing<float> context(block);
         gain.process(context);

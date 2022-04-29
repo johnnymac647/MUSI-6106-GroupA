@@ -87,9 +87,9 @@ public:
     Compressor(juce::AudioProcessorValueTreeState* mainApvts)
     {
         ptr_apvts = mainApvts;
-        inputGain.setGainDecibels(ptr_apvts->getRawParameterValue("COMPRESSOR_PRE_GAIN")->load());
-        makeUpGain.setGainDecibels(ptr_apvts->getRawParameterValue("COMPRESSOR_MAKEUP_GAIN")->load());
-        outputGain.setGainDecibels(ptr_apvts->getRawParameterValue("COMPRESSOR_POST_GAIN")->load());
+        inputGain.setGainDecibels(ptr_apvts->getRawParameterValue(parameterIDs[kPreGain])->load());
+        makeUpGain.setGainDecibels(ptr_apvts->getRawParameterValue(parameterIDs[kMakeupGain])->load());
+        outputGain.setGainDecibels(ptr_apvts->getRawParameterValue(parameterIDs[kPostGain])->load());
     }
 
     void prepareToPlay(double sampleRate, int samplesPerBlock) override
@@ -106,14 +106,14 @@ public:
     {
         
         
-        inputGain.setGainDecibels(ptr_apvts->getRawParameterValue("COMPRESSOR_PRE_GAIN")->load());
-        makeUpGain.setGainDecibels(ptr_apvts->getRawParameterValue("COMPRESSOR_MAKEUP_GAIN")->load());
-        outputGain.setGainDecibels(ptr_apvts->getRawParameterValue("COMPRESSOR_POST_GAIN")->load());
+        inputGain.setGainDecibels(ptr_apvts->getRawParameterValue(parameterIDs[kPreGain])->load());
+        makeUpGain.setGainDecibels(ptr_apvts->getRawParameterValue(parameterIDs[kMakeupGain])->load());
+        outputGain.setGainDecibels(ptr_apvts->getRawParameterValue(parameterIDs[kPostGain])->load());
         
-        compressor.setAttack(ptr_apvts->getRawParameterValue("COMPRESSOR_ATTACK")->load());
-        compressor.setRelease(ptr_apvts->getRawParameterValue("COMPRESSOR_RELEASE")->load());
-        compressor.setThreshold(ptr_apvts->getRawParameterValue("COMPRESSOR_THRESHOLD")->load());
-        compressor.setRatio(ptr_apvts->getRawParameterValue("COMPRESSOR_RATIO")->load());
+        compressor.setAttack(ptr_apvts->getRawParameterValue(parameterIDs[kAttack])->load());
+        compressor.setRelease(ptr_apvts->getRawParameterValue(parameterIDs[kRelease])->load());
+        compressor.setThreshold(ptr_apvts->getRawParameterValue(parameterIDs[kThreshold])->load());
+        compressor.setRatio(ptr_apvts->getRawParameterValue(parameterIDs[kRatio])->load());
         
         juce::dsp::AudioBlock<float> block(buffer);
         juce::dsp::ProcessContextReplacing<float> context(block);

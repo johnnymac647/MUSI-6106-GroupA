@@ -79,7 +79,7 @@ public:
     Gate(juce::AudioProcessorValueTreeState* mainApvts)
     {
         ptr_apvts = mainApvts;
-        gain.setGainDecibels(ptr_apvts->getRawParameterValue("GATE_POST_GAIN")->load());
+        gain.setGainDecibels(ptr_apvts->getRawParameterValue(parameterIDs[kPostGain])->load());
     }
 
     void prepareToPlay(double sampleRate, int samplesPerBlock) override
@@ -91,12 +91,12 @@ public:
 
     void processBlock(juce::AudioSampleBuffer& buffer, juce::MidiBuffer&) override
     {
-        gain.setGainDecibels(ptr_apvts->getRawParameterValue("GATE_POST_GAIN")->load());
+        gain.setGainDecibels(ptr_apvts->getRawParameterValue(parameterIDs[kPostGain])->load());
         
-        noiseGate.setAttack(ptr_apvts->getRawParameterValue("GATE_ATTACK")->load());
-        noiseGate.setRelease(ptr_apvts->getRawParameterValue("GATE_RELEASE")->load());
-        noiseGate.setThreshold(ptr_apvts->getRawParameterValue("GATE_THRESHOLD")->load());
-        noiseGate.setRatio(ptr_apvts->getRawParameterValue("GATE_RATIO")->load());
+        noiseGate.setAttack(ptr_apvts->getRawParameterValue(parameterIDs[kAttack])->load());
+        noiseGate.setRelease(ptr_apvts->getRawParameterValue(parameterIDs[kRelease])->load());
+        noiseGate.setThreshold(ptr_apvts->getRawParameterValue(parameterIDs[kThreshold])->load());
+        noiseGate.setRatio(ptr_apvts->getRawParameterValue(parameterIDs[kRatio])->load());
         
         auto block = juce::dsp::AudioBlock<float>(buffer);
         auto context = juce::dsp::ProcessContextReplacing<float>(block);

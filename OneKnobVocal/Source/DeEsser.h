@@ -84,7 +84,7 @@ public:
     Deesser(juce::AudioProcessorValueTreeState* mainApvts)
     {
         ptr_apvts = mainApvts;
-        gain.setGainDecibels(ptr_apvts->getRawParameterValue("DEESSER_POST_GAIN")->load());
+        gain.setGainDecibels(ptr_apvts->getRawParameterValue(parameterIDs[kPostGain])->load());
     }
 
     void prepareToPlay(double sampleRate, int samplesPerBlock) override
@@ -110,17 +110,17 @@ public:
         // for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         //     buffer.clear (i, 0, buffer.getNumSamples());
         
-        gain.setGainDecibels(ptr_apvts->getRawParameterValue("DEESSER_POST_GAIN")->load());
+        gain.setGainDecibels(ptr_apvts->getRawParameterValue(parameterIDs[kPostGain])->load());
         
         lowPass.setType(juce::dsp::LinkwitzRileyFilterType::lowpass);
-        lowPass.setCutoffFrequency(ptr_apvts->getRawParameterValue("DEESSER_CROSSOVERFREQ")->load());
+        lowPass.setCutoffFrequency(ptr_apvts->getRawParameterValue(parameterIDs[kCrossover])->load());
         highPass.setType(juce::dsp::LinkwitzRileyFilterType::highpass);
-        highPass.setCutoffFrequency(ptr_apvts->getRawParameterValue("DEESSER_CROSSOVERFREQ")->load());
+        highPass.setCutoffFrequency(ptr_apvts->getRawParameterValue(parameterIDs[kCrossover])->load());
 
-        compressor.setAttack(ptr_apvts->getRawParameterValue("DEESSER_ATTACK")->load());
-        compressor.setRelease(ptr_apvts->getRawParameterValue("DEESSER_RELEASE")->load());
-        compressor.setThreshold(ptr_apvts->getRawParameterValue("DEESSER_THRESHOLD")->load());
-        compressor.setRatio(ptr_apvts->getRawParameterValue("DEESSER_RATIO")->load());
+        compressor.setAttack(ptr_apvts->getRawParameterValue(parameterIDs[kAttack])->load());
+        compressor.setRelease(ptr_apvts->getRawParameterValue(parameterIDs[kRelease])->load());
+        compressor.setThreshold(ptr_apvts->getRawParameterValue(parameterIDs[kThreshold])->load());
+        compressor.setRatio(ptr_apvts->getRawParameterValue(parameterIDs[kRatio])->load());
             
         auto lowBlock = juce::dsp::AudioBlock<float>(lowBuffer);
         auto lowContext = juce::dsp::ProcessContextReplacing<float>(lowBlock);
