@@ -13,7 +13,7 @@
 #include "ModdedNormalisableRange.h"
 #include "Gate.h"
 
-class GateEditor : public juce::AudioProcessorEditor,
+class GateEditor : public juce::Component,
     public juce::Slider::Listener
 {
 public:

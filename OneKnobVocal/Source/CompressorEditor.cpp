@@ -11,7 +11,7 @@
 #include "CompressorEditor.h"
 
 CompressorEditor::CompressorEditor(OneKnobVocalAudioProcessor& p)
-    :AudioProcessorEditor(&p), mProcessor(p)
+    : mProcessor(p)
 {
     for (int i = 0; i < Compressor::effectParameters::kNumOfParameters; i++)
     {

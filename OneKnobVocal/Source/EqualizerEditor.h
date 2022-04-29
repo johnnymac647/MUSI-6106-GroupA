@@ -13,7 +13,7 @@
 #include "ModdedNormalisableRange.h"
 #include "Equalizer.h"
 
-class EqualizerEditor : public juce::AudioProcessorEditor,
+class EqualizerEditor : public juce::Component,
     public juce::Slider::Listener
 {
 public:

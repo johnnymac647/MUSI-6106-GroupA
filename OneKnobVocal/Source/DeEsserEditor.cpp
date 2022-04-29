@@ -11,7 +11,7 @@
 #include "DeEsserEditor.h"
 
 DeEsserEditor::DeEsserEditor(OneKnobVocalAudioProcessor& p)
-    :AudioProcessorEditor(&p), mProcessor(p)
+    : mProcessor(p)
 {
     for (int i = 0; i < Deesser::effectParameters::kNumOfParameters; i++)
     {

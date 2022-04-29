@@ -13,7 +13,7 @@
 #include "ModdedNormalisableRange.h"
 #include "Reverb.h"
 
-class ReverbEditor : public juce::AudioProcessorEditor,
+class ReverbEditor : public juce::Component,
     public juce::Slider::Listener
 {
 public:

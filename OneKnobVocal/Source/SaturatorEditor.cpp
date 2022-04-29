@@ -11,7 +11,7 @@
 #include "SaturatorEditor.h"
 
 SaturatorEditor::SaturatorEditor(OneKnobVocalAudioProcessor& p)
-    :AudioProcessorEditor(&p), mProcessor(p)
+    : mProcessor(p)
 {
     for (int i = 0; i < Saturator::effectParameters::kNumOfParameters; i++)
     {

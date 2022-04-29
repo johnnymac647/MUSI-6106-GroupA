@@ -13,7 +13,7 @@
 #include "ModdedNormalisableRange.h"
 #include "DeEsser.h"
 
-class DeEsserEditor : public juce::AudioProcessorEditor,
+class DeEsserEditor : public juce::Component,
     public juce::Slider::Listener
 {
 public:

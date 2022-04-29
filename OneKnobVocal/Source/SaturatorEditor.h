@@ -13,7 +13,7 @@
 #include "ModdedNormalisableRange.h"
 #include "Saturator.h"
 
-class SaturatorEditor : public juce::AudioProcessorEditor,
+class SaturatorEditor : public juce::Component,
     public juce::Slider::Listener
 {
 public:

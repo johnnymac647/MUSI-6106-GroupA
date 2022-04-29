@@ -11,7 +11,7 @@
 #include "GateEditor.h"
 
 GateEditor::GateEditor(OneKnobVocalAudioProcessor& p)
-    :AudioProcessorEditor(&p), mProcessor(p)
+    : mProcessor(p)
 {
     for (int i = 0; i < Gate::effectParameters::kNumOfParameters; i++)
     {

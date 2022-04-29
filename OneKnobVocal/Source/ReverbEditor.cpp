@@ -11,7 +11,7 @@
 #include "ReverbEditor.h"
 
 ReverbEditor::ReverbEditor(OneKnobVocalAudioProcessor& p)
-    :AudioProcessorEditor(&p), mProcessor(p)
+    : mProcessor(p)
 {
     for (int i = 0; i < Reverb::effectParameters::kNumOfParameters; i++)
     {

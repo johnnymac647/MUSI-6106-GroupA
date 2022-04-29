@@ -11,7 +11,7 @@
 #include "EqualizerEditor.h"
 
 EqualizerEditor::EqualizerEditor(OneKnobVocalAudioProcessor& p)
-    :AudioProcessorEditor(&p), mProcessor(p)
+    : mProcessor(p)
 {
     for (int i = 0; i < Equalizer::effectParameters::kNumOfParameters; i++)
     {

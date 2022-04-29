@@ -13,7 +13,7 @@
 #include "ModdedNormalisableRange.h"
 #include "Compressor.h" 
 
-class CompressorEditor : public juce::AudioProcessorEditor,
+class CompressorEditor : public juce::Component,
     public juce::Slider::Listener
 {
 public:
