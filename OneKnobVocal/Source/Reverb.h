@@ -90,32 +90,18 @@ public:
         juce::dsp::ProcessSpec spec{ sampleRate, static_cast<juce::uint32> (samplesPerBlock), 2 };
         reverb.prepare(spec);
         gain.prepare(spec);
-        gain.setGainDecibels(ptr_apvts->getRawParameterValue("REVERB_POST_GAIN")->load());
+        gain.setGainDecibels(ptr_apvts->getRawParameterValue(parameterIDs[kPostGain])->load());
         getReverbParameters(*ptr_apvts);
     }
 
     void processBlock(juce::AudioSampleBuffer& buffer, juce::MidiBuffer&) override
     {
-        gain.setGainDecibels(ptr_apvts->getRawParameterValue("REVERB_POST_GAIN")->load());
+        gain.setGainDecibels(ptr_apvts->getRawParameterValue(parameterIDs[kPostGain])->load());
         getReverbParameters(*ptr_apvts);
         juce::dsp::AudioBlock<float> block(buffer);
         juce::dsp::ProcessContextReplacing<float> context(block);
         reverb.process(context);
         gain.process(context);
-        
-        /*
-         //convert context to AudioBlock
-         juce::dsp::AudioBlock<float> outputBlock = context.getOutputBlock();
-         
-         int maxNumChannels = static_cast<int> (outputBlock.getNumChannels());
-         float* channels[maxNumChannels];
-
-         for (size_t c = 0; c < outputBlock.getNumChannels(); ++c)
-             channels[c] = outputBlock.getChannelPointer (c);
-
-         //convert AudioBlock to AudioBuffer
-         juce::AudioBuffer<float> outputBuffer {channels, static_cast<int>(outputBlock.getNumChannels()), static_cast<int>(outputBlock.getNumSamples()) };
-         */
     }
 
     void reset() override

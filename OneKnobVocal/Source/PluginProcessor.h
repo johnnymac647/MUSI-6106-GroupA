@@ -27,12 +27,7 @@ public:
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
 
-    //==============================================================================
-    // Alison: Merge John's GUI
-    // void paint (juce::Graphics& g) override;
-    // void resized() override;
-    // void sliderValueChanged (juce::Slider* slider) override;
-    //==============================================================================
+
 
    #ifndef JucePlugin_PreferredChannelConfigurations
     bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
@@ -161,24 +156,6 @@ private:
         loadedPreset.sendChangeMessage();
     }
 
-    // Alison: Merging John's GUI
-    //==============================================================================
-    // juce::LookAndFeel_V4 royalTheme;    
-    // juce::Colour backgroundColor = juce::Colour(0xff0f0038); //dark purple
-    // juce::Colour textColor = juce::Colour(0xffc2b948); // gold
-    // juce::Colour darkGold = juce::Colour(0xff423E12);
-    // juce::Colour lightPurple = juce::Colour(0xff6B43E0);
-    // juce::Colour clear = juce::Colour(0x00000000);
-    
-    // juce::Slider knob;
-    // juce::Label knobLabel;
-    
-    // juce::String s_knobValue;
-    
-    // juce::Image gear;
-    //==============================================================================
-
-    //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OneKnobVocalAudioProcessor)
 };
  

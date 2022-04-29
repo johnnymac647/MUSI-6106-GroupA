@@ -117,7 +117,6 @@ public:
 
     void prepareToPlay(double sampleRate, int samplesPerBlock) override
     {
-//        juce::dsp::ProcessSpec spec{ sampleRate, static_cast<juce::uint32> (samplesPerBlock), 2 };
         juce::dsp::ProcessSpec spec;
         spec.maximumBlockSize = samplesPerBlock;
         spec.numChannels = 1;
@@ -126,8 +125,6 @@ public:
         leftChain.prepare(spec);
         rightChain.prepare(spec);
         
-//        gain.setGainDecibels(ptr_apvts->getRawParameterValue("EQ_POST_GAIN")->load());
-//        gain.prepare(spec);
         
         
         auto eqSettings = getEQSettings(*ptr_apvts);
@@ -136,10 +133,8 @@ public:
         auto hiMidCoefficients = juce::dsp::IIR::Coefficients<float>::makePeakFilter(sampleRate, eqSettings.hiMidFreq, eqSettings.hiMidQ, juce::Decibels::decibelsToGain(eqSettings.hiMidGainDecibels));
         auto hiCoefficients = juce::dsp::IIR::Coefficients<float>::makeHighShelf(sampleRate, eqSettings.hiFreq, eqSettings.hiQ, juce::Decibels::decibelsToGain(eqSettings.hiGainDecibels));
         
-//        *monoChain.get<ChainPositions::low>().coefficients = *lowCoefficients;
         *leftChain.get<ChainPositions::lowMid>().coefficients = *lowMidCoefficients;
         *leftChain.get<ChainPositions::hiMid>().coefficients = *hiMidCoefficients;
-//        *monoChain.get<ChainPositions::hi>().coefficients = *hiCoefficients;
         
         *rightChain.get<ChainPositions::lowMid>().coefficients = *lowMidCoefficients;
         *rightChain.get<ChainPositions::hiMid>().coefficients = *hiMidCoefficients;
@@ -149,17 +144,15 @@ public:
 
     void processBlock(juce::AudioSampleBuffer& buffer, juce::MidiBuffer&) override
     {
-//        gain.setGainDecibels(ptr_apvts->getRawParameterValue("EQ_POST_GAIN")->load());
         auto eqSettings = getEQSettings(*ptr_apvts);
         auto lowCoefficients = juce::dsp::IIR::Coefficients<float>::makeLowShelf(getSampleRate(), eqSettings.lowFreq, eqSettings.lowQ, juce::Decibels::decibelsToGain(eqSettings.lowGainDecibels));
         auto lowMidCoefficients = juce::dsp::IIR::Coefficients<float>::makePeakFilter(getSampleRate(), eqSettings.lowMidFreq, eqSettings.lowMidQ, juce::Decibels::decibelsToGain(eqSettings.lowMidGainDecibels));
         auto hiMidCoefficients = juce::dsp::IIR::Coefficients<float>::makePeakFilter(getSampleRate(), eqSettings.hiMidFreq, eqSettings.hiMidQ, juce::Decibels::decibelsToGain(eqSettings.hiMidGainDecibels));
         auto hiCoefficients = juce::dsp::IIR::Coefficients<float>::makeHighShelf(getSampleRate(), eqSettings.hiFreq, eqSettings.hiQ, juce::Decibels::decibelsToGain(eqSettings.hiGainDecibels));
         
-//        *monoChain.get<ChainPositions::low>().coefficients = *lowCoefficients;
+
         *leftChain.get<ChainPositions::lowMid>().coefficients = *lowMidCoefficients;
         *leftChain.get<ChainPositions::hiMid>().coefficients = *hiMidCoefficients;
-//        *monoChain.get<ChainPositions::hi>().coefficients = *hiCoefficients;
         leftChain.get<ChainPositions::gain>().setGainDecibels(eqSettings.postGainDecibels);
         
         *rightChain.get<ChainPositions::lowMid>().coefficients = *lowMidCoefficients;
@@ -175,7 +168,6 @@ public:
         
         leftChain.process(leftContext);
         rightChain.process(rightContext);
-//        gain.process(context);
     }
 
     void reset() override

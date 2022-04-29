@@ -85,7 +85,6 @@ public:
     void processBlock(juce::AudioSampleBuffer& buffer, juce::MidiBuffer&) override
     {
         const int totalNumInputChannels  = getTotalNumInputChannels();
-        //const int totalNumOutputChannels = getTotalNumOutputChannels();
         
         /*
         Pirkle, Will. Designing Audio Effect Plug-Ins in C++: with digital audio signal processing theory. Routledge, 2012. Table 19.1

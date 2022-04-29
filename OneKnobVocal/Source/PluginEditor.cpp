@@ -108,18 +108,7 @@ OneKnobVocalAudioProcessorEditor::OneKnobVocalAudioProcessorEditor (OneKnobVocal
             });
     };
 
-    //mainToolbar.setBounds(0, 0, 800, 25);
-    //mainToolbar.addDefaultItems(mainToobarFactoryInstance);
-    //mainToolbar.setStyle(juce::Toolbar::ToolbarItemStyle::textOnly);
-    //addAndMakeVisible(mainToolbar);
 
-    //mainToolbar.getItemComponent(0)->onClick = [&]
-    //{
-    //    juce::PopupMenu menu;
-    //    menu.addItem("Load", nullptr);
-    //    menu.addItem("Save", nullptr);
-    //    menu.showMenuAsync(juce::PopupMenu::Options{}.withTargetComponent(mainToolbar.getItemComponent(0)));
-    //};
 
     // Alison: Toggle implement for switch between main vs advanced setting GUI
     //==============================================================================
@@ -224,10 +213,8 @@ void OneKnobVocalAudioProcessorEditor::timerCallback()
 void OneKnobVocalAudioProcessorEditor::paint (juce::Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
-    // g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
     g.fillAll (backgroundColor);
     g.setColour(textColor);
-    // g.setFont(juce::Font("Savoye LET", 100.0f, juce::Font::italic));
     g.setFont(savoyeItalic.withHeight(100.0f));
     g.drawText("Voce Dolce", getWidth()/2 - 200, 110, 400, 20, juce::Justification::centred, true);
 

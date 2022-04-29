@@ -107,8 +107,6 @@ public:
         lowBuffer.makeCopyOf(buffer, true);
         highBuffer.makeCopyOf(buffer, true);
 
-        // for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-        //     buffer.clear (i, 0, buffer.getNumSamples());
         
         gain.setGainDecibels(ptr_apvts->getRawParameterValue(parameterIDs[kPostGain])->load());
         
