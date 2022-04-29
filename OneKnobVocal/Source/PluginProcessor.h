@@ -60,32 +60,7 @@ public:
     
     float getRmsValue(const int channel, const int position) const;
 
-    void parameterChanged(const juce::String& parameterID, float newValue)
-    {
-        if (parameterID == "ONE_KNOB")
-        {
-            juce::HashMap<juce::String, ModdedNormalisableRange<double>>::Iterator i(knobValueMap);
-            while (i.next())
-            {
-                if (mappingRangeFlip[i.getKey()])
-                {
-                    apvts.getParameter(i.getKey())->setValueNotifyingHost(apvts.getParameter(i.getKey())->convertTo0to1(i.getValue().convertFrom0to1(1 - newValue)));
-                }
-                else 
-                {
-                    apvts.getParameter(i.getKey())->setValueNotifyingHost(apvts.getParameter(i.getKey())->convertTo0to1(i.getValue().convertFrom0to1(newValue)));
-                }
-            }
-        }
-    }
-
-
-    void setAudioParameters()
-    {
-        if (audioParameterValuesToLoad.isValid())
-            apvts.replaceState(audioParameterValuesToLoad);
-        loadedApvts.sendChangeMessage();
-    }
+    void setAudioParameters();
 
     juce::AudioProcessorValueTreeState apvts;
     juce::HashMap<juce::String, ModdedNormalisableRange<double>> knobValueMap;
@@ -127,37 +102,11 @@ private:
     juce::ReferenceCountedArray<juce::AudioProcessorGraph::Node> audioNodeList;
 
 
-    juce::ValueTree saveMapToValueTree()
-    {
-        juce::ValueTree mapValueTree("Mappings");
-        juce::HashMap<juce::String, ModdedNormalisableRange<double>>::Iterator i(knobValueMap);
-        while (i.next())
-        {
-            juce::ValueTree currentMappingValue("NormRange");
-            currentMappingValue.setProperty("id", i.getKey(), nullptr);
-            currentMappingValue.setProperty("Start", i.getValue().start, nullptr);
-            currentMappingValue.setProperty("End", i.getValue().end, nullptr);
-            currentMappingValue.setProperty("Flip", mappingRangeFlip[i.getKey()], nullptr);
-            mapValueTree.addChild(currentMappingValue.createCopy(), -1, nullptr);
-        }
-        return mapValueTree.createCopy();
-    }
+    juce::ValueTree saveMapToValueTree();
 
-    void loadMapFromValueTree(juce::ValueTree state)
-    {
-        if (state.getChildWithName("Mappings").isValid())
-        {
-            for (auto range : state.getChildWithName("Mappings"))
-            {
-                if (range.hasType("NormRange"))
-                {
-                    knobValueMap.set(range["id"].toString(), ModdedNormalisableRange<double>(range["Start"], range["End"]));
-                    mappingRangeFlip.set(range["id"].toString(), range["Flip"]);
-                }
-            }
-        }
-        loadedPreset.sendChangeMessage();
-    }
+    void loadMapFromValueTree(juce::ValueTree state);
+
+    void parameterChanged(const juce::String& parameterID, float newValue) override;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OneKnobVocalAudioProcessor)
 };

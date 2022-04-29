@@ -338,6 +338,13 @@ float OneKnobVocalAudioProcessor::getRmsValue(const int channel, const int posit
 
 }
 
+void OneKnobVocalAudioProcessor::setAudioParameters()
+{
+    if (audioParameterValuesToLoad.isValid())
+        apvts.replaceState(audioParameterValuesToLoad);
+    loadedApvts.sendChangeMessage();
+}
+
 //==============================================================================
 // This creates new instances of the plugin..
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
@@ -434,6 +441,57 @@ void OneKnobVocalAudioProcessor::prepareGraphForPlaying()
     midiOutputNode = mainProcessor->addNode(std::make_unique<juce::AudioProcessorGraph::AudioGraphIOProcessor>(juce::AudioProcessorGraph::AudioGraphIOProcessor::midiOutputNode));
 
     connectAudioNodes();
+}
+
+juce::ValueTree OneKnobVocalAudioProcessor::saveMapToValueTree()
+{
+    juce::ValueTree mapValueTree("Mappings");
+    juce::HashMap<juce::String, ModdedNormalisableRange<double>>::Iterator i(knobValueMap);
+    while (i.next())
+    {
+        juce::ValueTree currentMappingValue("NormRange");
+        currentMappingValue.setProperty("id", i.getKey(), nullptr);
+        currentMappingValue.setProperty("Start", i.getValue().start, nullptr);
+        currentMappingValue.setProperty("End", i.getValue().end, nullptr);
+        currentMappingValue.setProperty("Flip", mappingRangeFlip[i.getKey()], nullptr);
+        mapValueTree.addChild(currentMappingValue.createCopy(), -1, nullptr);
+    }
+    return mapValueTree.createCopy();
+}
+
+void OneKnobVocalAudioProcessor::loadMapFromValueTree(juce::ValueTree state)
+{
+    if (state.getChildWithName("Mappings").isValid())
+    {
+        for (auto range : state.getChildWithName("Mappings"))
+        {
+            if (range.hasType("NormRange"))
+            {
+                knobValueMap.set(range["id"].toString(), ModdedNormalisableRange<double>(range["Start"], range["End"]));
+                mappingRangeFlip.set(range["id"].toString(), range["Flip"]);
+            }
+        }
+    }
+    loadedPreset.sendChangeMessage();
+}
+
+void OneKnobVocalAudioProcessor::parameterChanged(const juce::String& parameterID, float newValue)
+{
+    if (parameterID == "ONE_KNOB")
+    {
+        juce::HashMap<juce::String, ModdedNormalisableRange<double>>::Iterator i(knobValueMap);
+        while (i.next())
+        {
+            if (mappingRangeFlip[i.getKey()])
+            {
+                apvts.getParameter(i.getKey())->setValueNotifyingHost(apvts.getParameter(i.getKey())->convertTo0to1(i.getValue().convertFrom0to1(1 - newValue)));
+            }
+            else
+            {
+                apvts.getParameter(i.getKey())->setValueNotifyingHost(apvts.getParameter(i.getKey())->convertTo0to1(i.getValue().convertFrom0to1(newValue)));
+            }
+        }
+    }
 }
 
 juce::AudioProcessorValueTreeState::ParameterLayout OneKnobVocalAudioProcessor::createParameterLayout()
