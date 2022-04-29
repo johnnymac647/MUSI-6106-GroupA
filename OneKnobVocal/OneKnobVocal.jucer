@@ -36,8 +36,6 @@
             file="Source/EqualizerEditor.cpp"/>
       <FILE id="LR6aAH" name="EqualizerEditor.h" compile="0" resource="0"
             file="Source/EqualizerEditor.h"/>
-      <FILE id="PTXnML" name="GainSlider.cpp" compile="1" resource="0" file="Source/GainSlider.cpp"/>
-      <FILE id="O7om6L" name="GainSlider.h" compile="0" resource="0" file="Source/GainSlider.h"/>
       <FILE id="kKpuCm" name="GateEditor.cpp" compile="1" resource="0" file="Source/GateEditor.cpp"/>
       <FILE id="a77q93" name="GateEditor.h" compile="0" resource="0" file="Source/GateEditor.h"/>
       <FILE id="oFdspF" name="ReverbEditor.cpp" compile="1" resource="0"
@@ -56,8 +54,6 @@
       <FILE id="BO0Wna" name="DeEsser.h" compile="0" resource="0" file="Source/DeEsser.h"/>
       <FILE id="n1SHE7" name="Equalizer.cpp" compile="1" resource="0" file="Source/Equalizer.cpp"/>
       <FILE id="I1a9lv" name="Equalizer.h" compile="0" resource="0" file="Source/Equalizer.h"/>
-      <FILE id="bSkpH6" name="Gain.cpp" compile="1" resource="0" file="Source/Gain.cpp"/>
-      <FILE id="PVMOWP" name="Gain.h" compile="0" resource="0" file="Source/Gain.h"/>
       <FILE id="uHxB6V" name="Gate.cpp" compile="1" resource="0" file="Source/Gate.cpp"/>
       <FILE id="tGKM4m" name="Gate.h" compile="0" resource="0" file="Source/Gate.h"/>
       <FILE id="PRXBCL" name="Reverb.cpp" compile="1" resource="0" file="Source/Reverb.cpp"/>

@@ -11,7 +11,6 @@
 #include "Compressor.h"
 #include "DeEsser.h"
 #include "Equalizer.h"
-#include "Gain.h"
 #include "Gate.h"
 #include "Reverb.h"
 #include "Saturator.h"
