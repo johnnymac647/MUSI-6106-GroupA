@@ -96,6 +96,8 @@ private:
 
     void updateRanges();
 
+    void setAdvancedMode(bool b);
+
     // Alison: Toggle for main vs advanced setting switch
     //==============================================================================
     void changeToggleStateOnClick(juce::Button* button);
