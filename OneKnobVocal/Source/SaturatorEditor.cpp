@@ -78,10 +78,12 @@ void SaturatorEditor::sliderValueChanged(juce::Slider* slider)
 
 void SaturatorEditor::updateRanges()
 {
+    removeSliderListeners(this);
     for (int i = 0; i < Saturator::effectParameters::kNumOfParameters; i++)
     {
         editorSliders[i].setMinAndMaxValues(mProcessor.knobValueMap[Saturator::parameterIDs[i]].start,
             mProcessor.knobValueMap[Saturator::parameterIDs[i]].end);
         editorSliders[i].setTooltip("Min: " + std::to_string(editorSliders[i].getMinValue()) + ", " + "Max: " + std::to_string(editorSliders[i].getMaxValue()));
     }
+    addSliderListeners(this);
 }

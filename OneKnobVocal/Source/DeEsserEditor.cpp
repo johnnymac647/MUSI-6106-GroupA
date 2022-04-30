@@ -80,10 +80,12 @@ void DeEsserEditor::sliderValueChanged(juce::Slider* slider)
 
 void DeEsserEditor::updateRanges()
 {
+    removeSliderListeners(this);
     for (int i = 0; i < Deesser::effectParameters::kNumOfParameters; i++)
     {
         editorSliders[i].setMinAndMaxValues(mProcessor.knobValueMap[Deesser::parameterIDs[i]].start,
             mProcessor.knobValueMap[Deesser::parameterIDs[i]].end);
         editorSliders[i].setTooltip("Min: " + std::to_string(editorSliders[i].getMinValue()) + ", " + "Max: " + std::to_string(editorSliders[i].getMaxValue()));
     }
+    addSliderListeners(this);
 }

@@ -80,10 +80,12 @@ void ReverbEditor::sliderValueChanged(juce::Slider* slider)
 
 void ReverbEditor::updateRanges()
 {
+    removeSliderListeners(this);
     for (int i = 0; i < Reverb::effectParameters::kNumOfParameters; i++)
     {
         editorSliders[i].setMinAndMaxValues(mProcessor.knobValueMap[Reverb::parameterIDs[i]].start,
             mProcessor.knobValueMap[Reverb::parameterIDs[i]].end);
         editorSliders[i].setTooltip("Min: " + std::to_string(editorSliders[i].getMinValue()) + ", " + "Max: " + std::to_string(editorSliders[i].getMaxValue()));
     }
+    addSliderListeners(this);
 }

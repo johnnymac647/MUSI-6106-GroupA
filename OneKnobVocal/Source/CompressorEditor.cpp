@@ -77,10 +77,12 @@ void CompressorEditor::sliderValueChanged(juce::Slider* slider)
 
 void CompressorEditor::updateRanges()
 {
+    removeSliderListeners(this);
     for (int i = 0; i < Compressor::effectParameters::kNumOfParameters; i++)
     {
         editorSliders[i].setMinAndMaxValues(mProcessor.knobValueMap[Compressor::parameterIDs[i]].start,
             mProcessor.knobValueMap[Compressor::parameterIDs[i]].end);
         editorSliders[i].setTooltip("Min: " + std::to_string(editorSliders[i].getMinValue()) + ", " + "Max: " + std::to_string(editorSliders[i].getMaxValue()));
     }
+    addSliderListeners(this);
 }
