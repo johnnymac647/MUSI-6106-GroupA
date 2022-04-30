@@ -81,6 +81,8 @@ public:
 
     juce::ChangeBroadcaster loadedApvts;
 
+    bool isEditorInAdvancedMode = false;
+
     bool isEditorOpen = false;
 
 private:

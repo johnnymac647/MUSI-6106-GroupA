@@ -100,6 +100,20 @@ OneKnobVocalAudioProcessorEditor::OneKnobVocalAudioProcessorEditor (OneKnobVocal
     addAndMakeVisible(viewToggleButtons);
     viewToggleButtons.setAlwaysOnTop(true);
     addAndMakeVisible(mOneKnobSlider);
+
+
+    if (audioProcessor.isEditorInAdvancedMode)
+    {
+        viewToggleButtons.setToggleState(true, juce::dontSendNotification);
+        viewToggleButtons.setButtonText("Advanced");
+        addAndMakeVisible(mGateEditor.get());
+        addAndMakeVisible(mDeEsserEditor.get());
+        addAndMakeVisible(mEqualizerEditor.get());
+        addAndMakeVisible(mCompressorEditor.get());
+        addAndMakeVisible(mSaturatorEditor.get());
+        addAndMakeVisible(mReverbEditor.get());
+        mOneKnobSlider.setVisible(false);
+    }
     //==============================================================================
 
     mMeterInLeft.setBounds(20, 20, 20, 150); //x, y, width, height
@@ -258,33 +272,36 @@ void OneKnobVocalAudioProcessorEditor::updateRanges()
 
 void OneKnobVocalAudioProcessorEditor::changeToggleStateOnClick(juce::Button* button)
 {
-    auto state = button->getToggleState();
-    juce::String selectedString = state ? "Advanced" : "Basic";
-
-    button->setButtonText(selectedString);
-
-    if (selectedString == "Advanced")
+    if (button == &viewToggleButtons)
     {
-        addAndMakeVisible(mGateEditor.get());
-        addAndMakeVisible(mDeEsserEditor.get());
-        addAndMakeVisible(mEqualizerEditor.get());
-        addAndMakeVisible(mCompressorEditor.get());
-        addAndMakeVisible(mSaturatorEditor.get());
-        addAndMakeVisible(mReverbEditor.get());
-        mOneKnobSlider.setVisible(false);
-    }
-    else
-    {
-        addAndMakeVisible(mOneKnobSlider);
-        mGateEditor.get()->setVisible(false);
-        mDeEsserEditor.get()->setVisible(false);
-        mEqualizerEditor.get()->setVisible(false);
-        mCompressorEditor.get()->setVisible(false);
-        mSaturatorEditor.get()->setVisible(false);
-        mReverbEditor.get()->setVisible(false);
-    }
+        auto state = button->getToggleState();
+        juce::String selectedString = state ? "Advanced" : "Basic";
 
+        button->setButtonText(selectedString);
 
+        if (selectedString == "Advanced")
+        {
+            addAndMakeVisible(mGateEditor.get());
+            addAndMakeVisible(mDeEsserEditor.get());
+            addAndMakeVisible(mEqualizerEditor.get());
+            addAndMakeVisible(mCompressorEditor.get());
+            addAndMakeVisible(mSaturatorEditor.get());
+            addAndMakeVisible(mReverbEditor.get());
+            mOneKnobSlider.setVisible(false);
+            audioProcessor.isEditorInAdvancedMode = true;
+        }
+        else
+        {
+            addAndMakeVisible(mOneKnobSlider);
+            mGateEditor.get()->setVisible(false);
+            mDeEsserEditor.get()->setVisible(false);
+            mEqualizerEditor.get()->setVisible(false);
+            mCompressorEditor.get()->setVisible(false);
+            mSaturatorEditor.get()->setVisible(false);
+            mReverbEditor.get()->setVisible(false);
+            audioProcessor.isEditorInAdvancedMode = false;
+        }
+    }
 }
 
 void OneKnobVocalAudioProcessorEditor::savePreset()
