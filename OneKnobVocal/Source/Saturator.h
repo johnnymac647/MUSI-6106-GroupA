@@ -42,7 +42,7 @@ public:
 
     inline static const float parameterSettings[effectParameters::kNumOfParameters][parameterRange::kParameterRangeNumbers]
     {
-        {-96.0f, 12.0f, 0.0f},
+        {-36.0f, 12.0f, 0.0f},
         {0.0f, 1.0f, 0.0f},
         {0.01f, 10.0f, 1.0f}
     };

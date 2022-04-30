@@ -47,11 +47,11 @@ public:
 
     inline static const float parameterSettings[effectParameters::kNumOfParameters][parameterRange::kParameterRangeNumbers]
     {
-        {-96.0f, 12.0f, 0.0f},
-        {-60.0f, 0.0f, -18.0f},
-        {0.0f, 1000.0f, 1.0f},
-        {0.0f, 5000.0f, 100.0f},
-        {1.0f, 100.0f, 10.0f}
+        {-36.0f, 12.0f, 0.0f},
+        {-48.0f, 0.0f, -18.0f},
+        {0.0f, 50.0f, 1.0f},
+        {0.0f, 100.0f, 100.0f},
+        {1.0f, 10.0f, 10.0f}
     };
 
     static void addToParameterLayout(std::vector<std::unique_ptr<juce::RangedAudioParameter>>& params)
