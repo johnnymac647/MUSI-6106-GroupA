@@ -24,16 +24,20 @@ CompressorEditor::CompressorEditor(OneKnobVocalAudioProcessor& p)
         flipToggleButtons[i].onClick = [this, i] { changeToggleStateOnClick(&flipToggleButtons[i]); };
         addAndMakeVisible(flipToggleButtons[i]);
 
-        editorSliders[i].setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
-        editorSliders[i].setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
-        editorSliders[i].addListener(this);
-        addAndMakeVisible(editorSliders[i]);
-
         sliderAttachments[i] = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts,
             Compressor::parameterIDs[i],
             editorSliders[i]);
+
+        editorSliders[i].setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
+        editorSliders[i].setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
+
         editorSliders[i].setMinAndMaxValues(mProcessor.knobValueMap[Compressor::parameterIDs[i]].start,
             mProcessor.knobValueMap[Compressor::parameterIDs[i]].end);
+
+        editorSliders[i].addListener(this);
+        addAndMakeVisible(editorSliders[i]);
+
+
         editorSliders[i].setTooltip("Min: " + std::to_string(editorSliders[i].getMinValue()) + ", " + "Max: " + std::to_string(editorSliders[i].getMaxValue()));
         editorSliders[i].setBounds(0, i * 40 + 40, 120, 20);
     }

@@ -22,59 +22,6 @@ OneKnobVocalAudioProcessorEditor::OneKnobVocalAudioProcessorEditor (OneKnobVocal
     audioProcessor.isEditorOpen = true;
 
 
-    mainDropdownBox.setBounds(280, 40, 160, 20);
-    addAndMakeVisible(mainDropdownBox);
-    mainDropdownBox.addItem("Default", kDefault);
-    mainDropdownBox.addItem("Club", kClub);
-    mainDropdownBox.addItem("Country", kCountry);
-    mainDropdownBox.addItem("Pop", kPop);
-    mainDropdownBox.addItem("Rock", kRock);
-    mainDropdownBox.addItem("Select Custom...", kCustomSelect);
-    mainDropdownBox.setTextWhenNothingSelected("Custom");
-
-    mainDropdownBox.onChange = [this] { 
-        loadPreset();
-    };
-    mainDropdownBox.setSelectedId(kDefault);
-
-    savePresetButton.setBounds(460, 40, 60, 20);
-    addAndMakeVisible(savePresetButton);
-
-
-
-    savePresetButton.onClick = [&]
-    {
-        savePreset();
-    };
-
-
-
-    // Alison: Toggle implement for switch between main vs advanced setting GUI
-    //==============================================================================
-    viewToggleButtons.setClickingTogglesState(true);
-    viewToggleButtons.setBounds(650, 650, 120, 60);
-    viewToggleButtons.setButtonText("Basic");
-    viewToggleButtons.onClick = [this] { changeToggleStateOnClick(&viewToggleButtons); };
-    addAndMakeVisible(viewToggleButtons);
-    viewToggleButtons.setAlwaysOnTop(true);
-    addAndMakeVisible(mOneKnobSlider);
-    //==============================================================================
-    
-    mMeterInLeft.setBounds(20, 20, 20, 150); //x, y, width, height
-    mMeterInRight.setBounds(60, 20, 20, 150);
-    mMeterOutLeft.setBounds(720, 20, 20, 150);
-    mMeterOutRight.setBounds(760, 20, 20, 150);
-    
-    addAndMakeVisible(mMeterInLeft);
-    addAndMakeVisible(mMeterInRight);
-    addAndMakeVisible(mMeterOutLeft);
-    addAndMakeVisible(mMeterOutRight);
-    
-    startTimerHz(24); //refresh the meter at the rate of 24Hz
-    
-    audioProcessor.loadedPreset.addChangeListener(this);
-    audioProcessor.loadedApvts.addChangeListener(this);
-
     mGateEditor = std::make_unique<GateEditor>(p);
     mGateEditor->setSize(133, 600); // (133, 400)
     mGateEditor->setTopLeftPosition(0, 200);
@@ -99,11 +46,12 @@ OneKnobVocalAudioProcessorEditor::OneKnobVocalAudioProcessorEditor (OneKnobVocal
     mReverbEditor->setSize(133, 600);
     mReverbEditor->setTopLeftPosition(667, 200);
 
+
+    OneKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts, "ONE_KNOB", mOneKnobSlider);
     mOneKnobSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     mOneKnobSlider.setRange(0, 1);
     mOneKnobSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 10);
     mOneKnobSlider.setBounds(0, 650, 120, 120);
-    OneKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts, "ONE_KNOB", mOneKnobSlider);
 
     royalTheme.setColour(juce::Slider::thumbColourId, textColor);
     royalTheme.setColour(juce::Slider::textBoxTextColourId, textColor);
@@ -114,11 +62,65 @@ OneKnobVocalAudioProcessorEditor::OneKnobVocalAudioProcessorEditor (OneKnobVocal
     mOneKnobSlider.setLookAndFeel(&royalTheme);
 
 
+
+    mainDropdownBox.setBounds(280, 40, 160, 20);
+    addAndMakeVisible(mainDropdownBox);
+    mainDropdownBox.addItem("Default", kDefault);
+    mainDropdownBox.addItem("Club", kClub);
+    mainDropdownBox.addItem("Country", kCountry);
+    mainDropdownBox.addItem("Pop", kPop);
+    mainDropdownBox.addItem("Rock", kRock);
+    mainDropdownBox.addItem("Select Custom...", kCustomSelect);
+    mainDropdownBox.setSelectedId(audioProcessor.selectedComboBoxID);
+    mainDropdownBox.setTextWhenNothingSelected(audioProcessor.selectedComboBoxMessage);
+
+    mainDropdownBox.onChange = [this] {
+        if (!isLoadingStateInformation)
+            loadPreset();
+    };
+
+    savePresetButton.setBounds(460, 40, 60, 20);
+    addAndMakeVisible(savePresetButton);
+
+
+
+    savePresetButton.onClick = [&]
+    {
+        savePreset();
+    };
+
+
+
+    // Alison: Toggle implement for switch between main vs advanced setting GUI
+    //==============================================================================
+    viewToggleButtons.setClickingTogglesState(true);
+    viewToggleButtons.setBounds(650, 650, 120, 60);
+    viewToggleButtons.setButtonText("Basic");
+    viewToggleButtons.onClick = [this] { changeToggleStateOnClick(&viewToggleButtons); };
+    addAndMakeVisible(viewToggleButtons);
+    viewToggleButtons.setAlwaysOnTop(true);
+    addAndMakeVisible(mOneKnobSlider);
+    //==============================================================================
+
+    mMeterInLeft.setBounds(20, 20, 20, 150); //x, y, width, height
+    mMeterInRight.setBounds(60, 20, 20, 150);
+    mMeterOutLeft.setBounds(720, 20, 20, 150);
+    mMeterOutRight.setBounds(760, 20, 20, 150);
+
+    addAndMakeVisible(mMeterInLeft);
+    addAndMakeVisible(mMeterInRight);
+    addAndMakeVisible(mMeterOutLeft);
+    addAndMakeVisible(mMeterOutRight);
+
+    startTimerHz(24); //refresh the meter at the rate of 24Hz
+
+    audioProcessor.loadedPreset.addChangeListener(this);
+    audioProcessor.loadedApvts.addChangeListener(this);
+    audioProcessor.loadedStateInformation.addChangeListener(this);
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
 
     setSize (800, 750);
-    
 }
 
 
@@ -126,6 +128,9 @@ OneKnobVocalAudioProcessorEditor::OneKnobVocalAudioProcessorEditor (OneKnobVocal
 OneKnobVocalAudioProcessorEditor::~OneKnobVocalAudioProcessorEditor()
 {
     audioProcessor.isEditorOpen = false;
+    audioProcessor.loadedPreset.removeChangeListener(this);
+    audioProcessor.loadedApvts.removeChangeListener(this);
+    audioProcessor.loadedStateInformation.removeChangeListener(this);
 }
 
 //==============================================================================
@@ -177,7 +182,21 @@ void OneKnobVocalAudioProcessorEditor::changeListenerCallback(juce::ChangeBroadc
         updateRanges();
     }
     else if (source == &audioProcessor.loadedApvts)
+    {
         addAsSliderListener();
+    }
+    else if (source == &audioProcessor.loadedStateInformation)
+    {
+        isLoadingStateInformation = true;
+        removeAsSliderListener();
+        updateRanges();
+        mainDropdownBox.setSelectedId(audioProcessor.selectedComboBoxID);
+        if (!audioProcessor.selectedComboBoxID)
+        {
+            mainDropdownBox.setTextWhenNoChoicesAvailable(audioProcessor.selectedComboBoxMessage);
+        }
+        isLoadingStateInformation = false;
+    }
 }
 
 void OneKnobVocalAudioProcessorEditor::addAsSliderListener()
@@ -204,6 +223,8 @@ void OneKnobVocalAudioProcessorEditor::sliderValueChanged(juce::Slider* slider)
 {
     if (mainDropdownBox.getSelectedId())
     {
+        audioProcessor.selectedComboBoxMessage = mainDropdownBox.getText() + "(Modified)";
+        audioProcessor.selectedComboBoxID = 0;
         mainDropdownBox.setTextWhenNothingSelected(mainDropdownBox.getText() + "(Modified)");
         mainDropdownBox.setSelectedId(0);
     }
@@ -281,7 +302,7 @@ void OneKnobVocalAudioProcessorEditor::savePreset()
             if (fileToSave.getFullPathName() != "")
             {
                 juce::MemoryBlock dataToSave;
-                audioProcessor.getStateInformation(dataToSave);
+                audioProcessor.savePluginPreset(dataToSave);
 
 
                 fileToSave.replaceWithData(dataToSave.getData(), dataToSave.getSize());
@@ -294,19 +315,29 @@ void OneKnobVocalAudioProcessorEditor::loadPreset()
     switch (mainDropdownBox.getSelectedId())
     {
     case kDefault:
-        audioProcessor.setStateInformation(BinaryData::Default_pst, BinaryData::Default_pstSize);
+        audioProcessor.loadSavedPreset(BinaryData::Default_pst, BinaryData::Default_pstSize);
+        audioProcessor.selectedComboBoxID = kDefault;
+        audioProcessor.selectedComboBoxMessage = mainDropdownBox.getText();
         break;
     case kClub:
-        audioProcessor.setStateInformation(BinaryData::Club_pst, BinaryData::Club_pstSize);
+        audioProcessor.loadSavedPreset(BinaryData::Club_pst, BinaryData::Club_pstSize);
+        audioProcessor.selectedComboBoxID = kClub;
+        audioProcessor.selectedComboBoxMessage = mainDropdownBox.getText();
         break;
     case kCountry:
-        audioProcessor.setStateInformation(BinaryData::Country_pst, BinaryData::Country_pstSize);
+        audioProcessor.loadSavedPreset(BinaryData::Country_pst, BinaryData::Country_pstSize);
+        audioProcessor.selectedComboBoxID = kCountry;
+        audioProcessor.selectedComboBoxMessage = mainDropdownBox.getText();
         break;
     case kPop:
-        audioProcessor.setStateInformation(BinaryData::Pop_pst, BinaryData::Pop_pstSize);
+        audioProcessor.loadSavedPreset(BinaryData::Pop_pst, BinaryData::Pop_pstSize);
+        audioProcessor.selectedComboBoxID = kPop;
+        audioProcessor.selectedComboBoxMessage = mainDropdownBox.getText();
         break;
     case kRock:
-        audioProcessor.setStateInformation(BinaryData::Rock_pst, BinaryData::Rock_pstSize);
+        audioProcessor.loadSavedPreset(BinaryData::Rock_pst, BinaryData::Rock_pstSize);
+        audioProcessor.selectedComboBoxID = kRock;
+        audioProcessor.selectedComboBoxMessage = mainDropdownBox.getText();
         break;
     case kCustomSelect:
     {
@@ -325,11 +356,13 @@ void OneKnobVocalAudioProcessorEditor::loadPreset()
                     juce::MemoryBlock dataToLoad;
                     fileToLoad.loadFileAsData(dataToLoad);
 
-                    audioProcessor.setStateInformation(dataToLoad.getData(), dataToLoad.getSize());
+                    audioProcessor.loadSavedPreset(dataToLoad.getData(), dataToLoad.getSize());
                 }
                 mainDropdownBox.setTextWhenNothingSelected("Custom");
             });
         mainDropdownBox.setSelectedId(0);
+        audioProcessor.selectedComboBoxID = 0;
+        audioProcessor.selectedComboBoxMessage = "Custom";
         break;
     }
     default:

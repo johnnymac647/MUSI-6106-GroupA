@@ -56,7 +56,10 @@ public:
 
     //==============================================================================
     void getStateInformation (juce::MemoryBlock& destData) override;
+    void savePluginPreset(juce::MemoryBlock& destData);
     void setStateInformation (const void* data, int sizeInBytes) override;
+
+    void loadSavedPreset(const void* data, int sizeInBytes);
     
     float getRmsValue(const int channel, const int position) const;
 
@@ -66,6 +69,13 @@ public:
     juce::HashMap<juce::String, ModdedNormalisableRange<double>> knobValueMap;
     juce::HashMap<juce::String, bool> mappingRangeFlip;
     juce::ValueTree audioParameterValuesToLoad;
+
+    int selectedComboBoxID = 0;
+
+    juce::String selectedComboBoxMessage = "Custom";
+
+
+    juce::ChangeBroadcaster loadedStateInformation;
 
     juce::ChangeBroadcaster loadedPreset;
 

@@ -25,16 +25,21 @@ ReverbEditor::ReverbEditor(OneKnobVocalAudioProcessor& p)
         flipToggleButtons[i].setTooltip("Flip the mapping function");
         addAndMakeVisible(flipToggleButtons[i]);
 
-        editorSliders[i].setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
-        editorSliders[i].setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
-        editorSliders[i].addListener(this);
-        addAndMakeVisible(editorSliders[i]);
 
         sliderAttachments[i] = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts,
             Reverb::parameterIDs[i],
             editorSliders[i]);
+
+        editorSliders[i].setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
+        editorSliders[i].setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
+
         editorSliders[i].setMinAndMaxValues(mProcessor.knobValueMap[Reverb::parameterIDs[i]].start,
             mProcessor.knobValueMap[Reverb::parameterIDs[i]].end);
+
+        editorSliders[i].addListener(this);
+        addAndMakeVisible(editorSliders[i]);
+
+
         editorSliders[i].setTooltip("Min: " + std::to_string(editorSliders[i].getMinValue()) + ", " + "Max: " + std::to_string(editorSliders[i].getMaxValue()));
         editorSliders[i].setBounds(0, i * 40 + 40, 120, 20);
     }

@@ -82,6 +82,8 @@ private:
 
     std::unique_ptr<juce::FileChooser> myChooser;
 
+    bool isLoadingStateInformation = false;
+
     RangeDisplay mainTooltip{ this };
 
     void changeListenerCallback(juce::ChangeBroadcaster* source) override;

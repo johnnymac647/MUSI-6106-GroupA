@@ -279,6 +279,29 @@ void OneKnobVocalAudioProcessor::getStateInformation (juce::MemoryBlock& destDat
     // as intermediaries to make it easy to save and load complex data.
     auto paramsValueTree = apvts.copyState();
     auto mappingValueTree = saveMapToValueTree();
+
+    juce::ValueTree miscStateInfomation("Misc");
+    juce::ValueTree comboBoxState("Preset");
+    comboBoxState.setProperty("id", selectedComboBoxID, nullptr);
+    comboBoxState.setProperty("Message", selectedComboBoxMessage, nullptr);
+
+    miscStateInfomation.addChild(comboBoxState, -1, nullptr);
+
+    juce::ValueTree state("SavingState");
+    state.addChild(paramsValueTree, -1, nullptr);
+    state.addChild(mappingValueTree, -1, nullptr);
+    state.addChild(miscStateInfomation, -1, nullptr);
+    std::unique_ptr<juce::XmlElement> xml(state.createXml());
+    copyXmlToBinary(*xml, destData);
+}
+
+void OneKnobVocalAudioProcessor::savePluginPreset(juce::MemoryBlock& destData)
+{
+    // You should use this method to store your parameters in the memory block.
+    // You could do that either as raw data, or use the XML or ValueTree classes
+    // as intermediaries to make it easy to save and load complex data.
+    auto paramsValueTree = apvts.copyState();
+    auto mappingValueTree = saveMapToValueTree();
     juce::ValueTree state("SavingState");
     state.addChild(paramsValueTree, -1, nullptr);
     state.addChild(mappingValueTree, -1, nullptr);
@@ -298,6 +321,15 @@ void OneKnobVocalAudioProcessor::setStateInformation (const void* data, int size
 
         apvts.removeParameterListener("ONE_KNOB", this);
         loadMapFromValueTree(state);
+        if (state.getChildWithName("Misc").isValid())
+        {
+            if (state.getChildWithName("Misc").getChildWithName("Preset").isValid())
+            {
+                selectedComboBoxID = state.getChildWithName("Misc").getChildWithName("Preset")["id"];
+                selectedComboBoxMessage = state.getChildWithName("Misc").getChildWithName("Preset")["Message"];
+            }
+        }
+        loadedStateInformation.sendChangeMessage();
         if (state.getChildWithName(apvts.state.getType()).isValid() && !isEditorOpen)
         {
             apvts.replaceState(state.getChildWithName(apvts.state.getType()));
@@ -310,6 +342,30 @@ void OneKnobVocalAudioProcessor::setStateInformation (const void* data, int size
 
 }
 
+void OneKnobVocalAudioProcessor::loadSavedPreset(const void* data, int sizeInBytes)
+{
+    // You should use this method to restore your parameters from this memory block,
+    // whose contents will have been created by the getStateInformation() call.
+    std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
+
+    if (xmlState.get() != nullptr)
+    {
+        auto state = juce::ValueTree::fromXml(*xmlState);
+
+        apvts.removeParameterListener("ONE_KNOB", this);
+        loadMapFromValueTree(state);
+        loadedPreset.sendChangeMessage();
+        if (state.getChildWithName(apvts.state.getType()).isValid() && !isEditorOpen)
+        {
+            apvts.replaceState(state.getChildWithName(apvts.state.getType()));
+            loadedApvts.sendChangeMessage();
+        }
+        else
+            audioParameterValuesToLoad = state.getChildWithName(apvts.state.getType());
+        apvts.addParameterListener("ONE_KNOB", this);
+    }
+
+}
 
 
 float OneKnobVocalAudioProcessor::getRmsValue(const int channel, const int position) const
@@ -472,7 +528,6 @@ void OneKnobVocalAudioProcessor::loadMapFromValueTree(juce::ValueTree state)
             }
         }
     }
-    loadedPreset.sendChangeMessage();
 }
 
 void OneKnobVocalAudioProcessor::parameterChanged(const juce::String& parameterID, float newValue)
@@ -505,7 +560,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout OneKnobVocalAudioProcessor::
     Saturator::addToParameterLayout(params);
     Reverb::addToParameterLayout(params);
 
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("ONE_KNOB", "OneKnob", 0.0f, 1.0f, 0.5f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("ONE_KNOB", "One Knob", 0.0f, 1.0f, 0.5f));
 
     return { params.begin() , params.end() };
 }

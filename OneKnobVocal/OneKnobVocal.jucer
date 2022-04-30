@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="yHeTrN" name="OneKnobVocal" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
-              cppLanguageStandard="17">
+              cppLanguageStandard="17" pluginManufacturer="2021-MUSI6016-GroupA">
   <MAINGROUP id="t5B24K" name="OneKnobVocal">
     <GROUP id="{CE273054-61AD-8A7A-B55C-4FCBBB1F5F83}" name="Presets">
       <FILE id="nRAV3W" name="Club.pst" compile="0" resource="1" file="Resources/Club.pst"/>
