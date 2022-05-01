@@ -11,7 +11,6 @@
 #include "Compressor.h"
 #include "DeEsser.h"
 #include "Equalizer.h"
-#include "Gain.h"
 #include "Gate.h"
 #include "Reverb.h"
 #include "Saturator.h"
@@ -20,67 +19,384 @@
 OneKnobVocalAudioProcessorEditor::OneKnobVocalAudioProcessorEditor (OneKnobVocalAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
-    mInputGainSlider = std::make_unique<GainSlider>(dynamic_cast<Gain&>(*audioProcessor.inputGainNode->getProcessor()));
-    mInputGainSlider->setSize(400, 50);
-    mInputGainSlider->setTopLeftPosition(0, 0);
-    addAndMakeVisible(mInputGainSlider.get());
+    audioProcessor.isEditorOpen = true;
 
-    mGateEditor = std::make_unique<GateEditor>(dynamic_cast<Gate&>(*audioProcessor.gateNode->getProcessor()));
-    mGateEditor->setSize(133, 550);
-    mGateEditor->setTopLeftPosition(0, 50);
-    addAndMakeVisible(mGateEditor.get());
 
-    mDeEsserEditor = std::make_unique<DeEsserEditor>(dynamic_cast<Deesser&>(*audioProcessor.deEsserNode->getProcessor()));
-    mDeEsserEditor->setSize(134, 550);
-    mDeEsserEditor->setTopLeftPosition(133, 50);
-    addAndMakeVisible(mDeEsserEditor.get());
+    mGateEditor = std::make_unique<GateEditor>(p);
+    mGateEditor->setSize(133, 600); // (133, 400)
+    mGateEditor->setTopLeftPosition(0, 200);
 
-    mEqualizerEditor = std::make_unique<EqualizerEditor>(dynamic_cast<Equalizer&>(*audioProcessor.equalizerNode->getProcessor()));
-    mEqualizerEditor->setSize(133, 550);
-    mEqualizerEditor->setTopLeftPosition(267, 50);
-    addAndMakeVisible(mEqualizerEditor.get());
+    mDeEsserEditor = std::make_unique<DeEsserEditor>(p);
+    mDeEsserEditor->setSize(134, 600);
+    mDeEsserEditor->setTopLeftPosition(133, 200);
 
-    mCompressorEditor = std::make_unique<CompressorEditor>(dynamic_cast<Compressor&>(*audioProcessor.compressorNode->getProcessor()));
-    mCompressorEditor->setSize(133, 550);
-    mCompressorEditor->setTopLeftPosition(400, 50);
-    addAndMakeVisible(mCompressorEditor.get());
+    mEqualizerEditor = std::make_unique<EqualizerEditor>(p);
+    mEqualizerEditor->setSize(133, 600);
+    mEqualizerEditor->setTopLeftPosition(267, 200);
 
-    mSaturatorEditor = std::make_unique<SaturatorEditor>(dynamic_cast<Saturator&>(*audioProcessor.saturatorNode->getProcessor()));
-    mSaturatorEditor->setSize(134, 550);
-    mSaturatorEditor->setTopLeftPosition(533, 50);
-    addAndMakeVisible(mSaturatorEditor.get());
+    mCompressorEditor = std::make_unique<CompressorEditor>(p);
+    mCompressorEditor->setSize(133, 600);
+    mCompressorEditor->setTopLeftPosition(400, 200);
 
-    mReverbEditor = std::make_unique<ReverbEditor>(dynamic_cast<Reverb&>(*audioProcessor.reverbNode->getProcessor()));
-    mReverbEditor->setSize(133, 550);
-    mReverbEditor->setTopLeftPosition(667, 50);
-    addAndMakeVisible(mReverbEditor.get());
+    mSaturatorEditor = std::make_unique<SaturatorEditor>(p);
+    mSaturatorEditor->setSize(134, 600);
+    mSaturatorEditor->setTopLeftPosition(533, 200);
 
-    mOutputGainSlider = std::make_unique<GainSlider>(dynamic_cast<Gain&>(*audioProcessor.outputGainNode->getProcessor()), juce::Colours::cyan);
-    mOutputGainSlider->setSize(400, 50);
-    mOutputGainSlider->setTopLeftPosition(400, 0);
-    addAndMakeVisible(mOutputGainSlider.get());
+    mReverbEditor = std::make_unique<ReverbEditor>(p);
+    mReverbEditor->setSize(133, 600);
+    mReverbEditor->setTopLeftPosition(667, 200);
+
+    OneKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts, "ONE_KNOB", mOneKnobSlider);
+    mOneKnobSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    mOneKnobSlider.setRange(0, 1);
+    mOneKnobSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 100, 20);
+    mOneKnobSlider.setBounds(0, 650, 120, 120);
+
+    royalTheme.setColour(juce::Slider::thumbColourId, textColor);
+    royalTheme.setColour(juce::Slider::textBoxTextColourId, textColor);
+    royalTheme.setColour(juce::Slider::rotarySliderFillColourId, textColor);
+    royalTheme.setColour(juce::Slider::rotarySliderOutlineColourId, darkGold);
+    royalTheme.setColour(juce::Slider::textBoxOutlineColourId, clear);
+    royalTheme.setColour(juce::TextButton::buttonOnColourId, lightPurple);
+    royalTheme.setColour(juce::TextButton::buttonColourId, lightPurple);
+    royalTheme.setColour(juce::TextButton::textColourOnId, textColor);
+    royalTheme.setColour(juce::TextButton::textColourOffId, textColor);
+    royalTheme.setColour(juce::ComboBox::backgroundColourId, lightPurple);
+    royalTheme.setColour(juce::ComboBox::textColourId, textColor);
+    royalTheme.setColour(juce::ComboBox::outlineColourId, clear);
+    royalTheme.setColour(juce::ComboBox::arrowColourId, textColor);
+    royalTheme.setColour(juce::ComboBox::buttonColourId, lightPurple);
+    royalTheme.setColour(juce::PopupMenu::backgroundColourId, lightPurple);
+    royalTheme.setColour(juce::PopupMenu::textColourId, textColor);
+    royalTheme.setColour(juce::PopupMenu::highlightedTextColourId, juce::Colours::orchid);
+    royalTheme.setColour(juce::PopupMenu::highlightedBackgroundColourId, backgroundColor);
+
+    mOneKnobSlider.setLookAndFeel(&royalTheme);
+    savePresetButton.setLookAndFeel(&royalTheme);
+    mainDropdownBox.setLookAndFeel(&royalTheme);
+    viewToggleButtons.setLookAndFeel(&royalTheme);
+
+    mainDropdownBox.setBounds(280, 180, 160, 20);
+    addAndMakeVisible(mainDropdownBox);
+    mainDropdownBox.addItem("Default", kDefault);
+    mainDropdownBox.addItem("Club", kClub);
+    mainDropdownBox.addItem("Country", kCountry);
+    mainDropdownBox.addItem("Pop", kPop);
+    mainDropdownBox.addItem("Rock", kRock);
+    mainDropdownBox.addItem("Select Custom...", kCustomSelect);
+    mainDropdownBox.setSelectedId(audioProcessor.selectedComboBoxID);
+    mainDropdownBox.setTextWhenNothingSelected(audioProcessor.selectedComboBoxMessage);
+    
+    mainDropdownBox.setColour(juce::PopupMenu::backgroundColourId, lightPurple);
+    mainDropdownBox.setColour(juce::PopupMenu::textColourId, textColor);
+
+    mainDropdownBox.onChange = [this] {
+        if (!isLoadingStateInformation)
+            loadPreset();
+    };
+
+    savePresetButton.setBounds(460, 180, 60, 20);
+    addAndMakeVisible(savePresetButton);
+
+
+    savePresetButton.onClick = [&]
+    {
+        savePreset();
+    };
+
+
+
+    // Alison: Toggle implement for switch between main vs advanced setting GUI
+    //==============================================================================
+    viewToggleButtons.setClickingTogglesState(true);
+    viewToggleButtons.setBounds(650, 650, 120, 60);
+    viewToggleButtons.setButtonText("Basic");
+    viewToggleButtons.onClick = [this] { changeToggleStateOnClick(&viewToggleButtons); };
+    addAndMakeVisible(viewToggleButtons);
+    viewToggleButtons.setAlwaysOnTop(true);
+    addAndMakeVisible(mOneKnobSlider);
+
+
+    if (audioProcessor.isEditorInAdvancedMode)
+    {
+        viewToggleButtons.setToggleState(true, juce::dontSendNotification);
+        setAdvancedMode(audioProcessor.isEditorInAdvancedMode);
+    }
+    //==============================================================================
+
+    mMeterInLeft.setBounds(20, 20, 20, 150); //x, y, width, height
+    mMeterInRight.setBounds(60, 20, 20, 150);
+    mMeterOutLeft.setBounds(720, 20, 20, 150);
+    mMeterOutRight.setBounds(760, 20, 20, 150);
+
+    addAndMakeVisible(mMeterInLeft);
+    addAndMakeVisible(mMeterInRight);
+    addAndMakeVisible(mMeterOutLeft);
+    addAndMakeVisible(mMeterOutRight);
+
+    startTimerHz(24); //refresh the meter at the rate of 24Hz
+
+    audioProcessor.loadedPreset.addChangeListener(this);
+    audioProcessor.loadedApvts.addChangeListener(this);
+    audioProcessor.loadedStateInformation.addChangeListener(this);
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (800, 600);
+
+    setSize (800, 750);
 }
+
+
 
 OneKnobVocalAudioProcessorEditor::~OneKnobVocalAudioProcessorEditor()
 {
+    audioProcessor.isEditorOpen = false;
+    audioProcessor.loadedPreset.removeChangeListener(this);
+    audioProcessor.loadedApvts.removeChangeListener(this);
+    audioProcessor.loadedStateInformation.removeChangeListener(this);
 }
 
 //==============================================================================
+
+
+void OneKnobVocalAudioProcessorEditor::timerCallback()
+{
+    float fInLevelLeft = audioProcessor.getRmsValue(0, 0);
+    float fInLevelRight = audioProcessor.getRmsValue(1, 0);
+    float fOutLevelLeft = audioProcessor.getRmsValue(0, 1);
+    float fOutLevelRight = audioProcessor.getRmsValue(1, 1);
+    
+    
+    mMeterInLeft.setLevel(fInLevelLeft);
+    mMeterInRight.setLevel(fInLevelRight);
+    mMeterOutLeft.setLevel(fOutLevelLeft);
+    mMeterOutRight.setLevel(fOutLevelRight);
+    
+    mMeterInLeft.repaint();
+    mMeterInRight.repaint();
+    mMeterOutLeft.repaint();
+    mMeterOutRight.repaint();
+}
+
+
 void OneKnobVocalAudioProcessorEditor::paint (juce::Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
-
-    g.setColour (juce::Colours::white);
-    g.setFont (15.0f);
-    g.drawFittedText ("Hello World!", getLocalBounds(), juce::Justification::centred, 1);
+    g.fillAll (backgroundColor);
+    g.setColour(textColor);
+    g.setFont(savoyeItalic.withHeight(100.0f));
+    g.drawText("Voce Dolce", getWidth()/2 - 200, 110, 400, 20, juce::Justification::centred, true);
+    
 }
 
 void OneKnobVocalAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
+    auto sliderWidth = 380;
+    mOneKnobSlider.setBounds ((getWidth() - sliderWidth)/2, (getHeight() - sliderWidth)/2 + 50, sliderWidth, sliderWidth);
+}
+
+void OneKnobVocalAudioProcessorEditor::changeListenerCallback(juce::ChangeBroadcaster* source)
+{
+    if (source == &audioProcessor.loadedPreset)
+    {
+        removeAsSliderListener();
+        updateRanges();
+    }
+    else if (source == &audioProcessor.loadedApvts)
+    {
+        addAsSliderListener();
+    }
+    else if (source == &audioProcessor.loadedStateInformation)
+    {
+        isLoadingStateInformation = true;
+        removeAsSliderListener();
+        updateRanges();
+        viewToggleButtons.setToggleState(audioProcessor.isEditorInAdvancedMode, juce::dontSendNotification);
+        setAdvancedMode(audioProcessor.isEditorInAdvancedMode);
+        mainDropdownBox.setSelectedId(audioProcessor.selectedComboBoxID);
+        if (!audioProcessor.selectedComboBoxID)
+        {
+            mainDropdownBox.setTextWhenNoChoicesAvailable(audioProcessor.selectedComboBoxMessage);
+        }
+        isLoadingStateInformation = false;
+    }
+}
+
+void OneKnobVocalAudioProcessorEditor::addAsSliderListener()
+{
+    mGateEditor->addSliderListeners(this);
+    mDeEsserEditor->addSliderListeners(this);
+    mEqualizerEditor->addSliderListeners(this);
+    mCompressorEditor->addSliderListeners(this);
+    mSaturatorEditor->addSliderListeners(this);
+    mReverbEditor->addSliderListeners(this);
+}
+
+void OneKnobVocalAudioProcessorEditor::removeAsSliderListener()
+{
+    mGateEditor->removeSliderListeners(this);
+    mDeEsserEditor->removeSliderListeners(this);
+    mEqualizerEditor->removeSliderListeners(this);
+    mCompressorEditor->removeSliderListeners(this);
+    mSaturatorEditor->removeSliderListeners(this);
+    mReverbEditor->removeSliderListeners(this);
+}
+
+void OneKnobVocalAudioProcessorEditor::sliderValueChanged(juce::Slider* slider)
+{
+    if (mainDropdownBox.getSelectedId())
+    {
+        audioProcessor.selectedComboBoxMessage = mainDropdownBox.getText() + "(Modified)";
+        audioProcessor.selectedComboBoxID = 0;
+        mainDropdownBox.setTextWhenNothingSelected(mainDropdownBox.getText() + "(Modified)");
+        mainDropdownBox.setSelectedId(0);
+    }
+}
+
+void OneKnobVocalAudioProcessorEditor::updateRanges()
+{
+    mGateEditor->updateRanges();
+    mGateEditor->setAllButtonState();
+
+    mDeEsserEditor->updateRanges();
+    mDeEsserEditor->setAllButtonState();
+
+    mEqualizerEditor->updateRanges();
+    mEqualizerEditor->setAllButtonState();
+
+    mCompressorEditor->updateRanges();
+    mCompressorEditor->setAllButtonState();
+
+    mSaturatorEditor->updateRanges();
+    mSaturatorEditor->setAllButtonState();
+
+    mReverbEditor->updateRanges();
+    mReverbEditor->setAllButtonState();
+
+    audioProcessor.setAudioParameters();
+}
+
+// Alison: Toggle for main vs advanced setting switch
+//==============================================================================
+
+
+void OneKnobVocalAudioProcessorEditor::setAdvancedMode(bool b)
+{
+    if (b)
+    {
+        viewToggleButtons.setButtonText("Advanced");
+        addAndMakeVisible(mGateEditor.get());
+        addAndMakeVisible(mDeEsserEditor.get());
+        addAndMakeVisible(mEqualizerEditor.get());
+        addAndMakeVisible(mCompressorEditor.get());
+        addAndMakeVisible(mSaturatorEditor.get());
+        addAndMakeVisible(mReverbEditor.get());
+        mOneKnobSlider.setVisible(false);
+    }
+    else
+    {
+        viewToggleButtons.setButtonText("Basic");
+        addAndMakeVisible(mOneKnobSlider);
+        mGateEditor.get()->setVisible(false);
+        mDeEsserEditor.get()->setVisible(false);
+        mEqualizerEditor.get()->setVisible(false);
+        mCompressorEditor.get()->setVisible(false);
+        mSaturatorEditor.get()->setVisible(false);
+        mReverbEditor.get()->setVisible(false);
+    }
+}
+
+
+void OneKnobVocalAudioProcessorEditor::changeToggleStateOnClick(juce::Button* button)
+{
+    if (button == &viewToggleButtons)
+    {
+        setAdvancedMode(button->getToggleState());
+
+        audioProcessor.isEditorInAdvancedMode = button->getToggleState();
+    }
+}
+
+void OneKnobVocalAudioProcessorEditor::savePreset()
+{
+    myChooser = std::make_unique<juce::FileChooser>("Saving Presets..",
+        juce::File::getSpecialLocation(juce::File::userHomeDirectory),
+        "*.pst");
+
+    auto folderChooserFlags = juce::FileBrowserComponent::saveMode | juce::FileBrowserComponent::canSelectFiles | juce::FileBrowserComponent::warnAboutOverwriting;
+    myChooser->launchAsync(folderChooserFlags, [this](const juce::FileChooser& chooser)
+        {
+            juce::File fileToSave(chooser.getResult());
+
+
+            if (fileToSave.getFullPathName() != "")
+            {
+                juce::MemoryBlock dataToSave;
+                audioProcessor.savePluginPreset(dataToSave);
+
+
+                fileToSave.replaceWithData(dataToSave.getData(), dataToSave.getSize());
+            }
+        });
+}
+
+void OneKnobVocalAudioProcessorEditor::loadPreset()
+{
+    switch (mainDropdownBox.getSelectedId())
+    {
+    case kDefault:
+        audioProcessor.loadSavedPreset(BinaryData::Default_pst, BinaryData::Default_pstSize);
+        audioProcessor.selectedComboBoxID = kDefault;
+        audioProcessor.selectedComboBoxMessage = mainDropdownBox.getText();
+        break;
+    case kClub:
+        audioProcessor.loadSavedPreset(BinaryData::Club_pst, BinaryData::Club_pstSize);
+        audioProcessor.selectedComboBoxID = kClub;
+        audioProcessor.selectedComboBoxMessage = mainDropdownBox.getText();
+        break;
+    case kCountry:
+        audioProcessor.loadSavedPreset(BinaryData::Country_pst, BinaryData::Country_pstSize);
+        audioProcessor.selectedComboBoxID = kCountry;
+        audioProcessor.selectedComboBoxMessage = mainDropdownBox.getText();
+        break;
+    case kPop:
+        audioProcessor.loadSavedPreset(BinaryData::Pop_pst, BinaryData::Pop_pstSize);
+        audioProcessor.selectedComboBoxID = kPop;
+        audioProcessor.selectedComboBoxMessage = mainDropdownBox.getText();
+        break;
+    case kRock:
+        audioProcessor.loadSavedPreset(BinaryData::Rock_pst, BinaryData::Rock_pstSize);
+        audioProcessor.selectedComboBoxID = kRock;
+        audioProcessor.selectedComboBoxMessage = mainDropdownBox.getText();
+        break;
+    case kCustomSelect:
+    {
+        myChooser = std::make_unique<juce::FileChooser>("Loading Custom Presets..",
+            juce::File::getSpecialLocation(juce::File::userHomeDirectory),
+            "*.pst");
+
+        auto folderChooserFlags = juce::FileBrowserComponent::openMode | juce::FileBrowserComponent::canSelectFiles;
+        myChooser->launchAsync(folderChooserFlags, [this](const juce::FileChooser& chooser)
+            {
+                juce::File fileToLoad(chooser.getResult());
+
+
+                if (fileToLoad.getFullPathName() != "")
+                {
+                    juce::MemoryBlock dataToLoad;
+                    fileToLoad.loadFileAsData(dataToLoad);
+
+                    audioProcessor.loadSavedPreset(dataToLoad.getData(), dataToLoad.getSize());
+                }
+                mainDropdownBox.setTextWhenNothingSelected("Custom");
+            });
+        mainDropdownBox.setSelectedId(0);
+        audioProcessor.selectedComboBoxID = 0;
+        audioProcessor.selectedComboBoxMessage = "Custom";
+        break;
+    }
+    default:
+        break;
+    }
 }

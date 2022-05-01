@@ -33,6 +33,14 @@
 class ProcessorBase  : public juce::AudioProcessor
 {
 public:
+
+    enum parameterRange
+    {
+        kParameterStart = 0,
+        kParameterEnd,
+        kParameterDefault,
+        kParameterRangeNumbers
+    };
     //==============================================================================
     ProcessorBase()
         : AudioProcessor (BusesProperties().withInput ("Input", juce::AudioChannelSet::stereo())

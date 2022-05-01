@@ -1,8 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="yHeTrN" name="OneKnobVocal" projectType="audioplug" useAppConfig="0"
-              addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1">
+              addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
+              cppLanguageStandard="17" pluginManufacturer="2021-MUSI6016-GroupA">
   <MAINGROUP id="t5B24K" name="OneKnobVocal">
+    <GROUP id="{CE273054-61AD-8A7A-B55C-4FCBBB1F5F83}" name="Presets">
+      <FILE id="nRAV3W" name="Club.pst" compile="0" resource="1" file="Resources/Club.pst"/>
+      <FILE id="FPziAc" name="Country.pst" compile="0" resource="1" file="Resources/Country.pst"/>
+      <FILE id="Mi5J18" name="Default.pst" compile="0" resource="1" file="Resources/Default.pst"/>
+      <FILE id="euoz7g" name="Pop.pst" compile="0" resource="1" file="Resources/Pop.pst"/>
+      <FILE id="x63FNX" name="Rock.pst" compile="0" resource="1" file="Resources/Rock.pst"/>
+      <FILE id="lbp9HH" name="SamplePreset.pst" compile="0" resource="1"
+            file="Resources/SamplePreset.pst"/>
+    </GROUP>
+    <GROUP id="{C569CEEF-0225-098C-FDAB-8A44D07C245A}" name="Resources">
+      <FILE id="LfKqTx" name="Savoye Regular.ttf" compile="0" resource="1"
+            file="Resources/Savoye Regular.ttf"/>
+    </GROUP>
+    <GROUP id="{BB5D406B-BE58-476C-AAD2-D1F0F7FAE07C}" name="Inc">
+      <FILE id="QP8gxv" name="RangeDisplay.cpp" compile="1" resource="0"
+            file="Source/RangeDisplay.cpp"/>
+      <FILE id="c9xRqP" name="RangeDisplay.h" compile="0" resource="0" file="Source/RangeDisplay.h"/>
+      <FILE id="CFzKbp" name="ModdedNormalisableRange.h" compile="0" resource="0"
+            file="Source/ModdedNormalisableRange.h"/>
+    </GROUP>
     <GROUP id="{7487D8CA-5F2F-A206-091F-2D45C0C4C956}" name="ProcessingEditors">
       <FILE id="C6aPhe" name="CompressorEditor.cpp" compile="1" resource="0"
             file="Source/CompressorEditor.cpp"/>
@@ -15,8 +36,6 @@
             file="Source/EqualizerEditor.cpp"/>
       <FILE id="LR6aAH" name="EqualizerEditor.h" compile="0" resource="0"
             file="Source/EqualizerEditor.h"/>
-      <FILE id="PTXnML" name="GainSlider.cpp" compile="1" resource="0" file="Source/GainSlider.cpp"/>
-      <FILE id="O7om6L" name="GainSlider.h" compile="0" resource="0" file="Source/GainSlider.h"/>
       <FILE id="kKpuCm" name="GateEditor.cpp" compile="1" resource="0" file="Source/GateEditor.cpp"/>
       <FILE id="a77q93" name="GateEditor.h" compile="0" resource="0" file="Source/GateEditor.h"/>
       <FILE id="oFdspF" name="ReverbEditor.cpp" compile="1" resource="0"
@@ -26,6 +45,7 @@
             file="Source/SaturatorEditor.cpp"/>
       <FILE id="QiNTrQ" name="SaturatorEditor.h" compile="0" resource="0"
             file="Source/SaturatorEditor.h"/>
+      <FILE id="OP9bHp" name="VerticalMeter.h" compile="0" resource="0" file="Source/VerticalMeter.h"/>
     </GROUP>
     <GROUP id="{F9C8FBCD-4E3B-9781-8A7F-96ABC945322E}" name="ProcessingUnits">
       <FILE id="ZTvsw8" name="Compressor.cpp" compile="1" resource="0" file="Source/Compressor.cpp"/>
@@ -34,8 +54,6 @@
       <FILE id="BO0Wna" name="DeEsser.h" compile="0" resource="0" file="Source/DeEsser.h"/>
       <FILE id="n1SHE7" name="Equalizer.cpp" compile="1" resource="0" file="Source/Equalizer.cpp"/>
       <FILE id="I1a9lv" name="Equalizer.h" compile="0" resource="0" file="Source/Equalizer.h"/>
-      <FILE id="bSkpH6" name="Gain.cpp" compile="1" resource="0" file="Source/Gain.cpp"/>
-      <FILE id="PVMOWP" name="Gain.h" compile="0" resource="0" file="Source/Gain.h"/>
       <FILE id="uHxB6V" name="Gate.cpp" compile="1" resource="0" file="Source/Gate.cpp"/>
       <FILE id="tGKM4m" name="Gate.h" compile="0" resource="0" file="Source/Gate.h"/>
       <FILE id="PRXBCL" name="Reverb.cpp" compile="1" resource="0" file="Source/Reverb.cpp"/>
@@ -77,7 +95,7 @@
         <MODULEPATH id="juce_dsp" path="../../../../../JUCE/modules"/>
       </MODULEPATHS>
     </VS2019>
-    <XCODE_MAC targetFolder="Builds/MacOSX">
+    <XCODE_MAC targetFolder="Builds/MacOSX" microphonePermissionNeeded="1">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug" targetName="OneKnobVocal"/>
         <CONFIGURATION isDebug="0" name="Release" targetName="OneKnobVocal"/>
@@ -98,6 +116,27 @@
         <MODULEPATH id="juce_dsp" path="../../../../../JUCE/modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
+    <VS2022 targetFolder="Builds/VisualStudio2022">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug"/>
+        <CONFIGURATION isDebug="0" name="Release"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="C:\JUCE\modules"/>
+        <MODULEPATH id="juce_audio_devices" path="C:\JUCE\modules"/>
+        <MODULEPATH id="juce_audio_formats" path="C:\JUCE\modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="C:\JUCE\modules"/>
+        <MODULEPATH id="juce_audio_processors" path="C:\JUCE\modules"/>
+        <MODULEPATH id="juce_audio_utils" path="C:\JUCE\modules"/>
+        <MODULEPATH id="juce_core" path="C:\JUCE\modules"/>
+        <MODULEPATH id="juce_data_structures" path="C:\JUCE\modules"/>
+        <MODULEPATH id="juce_dsp" path="C:\JUCE\modules"/>
+        <MODULEPATH id="juce_events" path="C:\JUCE\modules"/>
+        <MODULEPATH id="juce_graphics" path="C:\JUCE\modules"/>
+        <MODULEPATH id="juce_gui_basics" path="C:\JUCE\modules"/>
+        <MODULEPATH id="juce_gui_extra" path="C:\JUCE\modules"/>
+      </MODULEPATHS>
+    </VS2022>
   </EXPORTFORMATS>
   <MODULES>
     <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>

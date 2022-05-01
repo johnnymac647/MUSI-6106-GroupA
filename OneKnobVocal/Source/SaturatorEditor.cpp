@@ -10,29 +10,39 @@
 
 #include "SaturatorEditor.h"
 
-SaturatorEditor::SaturatorEditor(Saturator& p)
-    :AudioProcessorEditor(&p), mProcessor(p)
+SaturatorEditor::SaturatorEditor(OneKnobVocalAudioProcessor& p)
+    : mProcessor(p)
 {
-    
-    GainKnob.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    GainKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
-    addAndMakeVisible(GainKnob);
-    GainKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "GAIN", GainKnob);
-    GainKnob.setBounds(0, 40, 120, 20);
-    
-    MixKnob.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    MixKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
-    addAndMakeVisible(MixKnob);
-    MixKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "MIX", MixKnob);
-    MixKnob.setBounds(0, 65, 120, 20);
+    for (int i = 0; i < Saturator::effectParameters::kNumOfParameters; i++)
+    {
+        editorLabels[i].setText(Saturator::parameterNames[i], juce::NotificationType::dontSendNotification);
+        editorLabels[i].setBounds(0, i * 40 + 20, 120, 20);
+        addAndMakeVisible(editorLabels[i]);
 
-    
-    VolumeKnob.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    VolumeKnob.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
-    addAndMakeVisible(VolumeKnob);
-    VolumeKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts, "OUTPUT", VolumeKnob);
-    VolumeKnob.setBounds(0, 90, 120, 20);
-    
+        flipToggleButtons[i].setClickingTogglesState(true);
+        flipToggleButtons[i].setBounds(90, i * 40 + 20, 20, 20);
+        flipToggleButtons[i].onClick = [this, i] { changeToggleStateOnClick(&flipToggleButtons[i]); };
+        addAndMakeVisible(flipToggleButtons[i]);
+
+        sliderAttachments[i] = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(mProcessor.apvts,
+            Saturator::parameterIDs[i],
+            editorSliders[i]);
+
+        editorSliders[i].setSliderStyle(juce::Slider::SliderStyle::ThreeValueHorizontal);
+        editorSliders[i].setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
+
+        editorSliders[i].setMinAndMaxValues(mProcessor.knobValueMap[Saturator::parameterIDs[i]].start,
+            mProcessor.knobValueMap[Saturator::parameterIDs[i]].end);
+
+        editorSliders[i].addListener(this);
+        addAndMakeVisible(editorSliders[i]);
+
+
+        editorSliders[i].setTooltip("Min: " + std::to_string(editorSliders[i].getMinValue()) + ", " + "Max: " + std::to_string(editorSliders[i].getMaxValue()));
+        editorSliders[i].setBounds(0, i * 40 + 40, 120, 20);
+    }
+
+    setAllButtonState();
     
 }
 SaturatorEditor::~SaturatorEditor()
@@ -41,9 +51,39 @@ SaturatorEditor::~SaturatorEditor()
 }
 void SaturatorEditor::paint(juce::Graphics& g)
 {
-    g.fillAll(juce::Colours::darkgrey);
+    g.fillAll(juce::Colours::purple);
 
     g.setColour(juce::Colours::white);
     g.setFont(15.0f);
     g.drawFittedText("Saturator", getLocalBounds(), juce::Justification::centredTop, 1);
+}
+
+void SaturatorEditor::sliderValueChanged(juce::Slider* slider)
+{
+    for (int i = 0; i < Saturator::effectParameters::kNumOfParameters; i++)
+    {
+        if (slider == &editorSliders[i])
+        {
+            if (abs(slider->getMinValue() - mProcessor.knobValueMap[Saturator::parameterIDs[i]].start) > 1e-3
+                || abs(slider->getMaxValue() - mProcessor.knobValueMap[Saturator::parameterIDs[i]].end) > 1e-3)
+            {
+                mProcessor.knobValueMap.set(Saturator::parameterIDs[i],
+                    ModdedNormalisableRange<double>(slider->getMinValue(), slider->getMaxValue()));
+                editorSliders[i].setTooltip("Min: " + std::to_string(editorSliders[i].getMinValue()) + ", " + "Max: " + std::to_string(editorSliders[i].getMaxValue()));
+            }
+        }
+
+    }
+}
+
+void SaturatorEditor::updateRanges()
+{
+    removeSliderListeners(this);
+    for (int i = 0; i < Saturator::effectParameters::kNumOfParameters; i++)
+    {
+        editorSliders[i].setMinAndMaxValues(mProcessor.knobValueMap[Saturator::parameterIDs[i]].start,
+            mProcessor.knobValueMap[Saturator::parameterIDs[i]].end);
+        editorSliders[i].setTooltip("Min: " + std::to_string(editorSliders[i].getMinValue()) + ", " + "Max: " + std::to_string(editorSliders[i].getMaxValue()));
+    }
+    addSliderListeners(this);
 }

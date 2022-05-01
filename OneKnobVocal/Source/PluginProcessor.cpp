@@ -11,7 +11,6 @@
 #include "Compressor.h"
 #include "DeEsser.h"
 #include "Equalizer.h"
-#include "Gain.h"
 #include "Gate.h"
 #include "Reverb.h"
 #include "Saturator.h"
@@ -27,9 +26,28 @@ OneKnobVocalAudioProcessor::OneKnobVocalAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       ), mainProcessor(new juce::AudioProcessorGraph())
+                       ), mainProcessor(new juce::AudioProcessorGraph()),
+    apvts{ *this, nullptr, "Parameters", createParameterLayout() }
 #endif
 {
+    Gate::addToKnobMap(knobValueMap);
+    Deesser::addToKnobMap(knobValueMap);
+    Equalizer::addToKnobMap(knobValueMap);
+    Compressor::addToKnobMap(knobValueMap);
+    Saturator::addToKnobMap(knobValueMap);
+    Reverb::addToKnobMap(knobValueMap);
+
+    juce::HashMap<juce::String, ModdedNormalisableRange<double>>::Iterator i(knobValueMap);
+    while (i.next())
+    {
+        mappingRangeFlip.set(i.getKey(), false);
+    }
+
+    apvts.addParameterListener("ONE_KNOB", this);
+
+    initialiseGraph();
+
+
 }
 
 OneKnobVocalAudioProcessor::~OneKnobVocalAudioProcessor()
@@ -107,12 +125,28 @@ void OneKnobVocalAudioProcessor::prepareToPlay (double sampleRate, int samplesPe
 
     mainProcessor->prepareToPlay(sampleRate, samplesPerBlock);
 
-    initialiseGraph();
+    prepareGraphForPlaying();
 
     for (auto node : mainProcessor->getNodes())
+    {
+        node->getProcessor()->setPlayConfigDetails(getMainBusNumInputChannels(),
+            getMainBusNumOutputChannels(),
+            sampleRate, samplesPerBlock);
+        node->getProcessor()->prepareToPlay(sampleRate, samplesPerBlock);
         node->getProcessor()->enableAllBuses();
+    }
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
+    
+    mRmsInputLeft.reset(sampleRate, 0.5); //smooth the value when it goes down
+    mRmsInputRight.reset(sampleRate, 0.5);
+    mRmsOutputLeft.reset(sampleRate, 0.5);
+    mRmsOutputRight.reset(sampleRate, 0.5);
+    
+    mRmsInputLeft.setCurrentAndTargetValue(-100.f); //set the initial value
+    mRmsInputRight.setCurrentAndTargetValue(-100.f);;
+    mRmsOutputLeft.setCurrentAndTargetValue(-100.f);;
+    mRmsOutputRight.setCurrentAndTargetValue(-100.f);;
 }
 
 void OneKnobVocalAudioProcessor::releaseResources()
@@ -120,6 +154,9 @@ void OneKnobVocalAudioProcessor::releaseResources()
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
 }
+
+
+
 
 #ifndef JucePlugin_PreferredChannelConfigurations
 bool OneKnobVocalAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
@@ -169,7 +206,52 @@ void OneKnobVocalAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
 
+    
+    
+    /*
+    calculate the RMS of the block size.
+    The time resolution depends on the block size of the host, but it's acceptable.
+     */
+    
+    // the next smoothed value is after the length of the processing block
+    mRmsInputLeft.skip(buffer.getNumSamples());
+    mRmsInputRight.skip(buffer.getNumSamples());
+    mRmsOutputLeft.skip(buffer.getNumSamples());
+    mRmsOutputRight.skip(buffer.getNumSamples());
+    
+    float rmsInputLeft = juce::Decibels::gainToDecibels(buffer.getRMSLevel(0, 0, buffer.getNumSamples()));
+    if (rmsInputLeft < mRmsInputLeft.getCurrentValue())
+        mRmsInputLeft.setTargetValue(rmsInputLeft); //smooth the value only when it goes down
+    else
+        mRmsInputLeft.setCurrentAndTargetValue(rmsInputLeft);
+    
+    float rmsInputRight = juce::Decibels::gainToDecibels(buffer.getRMSLevel(1, 0, buffer.getNumSamples()));
+    if (rmsInputRight < mRmsInputRight.getCurrentValue())
+        mRmsInputRight.setTargetValue(rmsInputRight); //smooth the value only when it goes down
+    else
+        mRmsInputRight.setCurrentAndTargetValue(rmsInputRight);
+    
+    
+    //all the audio processing
     mainProcessor->processBlock(buffer, midiMessages);
+    
+
+    
+    float rmsOutputLeft = juce::Decibels::gainToDecibels(buffer.getRMSLevel(0, 0, buffer.getNumSamples()));
+    if (rmsOutputLeft < mRmsOutputLeft.getCurrentValue())
+        mRmsOutputLeft.setTargetValue(rmsOutputLeft); //smooth the value only when it goes down
+    else
+        mRmsOutputLeft.setCurrentAndTargetValue(rmsOutputLeft);
+    
+    
+    float rmsOutputRight = juce::Decibels::gainToDecibels(buffer.getRMSLevel(1, 0, buffer.getNumSamples()));
+    if (rmsOutputRight < mRmsOutputRight.getCurrentValue())
+        mRmsOutputRight.setTargetValue(rmsOutputRight); //smooth the value only when it goes down
+    else
+        mRmsOutputRight.setCurrentAndTargetValue(rmsOutputRight);
+    
+    
+    
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         auto* channelData = buffer.getWritePointer (channel);
@@ -195,12 +277,136 @@ void OneKnobVocalAudioProcessor::getStateInformation (juce::MemoryBlock& destDat
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
+    auto paramsValueTree = apvts.copyState();
+    auto mappingValueTree = saveMapToValueTree();
+
+    juce::ValueTree miscStateInfomation("Misc");
+    juce::ValueTree comboBoxState("Preset");
+    juce::ValueTree advancedModeState("Mode");
+    comboBoxState.setProperty("id", selectedComboBoxID, nullptr);
+    comboBoxState.setProperty("Message", selectedComboBoxMessage, nullptr);
+
+    advancedModeState.setProperty("isOn", isEditorInAdvancedMode, nullptr);
+
+    miscStateInfomation.addChild(comboBoxState, -1, nullptr);
+    miscStateInfomation.addChild(advancedModeState, -1, nullptr);
+
+    juce::ValueTree state("SavingState");
+    state.addChild(paramsValueTree, -1, nullptr);
+    state.addChild(mappingValueTree, -1, nullptr);
+    state.addChild(miscStateInfomation, -1, nullptr);
+    std::unique_ptr<juce::XmlElement> xml(state.createXml());
+    copyXmlToBinary(*xml, destData);
+}
+
+void OneKnobVocalAudioProcessor::savePluginPreset(juce::MemoryBlock& destData)
+{
+    // You should use this method to store your parameters in the memory block.
+    // You could do that either as raw data, or use the XML or ValueTree classes
+    // as intermediaries to make it easy to save and load complex data.
+    auto paramsValueTree = apvts.copyState();
+    auto mappingValueTree = saveMapToValueTree();
+    juce::ValueTree state("SavingState");
+    state.addChild(paramsValueTree, -1, nullptr);
+    state.addChild(mappingValueTree, -1, nullptr);
+    std::unique_ptr<juce::XmlElement> xml(state.createXml());
+    copyXmlToBinary(*xml, destData);
 }
 
 void OneKnobVocalAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+    std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
+
+    if (xmlState.get() != nullptr)
+    {
+        auto state = juce::ValueTree::fromXml(*xmlState);
+
+        apvts.removeParameterListener("ONE_KNOB", this);
+        loadMapFromValueTree(state);
+        if (state.getChildWithName("Misc").isValid())
+        {
+            if (state.getChildWithName("Misc").getChildWithName("Preset").isValid())
+            {
+                selectedComboBoxID = state.getChildWithName("Misc").getChildWithName("Preset")["id"];
+                selectedComboBoxMessage = state.getChildWithName("Misc").getChildWithName("Preset")["Message"];
+            }
+            if (state.getChildWithName("Misc").getChildWithName("Mode").isValid())
+            {
+                isEditorInAdvancedMode = state.getChildWithName("Misc").getChildWithName("Mode")["isOn"];
+            }
+        }
+        loadedStateInformation.sendChangeMessage();
+        if (state.getChildWithName(apvts.state.getType()).isValid() && !isEditorOpen)
+        {
+            apvts.replaceState(state.getChildWithName(apvts.state.getType()));
+            loadedApvts.sendChangeMessage();
+        }
+        else
+            audioParameterValuesToLoad = state.getChildWithName(apvts.state.getType());
+        apvts.addParameterListener("ONE_KNOB", this);
+    }
+
+}
+
+void OneKnobVocalAudioProcessor::loadSavedPreset(const void* data, int sizeInBytes)
+{
+    // You should use this method to restore your parameters from this memory block,
+    // whose contents will have been created by the getStateInformation() call.
+    std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
+
+    if (xmlState.get() != nullptr)
+    {
+        auto state = juce::ValueTree::fromXml(*xmlState);
+
+        apvts.removeParameterListener("ONE_KNOB", this);
+        loadMapFromValueTree(state);
+        loadedPreset.sendChangeMessage();
+        if (state.getChildWithName(apvts.state.getType()).isValid() && !isEditorOpen)
+        {
+            apvts.replaceState(state.getChildWithName(apvts.state.getType()));
+            loadedApvts.sendChangeMessage();
+        }
+        else
+            audioParameterValuesToLoad = state.getChildWithName(apvts.state.getType());
+        apvts.addParameterListener("ONE_KNOB", this);
+    }
+
+}
+
+
+float OneKnobVocalAudioProcessor::getRmsValue(const int channel, const int position) const
+{
+    jassert(channel == 0 || channel == 1); //only accept stereo
+    jassert(position == 0 || position == 1); //only two position: intput (0) and output (1)
+    
+    
+    if (channel == 0)
+    {
+        if(position == 0)
+            return mRmsInputLeft.getCurrentValue();
+        else if (position == 1)
+            return mRmsOutputLeft.getCurrentValue();
+    }
+    
+    if (channel == 1)
+    {
+        if(position == 0)
+            return mRmsInputRight.getCurrentValue();
+        else if (position == 1)
+            return mRmsOutputRight.getCurrentValue();
+    }
+    
+    return 0.f;
+
+}
+
+void OneKnobVocalAudioProcessor::setAudioParameters()
+{
+    if (audioParameterValuesToLoad.isValid())
+        apvts.replaceState(audioParameterValuesToLoad);
+    loadedApvts.sendChangeMessage();
 }
 
 //==============================================================================
@@ -212,29 +418,25 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 
 void OneKnobVocalAudioProcessor::initialiseAudioNodes() //TODO: Could someone make this neat?
 { 
-    inputGainNode = mainProcessor->addNode(std::make_unique<Gain>());
-    audioNodeList.add(inputGainNode);
 
-    gateNode = mainProcessor->addNode(std::make_unique<Gate>());
+    gateNode = mainProcessor->addNode(std::make_unique<Gate>(&apvts));
     audioNodeList.add(gateNode);
 
-    deEsserNode = mainProcessor->addNode(std::make_unique<Deesser>());
+    deEsserNode = mainProcessor->addNode(std::make_unique<Deesser>(&apvts));
     audioNodeList.add(deEsserNode);
 
-    equalizerNode = mainProcessor->addNode(std::make_unique<Equalizer>());
+    equalizerNode = mainProcessor->addNode(std::make_unique<Equalizer>(&apvts));
     audioNodeList.add(equalizerNode);
 
-    compressorNode = mainProcessor->addNode(std::make_unique<Compressor>());
+    compressorNode = mainProcessor->addNode(std::make_unique<Compressor>(&apvts));
     audioNodeList.add(compressorNode);
 
-    saturatorNode = mainProcessor->addNode(std::make_unique<Saturator>());
+    saturatorNode = mainProcessor->addNode(std::make_unique<Saturator>(&apvts));
     audioNodeList.add(saturatorNode);
 
-    reverbNode = mainProcessor->addNode(std::make_unique<Reverb>());
+    reverbNode = mainProcessor->addNode(std::make_unique<Reverb>(&apvts));
     audioNodeList.add(reverbNode);
 
-    outputGainNode = mainProcessor->addNode(std::make_unique<Gain>());
-    audioNodeList.add(outputGainNode);
 }
 
 void OneKnobVocalAudioProcessor::connectAudioNodes()
@@ -264,16 +466,109 @@ void OneKnobVocalAudioProcessor::connectMidiNodes()
 
 void OneKnobVocalAudioProcessor::initialiseGraph()
 {
+    audioNodeList.clear();
+
     mainProcessor->clear();
 
     audioInputNode = mainProcessor->addNode(std::make_unique<juce::AudioProcessorGraph::AudioGraphIOProcessor>(juce::AudioProcessorGraph::AudioGraphIOProcessor::audioInputNode));
     audioOutputNode = mainProcessor->addNode(std::make_unique<juce::AudioProcessorGraph::AudioGraphIOProcessor>(juce::AudioProcessorGraph::AudioGraphIOProcessor::audioOutputNode));
-   
-    
+
     midiInputNode = mainProcessor->addNode(std::make_unique<juce::AudioProcessorGraph::AudioGraphIOProcessor>(juce::AudioProcessorGraph::AudioGraphIOProcessor::midiInputNode));
     midiOutputNode = mainProcessor->addNode(std::make_unique<juce::AudioProcessorGraph::AudioGraphIOProcessor>(juce::AudioProcessorGraph::AudioGraphIOProcessor::midiOutputNode));
 
     initialiseAudioNodes();
     connectAudioNodes();
     connectMidiNodes();
+}
+
+void OneKnobVocalAudioProcessor::prepareGraphForPlaying()
+{
+    for (auto connections : mainProcessor->getConnections())
+    {
+        mainProcessor->removeConnection(connections);
+    }
+
+    if (audioInputNode)
+    {
+        mainProcessor->removeNode(audioInputNode->nodeID);
+    }
+
+    if (audioOutputNode)
+    {
+        mainProcessor->removeNode(audioOutputNode->nodeID);
+    }
+
+    audioInputNode = mainProcessor->addNode(std::make_unique<juce::AudioProcessorGraph::AudioGraphIOProcessor>(juce::AudioProcessorGraph::AudioGraphIOProcessor::audioInputNode));
+    audioOutputNode = mainProcessor->addNode(std::make_unique<juce::AudioProcessorGraph::AudioGraphIOProcessor>(juce::AudioProcessorGraph::AudioGraphIOProcessor::audioOutputNode));
+
+    midiInputNode = mainProcessor->addNode(std::make_unique<juce::AudioProcessorGraph::AudioGraphIOProcessor>(juce::AudioProcessorGraph::AudioGraphIOProcessor::midiInputNode));
+    midiOutputNode = mainProcessor->addNode(std::make_unique<juce::AudioProcessorGraph::AudioGraphIOProcessor>(juce::AudioProcessorGraph::AudioGraphIOProcessor::midiOutputNode));
+
+    connectAudioNodes();
+}
+
+juce::ValueTree OneKnobVocalAudioProcessor::saveMapToValueTree()
+{
+    juce::ValueTree mapValueTree("Mappings");
+    juce::HashMap<juce::String, ModdedNormalisableRange<double>>::Iterator i(knobValueMap);
+    while (i.next())
+    {
+        juce::ValueTree currentMappingValue("NormRange");
+        currentMappingValue.setProperty("id", i.getKey(), nullptr);
+        currentMappingValue.setProperty("Start", i.getValue().start, nullptr);
+        currentMappingValue.setProperty("End", i.getValue().end, nullptr);
+        currentMappingValue.setProperty("Flip", mappingRangeFlip[i.getKey()], nullptr);
+        mapValueTree.addChild(currentMappingValue.createCopy(), -1, nullptr);
+    }
+    return mapValueTree.createCopy();
+}
+
+void OneKnobVocalAudioProcessor::loadMapFromValueTree(juce::ValueTree state)
+{
+    if (state.getChildWithName("Mappings").isValid())
+    {
+        for (auto range : state.getChildWithName("Mappings"))
+        {
+            if (range.hasType("NormRange"))
+            {
+                knobValueMap.set(range["id"].toString(), ModdedNormalisableRange<double>(range["Start"], range["End"]));
+                mappingRangeFlip.set(range["id"].toString(), range["Flip"]);
+            }
+        }
+    }
+}
+
+void OneKnobVocalAudioProcessor::parameterChanged(const juce::String& parameterID, float newValue)
+{
+    if (parameterID == "ONE_KNOB")
+    {
+        juce::HashMap<juce::String, ModdedNormalisableRange<double>>::Iterator i(knobValueMap);
+        while (i.next())
+        {
+            if (mappingRangeFlip[i.getKey()])
+            {
+                apvts.getParameter(i.getKey())->setValueNotifyingHost(apvts.getParameter(i.getKey())->convertTo0to1(i.getValue().convertFrom0to1(1 - newValue)));
+            }
+            else
+            {
+                apvts.getParameter(i.getKey())->setValueNotifyingHost(apvts.getParameter(i.getKey())->convertTo0to1(i.getValue().convertFrom0to1(newValue)));
+            }
+        }
+    }
+}
+
+juce::AudioProcessorValueTreeState::ParameterLayout OneKnobVocalAudioProcessor::createParameterLayout()
+{
+    std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
+
+    Gate::addToParameterLayout(params);
+    Deesser::addToParameterLayout(params);
+    Equalizer::addToParameterLayout(params);
+    Compressor::addToParameterLayout(params);
+    Saturator::addToParameterLayout(params);
+    Reverb::addToParameterLayout(params);
+
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("ONE_KNOB", "One Knob", 0.0f, 1.0f, 0.5f));
+
+    return { params.begin() , params.end() };
 }
