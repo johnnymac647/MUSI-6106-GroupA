@@ -16,38 +16,35 @@ Final Project for Audio Software Engineering, Spring 2022
 - Create an “all-in-one” vocal plugin that includes any effect one may need to apply to a vocal track all within a single application. Real-time plug-in that can be rendered both online/offline. Includes audio presets for additional ease of use.
 
 ## Use Cases:
-- Karaoke (set once for the machine/karaoke plugin, and then leave it), Streaming music performances, hobby production
+- Karaoke (set once for the machine/karaoke plugin, and then leave it), 
+- Streaming music performances, 
+- Hobby production
 functionality from user point of view and how it differentiates from similar products
-- Single knob/parameter with presets for the user to adjust, rather than a potentially overwhelming set of options example
-- *nice to have but will do for our own prototyping* - open up the application for more advanced users to customize individual parameters
+- Single knob/parameter with presets for the user to adjust, rather than a potentially overwhelming set of options example.
+- Advanced settings option where more experienced users can customize individual parameters and create custom presets.
 ![See DSP Flowchart](https://github.com/johnnymac647/MUSI-6106-GroupA/blob/main/plots/flowchart_dsp.png?raw=true)
 
 ## Description of Functionality:
 - UI:
-  - All
-    - Output meter
-  - Default UI
-    - 1 knob (dry/wet)
-    - 2 switches for the audio presets below
-  - Advanced User (for users & us to easily prototype)
-- Effects:
-  - Gate
-  - Compression
-  - De-esser
-  - EQ
-  - Saturation
-  - Singing only:
-    - Delay
-    - Impulse Reverb
-  - Output meter
-- Audio presets for additional user ease of use
-  - Voiceover vs singing -> Treble vs bass
-  - Other options we may incorporate later:
-    - Various styles, e.g. lofi, radio, natural, modern
+  - Basic Settings:
+    - 1 knob controlling the extent of processing (0 = no processing, 1 = fully processed)
+    - Preset Drop-down Menu
+    - Input/Output Level Meter
+  - Advanced Settings:
+    - Gate
+    - Compression
+    - De-esser
+    - EQ
+    - Saturation
+    - Reverb
+- Audio presets in various styles
+  - Club 
+  - Country
+  - Pop
+  - Rock
 
 ## Work Packages:
 - JUCE: GUI, DSP packages
-- (Potentially) Eigen for linear algebra
 
 ## Algorithmic References:
 - Zölzer, Udo, et al. DAFX-Digital audio effects. John Wiley & Sons, 2002.
