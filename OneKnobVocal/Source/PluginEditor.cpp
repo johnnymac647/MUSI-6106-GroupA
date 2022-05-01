@@ -76,7 +76,7 @@ OneKnobVocalAudioProcessorEditor::OneKnobVocalAudioProcessorEditor (OneKnobVocal
     mainDropdownBox.setLookAndFeel(&royalTheme);
     viewToggleButtons.setLookAndFeel(&royalTheme);
 
-    mainDropdownBox.setBounds(280, 40, 160, 20);
+    mainDropdownBox.setBounds(280, 180, 160, 20);
     addAndMakeVisible(mainDropdownBox);
     mainDropdownBox.addItem("Default", kDefault);
     mainDropdownBox.addItem("Club", kClub);
@@ -95,7 +95,7 @@ OneKnobVocalAudioProcessorEditor::OneKnobVocalAudioProcessorEditor (OneKnobVocal
             loadPreset();
     };
 
-    savePresetButton.setBounds(460, 40, 60, 20);
+    savePresetButton.setBounds(460, 180, 60, 20);
     addAndMakeVisible(savePresetButton);
 
 
@@ -185,7 +185,7 @@ void OneKnobVocalAudioProcessorEditor::paint (juce::Graphics& g)
     g.setColour(textColor);
     g.setFont(savoyeItalic.withHeight(100.0f));
     g.drawText("Voce Dolce", getWidth()/2 - 200, 110, 400, 20, juce::Justification::centred, true);
-
+    
 }
 
 void OneKnobVocalAudioProcessorEditor::resized()
