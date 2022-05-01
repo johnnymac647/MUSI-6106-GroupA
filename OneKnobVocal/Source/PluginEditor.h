@@ -56,7 +56,7 @@ private:
 
 
 #ifdef __APPLE__
-    juce::Font savoyeItalic{"Savoye Let", "Regular", 100.f};
+    juce::Font savoyeItalic{"Savoye LET", "Regular", 100.f};
 #else
     inline static juce::Font savoyeItalic{juce::Font(juce::Typeface::createSystemTypefaceFor(BinaryData::Savoye_Regular_ttf, BinaryData::Savoye_Regular_ttfSize ))};
 #endif
