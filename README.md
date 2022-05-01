@@ -20,8 +20,8 @@ Final Project for Audio Software Engineering, Spring 2022
 - Streaming music performances, 
 - Hobby production
 functionality from user point of view and how it differentiates from similar products
-- Single knob/parameter with presets for the user to adjust, rather than a potentially overwhelming set of options example.
-- Advanced settings option where more experienced users can customize individual parameters and create custom presets.
+
+## Signal Flow Diagram
 ![See DSP Flowchart](https://github.com/johnnymac647/MUSI-6106-GroupA/blob/main/plots/flowchart_dsp.png?raw=true)
 
 ## Description of Functionality:
@@ -81,5 +81,8 @@ functionality from user point of view and how it differentiates from similar pro
   - Nitin: Compression, UX Design, Developer
   - Mike: Distortion, Developer
 
-## GUI design: 
+## GUI Design:
+### Basic Interface
 ![Group 1](https://user-images.githubusercontent.com/77855667/153244859-47ccf6b0-3f52-498e-9938-4c0cb93d7e8f.png)
+
+### Advanced Settings
