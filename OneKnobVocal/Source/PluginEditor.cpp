@@ -46,11 +46,10 @@ OneKnobVocalAudioProcessorEditor::OneKnobVocalAudioProcessorEditor (OneKnobVocal
     mReverbEditor->setSize(133, 600);
     mReverbEditor->setTopLeftPosition(667, 200);
 
-
     OneKnobAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts, "ONE_KNOB", mOneKnobSlider);
     mOneKnobSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     mOneKnobSlider.setRange(0, 1);
-    mOneKnobSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 10);
+    mOneKnobSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 100, 20);
     mOneKnobSlider.setBounds(0, 650, 120, 120);
 
     royalTheme.setColour(juce::Slider::thumbColourId, textColor);
@@ -58,10 +57,24 @@ OneKnobVocalAudioProcessorEditor::OneKnobVocalAudioProcessorEditor (OneKnobVocal
     royalTheme.setColour(juce::Slider::rotarySliderFillColourId, textColor);
     royalTheme.setColour(juce::Slider::rotarySliderOutlineColourId, darkGold);
     royalTheme.setColour(juce::Slider::textBoxOutlineColourId, clear);
-    
+    royalTheme.setColour(juce::TextButton::buttonOnColourId, lightPurple);
+    royalTheme.setColour(juce::TextButton::buttonColourId, lightPurple);
+    royalTheme.setColour(juce::TextButton::textColourOnId, textColor);
+    royalTheme.setColour(juce::TextButton::textColourOffId, textColor);
+    royalTheme.setColour(juce::ComboBox::backgroundColourId, lightPurple);
+    royalTheme.setColour(juce::ComboBox::textColourId, textColor);
+    royalTheme.setColour(juce::ComboBox::outlineColourId, clear);
+    royalTheme.setColour(juce::ComboBox::arrowColourId, textColor);
+    royalTheme.setColour(juce::ComboBox::buttonColourId, lightPurple);
+    royalTheme.setColour(juce::PopupMenu::backgroundColourId, lightPurple);
+    royalTheme.setColour(juce::PopupMenu::textColourId, textColor);
+    royalTheme.setColour(juce::PopupMenu::highlightedTextColourId, juce::Colours::orchid);
+    royalTheme.setColour(juce::PopupMenu::highlightedBackgroundColourId, backgroundColor);
+
     mOneKnobSlider.setLookAndFeel(&royalTheme);
-
-
+    savePresetButton.setLookAndFeel(&royalTheme);
+    mainDropdownBox.setLookAndFeel(&royalTheme);
+    viewToggleButtons.setLookAndFeel(&royalTheme);
 
     mainDropdownBox.setBounds(280, 40, 160, 20);
     addAndMakeVisible(mainDropdownBox);
@@ -73,6 +86,9 @@ OneKnobVocalAudioProcessorEditor::OneKnobVocalAudioProcessorEditor (OneKnobVocal
     mainDropdownBox.addItem("Select Custom...", kCustomSelect);
     mainDropdownBox.setSelectedId(audioProcessor.selectedComboBoxID);
     mainDropdownBox.setTextWhenNothingSelected(audioProcessor.selectedComboBoxMessage);
+    
+    mainDropdownBox.setColour(juce::PopupMenu::backgroundColourId, lightPurple);
+    mainDropdownBox.setColour(juce::PopupMenu::textColourId, textColor);
 
     mainDropdownBox.onChange = [this] {
         if (!isLoadingStateInformation)
@@ -81,7 +97,6 @@ OneKnobVocalAudioProcessorEditor::OneKnobVocalAudioProcessorEditor (OneKnobVocal
 
     savePresetButton.setBounds(460, 40, 60, 20);
     addAndMakeVisible(savePresetButton);
-
 
 
     savePresetButton.onClick = [&]
