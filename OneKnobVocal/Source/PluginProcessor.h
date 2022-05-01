@@ -70,7 +70,7 @@ public:
     juce::HashMap<juce::String, bool> mappingRangeFlip;
     juce::ValueTree audioParameterValuesToLoad;
 
-    int selectedComboBoxID = 0;
+    int selectedComboBoxID = 1;
 
     juce::String selectedComboBoxMessage = "Custom";
 
