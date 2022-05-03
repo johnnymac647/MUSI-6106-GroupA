@@ -282,14 +282,14 @@ void OneKnobVocalAudioProcessor::getStateInformation (juce::MemoryBlock& destDat
 
     juce::ValueTree miscStateInfomation("Misc");
     juce::ValueTree comboBoxState("Preset");
-    juce::ValueTree advancedModeState("Mode");
+    //juce::ValueTree advancedModeState("Mode");
     comboBoxState.setProperty("id", selectedComboBoxID, nullptr);
     comboBoxState.setProperty("Message", selectedComboBoxMessage, nullptr);
 
-    advancedModeState.setProperty("isOn", isEditorInAdvancedMode, nullptr);
+    //advancedModeState.setProperty("isOn", isEditorInAdvancedMode, nullptr);
 
     miscStateInfomation.addChild(comboBoxState, -1, nullptr);
-    miscStateInfomation.addChild(advancedModeState, -1, nullptr);
+    //miscStateInfomation.addChild(advancedModeState, -1, nullptr);
 
     juce::ValueTree state("SavingState");
     state.addChild(paramsValueTree, -1, nullptr);
@@ -332,10 +332,10 @@ void OneKnobVocalAudioProcessor::setStateInformation (const void* data, int size
                 selectedComboBoxID = state.getChildWithName("Misc").getChildWithName("Preset")["id"];
                 selectedComboBoxMessage = state.getChildWithName("Misc").getChildWithName("Preset")["Message"];
             }
-            if (state.getChildWithName("Misc").getChildWithName("Mode").isValid())
-            {
-                isEditorInAdvancedMode = state.getChildWithName("Misc").getChildWithName("Mode")["isOn"];
-            }
+            //if (state.getChildWithName("Misc").getChildWithName("Mode").isValid())
+            //{
+            //    isEditorInAdvancedMode = state.getChildWithName("Misc").getChildWithName("Mode")["isOn"];
+            //}
         }
         loadedStateInformation.sendChangeMessage();
         if (state.getChildWithName(apvts.state.getType()).isValid() && !isEditorOpen)
