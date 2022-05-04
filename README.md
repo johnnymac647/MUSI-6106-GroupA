@@ -1,5 +1,7 @@
 # MUSI-6106-GroupA
 Final Project for Audio Software Engineering, Spring 2022
+You can find our user-demo here: https://vimeo.com/705188204
+You can find our technical explanation here: https://www.youtube.com/watch?v=ahXx7ZnZADg
 
 ## Motivation:
 - When editing vocals for singers, a variety of plug-ins are often necessary for sound design and music production
