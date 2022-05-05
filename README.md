@@ -91,4 +91,4 @@ functionality from user point of view and how it differentiates from similar pro
 ![Group 1](https://github.com/johnnymac647/MUSI-6106-GroupA/blob/main/images/advanced.png)
 
 ## Class Diagram
-![Class_Diagram](https://github.com/johnnymac647/MUSI-6106-GroupA/blob/main/images/class+diagram.png)
+![Class Diagram](https://github.com/johnnymac647/MUSI-6106-GroupA/blob/main/images/class%20diagram.png)
