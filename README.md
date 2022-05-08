@@ -5,6 +5,7 @@ You can find our technical explanation here: https://www.youtube.com/watch?v=ahX
 
 ## Requirements:
 JUCE >= 6.1.5
+
 Any C++ compiler that supports C++ 17 or later
 
 ## Build:
