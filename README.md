@@ -3,6 +3,13 @@ Final Project for Audio Software Engineering, Spring 2022
 You can find our user-demo here: https://vimeo.com/705188204
 You can find our technical explanation here: https://www.youtube.com/watch?v=ahXx7ZnZADg
 
+## Requirements:
+JUCE >= 6.1.5
+Any C++ compiler that supports C++ 17 or later
+
+## Build:
+Open OneKnobVocal.jucer with projucer, generate project for your specific environment and build with the generated project. 
+
 ## Motivation:
 - When editing vocals for singers, a variety of plug-ins are often necessary for sound design and music production
 
